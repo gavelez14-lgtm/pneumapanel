@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PneumaPanel — Actuator Control Panel Configurator</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e13;--surface:#0f1620;--panel:#141c28;--border:#1e2d42;--border2:#243447;--cyan:#00d4ff;--cyan-dim:#0099bb;--orange:#ff6b2b;--green:#00e676;--yellow:#ffc107;--red:#ff3d3d;--purple:#a78bfa;--text:#c8d8e8;--text-dim:#546e8a;--text-muted:#2d4060;--mono:'Share Tech Mono',monospace;--head:'Bebas Neue',sans-serif;--body:'Rajdhani',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(0,212,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.02) 1px,transparent 1px);background-size:40px 40px;}
+header{position:relative;z-index:10;display:flex;align-items:center;gap:20px;padding:15px 34px;background:linear-gradient(180deg,#0c1520 0%,transparent 100%);border-bottom:1px solid var(--border);}
+.logo-mark{width:40px;height:40px;background:var(--cyan);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:16px;color:var(--bg);flex-shrink:0;}
+.logo-text h1{font-family:var(--head);font-size:25px;letter-spacing:3px;color:var(--cyan);line-height:1;}
+.logo-text p{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:2px;}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.hdr-badge{font-family:var(--mono);font-size:9px;color:var(--text-dim);border:1px solid var(--border);padding:4px 10px;border-radius:2px;letter-spacing:1px;}
+.hdr-badge span{color:var(--green);}
+.app-wrap{position:relative;z-index:1;display:grid;grid-template-columns:375px 1fr;min-height:calc(100vh - 72px);}
+.config-panel{background:var(--surface);border-right:1px solid var(--border);padding:22px 20px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;}
+.section-label{font-family:var(--mono);font-size:9px;color:var(--cyan-dim);letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:11px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.type-card{background:var(--panel);border:2px solid var(--border);border-radius:6px;padding:13px 10px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden;}
+.type-card::before{content:'';position:absolute;inset:0;background:var(--cyan);opacity:0;transition:opacity .2s;}
+.type-card.active{border-color:var(--cyan);}
+.type-card.active::before{opacity:.05;}
+.type-card:hover{border-color:var(--cyan-dim);}
+.type-card .tc-icon{font-size:22px;margin-bottom:4px;filter:grayscale(1) brightness(.4);transition:filter .2s;}
+.type-card.active .tc-icon{filter:none;}
+.type-card .tc-name{font-family:var(--head);font-size:16px;letter-spacing:1px;color:var(--text-dim);transition:color .2s;}
+.type-card.active .tc-name{color:var(--cyan);}
+.type-card .tc-sub{font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:2px;}
+.type-card.active .tc-sub{color:var(--text-dim);}
+.active-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--cyan);display:none;box-shadow:0 0 8px var(--cyan);}
+.type-card.active .active-dot{display:block;}
+.field-group{display:flex;flex-direction:column;gap:10px;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field label{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.input-wrap{position:relative;display:flex;align-items:center;}
+.input-wrap input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--mono);font-size:14px;padding:8px 50px 8px 11px;outline:none;transition:border-color .2s;-moz-appearance:textfield;}
+.input-wrap input::-webkit-outer-spin-button,.input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.input-wrap input:focus{border-color:var(--cyan);}
+.input-unit{position:absolute;right:9px;font-family:var(--mono);font-size:9px;color:var(--text-muted);pointer-events:none;}
+.input-wrap input:focus~.input-unit{color:var(--cyan-dim);}
+.calc-result{background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.12);border-radius:4px;padding:6px 11px;display:flex;justify-content:space-between;align-items:center;}
+.calc-result .cr-label{font-family:var(--mono);font-size:9px;color:var(--text-dim);}
+.calc-result .cr-value{font-family:var(--mono);font-size:13px;color:var(--cyan);font-weight:bold;}
+.checkbox-list{display:flex;flex-direction:column;gap:8px;}
+.checkbox-list label{display:flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--mono);font-size:10px;color:var(--text-dim);}
+.checkbox-list input[type=checkbox]{accent-color:var(--cyan);width:13px;height:13px;flex-shrink:0;}
+
+/* Bifold model selector rows */
+.comp-cv-group{display:flex;flex-direction:column;gap:6px;}
+.comp-cv-row{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:7px 10px;}
+.comp-cv-top{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.comp-cv-top label{font-family:var(--mono);font-size:9px;color:var(--text-dim);flex:1;letter-spacing:1px;}
+.comp-cv-top .cv-badge{font-family:var(--mono);font-size:11px;font-weight:bold;color:var(--cyan);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:2px 7px;border-radius:2px;min-width:52px;text-align:right;}
+.model-select{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:3px;color:var(--text-dim);font-family:var(--mono);font-size:9px;padding:4px 6px;outline:none;cursor:pointer;}
+.model-select:focus{border-color:var(--cyan);}
+.model-select option{background:var(--bg);}
+
+.gen-btn{width:100%;background:var(--cyan);color:var(--bg);border:none;border-radius:4px;font-family:var(--head);font-size:20px;letter-spacing:3px;padding:12px;cursor:pointer;transition:all .2s;}
+.gen-btn:hover{background:#22e8ff;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,212,255,.4);}
+.diagram-panel{background:var(--bg);padding:26px 30px;overflow-y:auto;position:relative;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:70vh;gap:14px;color:var(--text-muted);}
+.empty-state .es-icon{font-size:52px;opacity:.2;}
+.empty-state p{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-align:center;line-height:1.8;}
+
+/* APPROVAL */
+.approval-block{border-radius:8px;padding:18px 22px;margin-bottom:22px;}
+.approval-block.approved{background:rgba(0,230,118,.05);border:1.5px solid rgba(0,230,118,.35);}
+.approval-block.rejected{background:rgba(255,61,61,.05);border:1.5px solid rgba(255,61,61,.35);}
+.approval-block.warning{background:rgba(255,193,7,.05);border:1.5px solid rgba(255,193,7,.35);}
+.approval-verdict{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.verdict-badge{font-family:var(--head);font-size:22px;letter-spacing:2px;padding:5px 14px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
+.verdict-badge.approved{background:rgba(0,230,118,.15);color:var(--green);}
+.verdict-badge.rejected{background:rgba(255,61,61,.15);color:var(--red);}
+.verdict-badge.warning{background:rgba(255,193,7,.15);color:var(--yellow);}
+.verdict-sub{font-family:var(--mono);font-size:10px;color:var(--text-dim);line-height:1.7;padding-top:4px;}
+.check-list{display:flex;flex-direction:column;gap:5px;}
+.check-item{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;border-radius:4px;background:rgba(255,255,255,.02);}
+.check-icon{font-size:12px;flex-shrink:0;margin-top:2px;}
+.check-body{flex:1;}
+.check-title{font-family:var(--body);font-size:13px;font-weight:700;}
+.check-detail{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;line-height:1.6;}
+.check-item.pass .check-title{color:var(--green);}
+.check-item.fail .check-title{color:var(--red);}
+.check-item.warn .check-title{color:var(--yellow);}
+.check-item.info .check-title{color:var(--cyan);}
+.check-rec{font-family:var(--mono);font-size:9px;color:var(--orange);margin-top:3px;padding:3px 7px;background:rgba(255,107,43,.08);border-left:2px solid var(--orange);display:inline-block;}
+.check-model{font-family:var(--mono);font-size:9px;color:var(--green);margin-top:2px;padding:2px 7px;background:rgba(0,230,118,.06);border-left:2px solid var(--green);display:inline-block;}
+
+.diagram-title-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.diagram-title{font-family:var(--head);font-size:26px;letter-spacing:3px;color:var(--text);}
+.diagram-title span{color:var(--cyan);}
+.diagram-subtitle{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:3px;letter-spacing:1px;}
+.print-btn{font-family:var(--mono);font-size:9px;color:var(--text-dim);background:var(--panel);border:1px solid var(--border);padding:6px 12px;border-radius:3px;cursor:pointer;letter-spacing:1px;transition:all .15s;}
+.print-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+.config-badge-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.config-badge{font-family:var(--mono);font-size:9px;border:1px solid var(--border);padding:3px 8px;border-radius:2px;color:var(--text-dim);}
+.config-badge.c-cyan{border-color:var(--cyan);color:var(--cyan);}
+.config-badge.c-orange{border-color:var(--orange);color:var(--orange);}
+.config-badge.c-green{border-color:var(--green);color:var(--green);}
+.diagram-svg-wrap{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:20px;overflow:hidden;position:relative;}
+.diagram-svg-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,212,255,.04) 0%,transparent 60%);pointer-events:none;}
+.bom-title{font-family:var(--head);font-size:18px;letter-spacing:2px;color:var(--text);margin-bottom:11px;}
+.bom-table{width:100%;border-collapse:collapse;}
+.bom-table th{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text-dim);text-align:left;border-bottom:1px solid var(--border);padding:6px 9px;text-transform:uppercase;}
+.bom-table td{font-family:var(--body);font-size:13px;color:var(--text);padding:6px 9px;border-bottom:1px solid var(--border2);}
+.bom-table tr:hover td{background:rgba(0,212,255,.03);}
+.tag-cell{font-family:var(--mono);font-size:11px;color:var(--cyan);}
+.spec-cell{font-family:var(--mono);font-size:10px;color:var(--text-dim);}
+.mincv-cell{font-family:var(--mono);font-size:10px;color:var(--orange);}
+.model-cell{font-family:var(--mono);font-size:10px;color:var(--green);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.diagram-content{animation:fadeIn .3s ease;}
+@media(max-width:900px){.app-wrap{grid-template-columns:1fr;}.config-panel{border-right:none;border-bottom:1px solid var(--border);}header{padding:11px 16px;}.diagram-panel{padding:16px;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-mark">P</div>
+  <div class="logo-text"><h1>PNEUMAPANEL</h1><p>QUARTER-TURN ACTUATOR CONTROL PANEL CONFIGURATOR</p></div>
+  <div class="hdr-right">
+    <div class="hdr-badge">DESIGN <span id="hdrStatus">PENDING</span></div>
+    <div class="hdr-badge">BIFOLD <span>REF</span></div>
+  </div>
+</header>
+<div class="app-wrap">
+<aside class="config-panel">
+  <div>
+    <div class="section-label">01 — Actuator Type</div>
+    <div class="type-grid">
+      <div class="type-card active" id="btn-single" onclick="selectType('single')"><div class="active-dot"></div><div class="tc-icon">🌀</div><div class="tc-name">SINGLE<br>ACTING</div><div class="tc-sub">SPRING RETURN</div></div>
+      <div class="type-card" id="btn-double" onclick="selectType('double')"><div class="active-dot"></div><div class="tc-icon">⇄</div><div class="tc-name">DOUBLE<br>ACTING</div><div class="tc-sub">PNEUMATIC BOTH</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">02 — Supply Pressure</div>
+    <div class="field"><label>Instrument Air Supply</label><div class="input-wrap"><input type="number" id="supplyPSI" value="80" min="20" max="150" step="5" oninput="updateCalcs()"><span class="input-unit">PSI</span></div></div>
+  </div>
+  <div>
+    <div class="section-label">03 — Actuator Displacement</div>
+    <div class="field-group">
+      <div class="field"><label>Displacement (from datasheet)</label><div class="input-wrap"><input type="number" id="displacement" value="0.195" min="0.001" max="50" step="0.001" oninput="updateCalcs()"><span class="input-unit">gal</span></div></div>
+      <div class="calc-result"><span class="cr-label">Req. flow (open):</span><span class="cr-value" id="reqFlowOpen">—</span></div>
+      <div class="calc-result"><span class="cr-label">Req. flow (close):</span><span class="cr-value" id="reqFlowClose">—</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">04 — Speed Requirements</div>
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field"><label>Open Time</label><div class="input-wrap"><input type="number" id="openTime" value="3" min="0.5" max="300" step="0.5" oninput="updateCalcs()"><span class="input-unit">sec</span></div></div>
+        <div class="field"><label>Close Time</label><div class="input-wrap"><input type="number" id="closeTime" value="5" min="0.5" max="300" step="0.5" oninput="updateCalcs()"><span class="input-unit">sec</span></div></div>
+      </div>
+      <div class="field-row">
+        <div class="calc-result"><span class="cr-label">Req. Cv (open):</span><span class="cr-value" id="openCvDisp">—</span></div>
+        <div class="calc-result"><span class="cr-label">Req. Cv (close):</span><span class="cr-value" id="closeCvDisp">—</span></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">05 — Panel Components</div>
+    <div class="checkbox-list">
+      <label><input type="checkbox" id="chk-fr" checked onchange="updateCompVisibility()"> Filter-Regulator + Gauge (FR)</label>
+      <label><input type="checkbox" id="chk-solenoid" checked onchange="updateCompVisibility()"> Solenoid Valve (SOV)</label>
+      <label><input type="checkbox" id="chk-positioner" onchange="updateCompVisibility()"> I/P Positioner (4–20 mA)</label>
+      <label><input type="checkbox" id="chk-speed-open" checked onchange="updateCompVisibility()"> Speed Control — Open (FCV)</label>
+      <label><input type="checkbox" id="chk-speed-close" checked onchange="updateCompVisibility()"> Speed Control — Close (FCV)</label>
+      <label><input type="checkbox" id="chk-qev" onchange="updateCompVisibility()"> Quick Exhaust Valve (QEV)</label>
+      <label><input type="checkbox" id="chk-limit" checked onchange="updateCompVisibility()"> Limit Switches (OPEN / CLOSE)</label>
+      <label><input type="checkbox" id="chk-gauge" onchange="updateCompVisibility()"> Cylinder Port Gauges</label>
+    </div>
+  </div>
+  <div id="cvInputSection">
+    <div class="section-label">06 — Component Selection (Bifold Ref)</div>
+    <div class="comp-cv-group" id="cvInputGroup"></div>
+    <div style="font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:7px;line-height:1.6;">Select Bifold model per component. Cv from Bifold published datasheets.<br>FR and SOV are the primary limiting factors in most panel designs.</div>
+  </div>
+  <button class="gen-btn" onclick="generateAll()">GENERATE &amp; VALIDATE</button>
+</aside>
+<main class="diagram-panel">
+  <div class="empty-state" id="emptyState"><div class="es-icon">⚙</div><p>CONFIGURE ACTUATOR PARAMETERS<br>AND CLICK GENERATE &amp; VALIDATE</p></div>
+  <div id="diagramContent" style="display:none"></div>
+</main>
+</div>
+
+<script>
+'use strict';
+const GAL_TO_IN3=231, IN3_TO_SCF=1/1728;
+function V(id){return parseFloat(document.getElementById(id).value)||0;}
+function C(id){const e=document.getElementById(id);return e?e.checked:false;}
+function GE(id){return document.getElementById(id);}
+let actuatorType='single';
+
+// ── Physics ───────────────────────────────────────────────────────────────────
+function calcRequiredCv(gallons,seconds,supplyPSI){
+  const in3=gallons*GAL_TO_IN3, scf=in3*IN3_TO_SCF, scfm=(scf/seconds)*60;
+  const p1=supplyPSI+14.696, p2=14.696, dp=p1-p2, T1=530;
+  const choked=dp>0.528*p1;
+  const cv=choked?(scfm*Math.sqrt(T1))/(22.67*p1):(scfm*14.696)/(22.67*Math.sqrt(dp*p2));
+  return{cv:Math.max(0.0001,cv),scfm,choked};
+}
+function systemCv(arr){
+  const v=arr.filter(c=>c>0);
+  if(!v.length)return 0;
+  return 1/Math.sqrt(v.reduce((a,c)=>a+1/(c*c),0));
+}
+
+// ── Bifold model reference data (Cv values from official Bifold datasheets) ────
+// SH/ASH Series Filter-Regulators — Bifold SH/ASH datasheet March 2007
+// Cv at 10 bar inlet, 6 bar secondary, 1 bar dp
+const BIFOLD_FR = [
+  {model:'Bifold SH06-FR-SR-MD-10-X3  (Filter-Reg, 1/4" NPT, manual drain)', cv:1.7, port:'1/4" NPT', note:'316L SS, self-relieving, 20–30µm, 10 bar'},
+  {model:'Bifold SH06-FR-SR-AD-10-X3  (Filter-Reg, 1/4" NPT, auto drain)',   cv:1.7, port:'1/4" NPT', note:'316L SS, self-relieving, 20–30µm, auto drain'},
+  {model:'Bifold SH12-FR-SR-MD-10-X3  (Filter-Reg, 1/2" NPT, manual drain)', cv:1.9, port:'1/2" NPT', note:'316L SS, self-relieving, 20–30µm, 10 bar'},
+  {model:'Bifold SH12-FR-SR-AD-10-X3  (Filter-Reg, 1/2" NPT, auto drain)',   cv:1.9, port:'1/2" NPT', note:'316L SS, self-relieving, 20–30µm, auto drain'},
+  {model:'Bifold SH25-FR-SR-MD-10-X3  (Filter-Reg, 1" NPT, manual drain)',   cv:14.2,port:'1" NPT',   note:'316L SS, self-relieving, high flow, 10 bar'},
+];
+// Bifold SOV models — Cv from official FP/BXS/SPR datasheets
+const BIFOLD_SOV_32 = [
+  {model:'Bifold FP03P 3/2 (1/8" NPT)', cv:0.1,  port:'1/8" NPT', note:'Direct acting, 10 bar, SIL 3 capable'},
+  {model:'Bifold FP06P 3/2 (1/4" NPT)', cv:0.6,  port:'1/4" NPT', note:'Direct acting, 10 bar, SIL 3 capable'},
+  {model:'Bifold FP10P 3/2 (1/4" NPT)', cv:0.75, port:'1/4" NPT', note:'Direct acting, 10 bar, SIL 3 capable'},
+  {model:'Bifold FP12P 3/2 (1/2" NPT)', cv:2.5,  port:'1/2" NPT', note:'Direct acting, 10 bar, SIL 3 capable'},
+  {model:'Bifold BXS 3/2 (1/4" NPT, NAMUR)', cv:0.73, port:'1/4" NPT', note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
+  {model:'Bifold SPR-08 3/2 (3/8" NPT)', cv:3.0, port:'3/8" NPT', note:'Pilot operated high flow, 10 bar, SIL 3'},
+  {model:'Bifold SPR-16 3/2 (1" NPT)',   cv:11.1,port:'1" NPT',   note:'Pilot operated high flow, 10 bar, SIL 3'},
+];
+const BIFOLD_SOV_52 = [
+  {model:'Bifold FP06P 5/2 (1/4" NPT)', cv:0.6,  port:'1/4" NPT', note:'Direct acting, 10 bar, SIL 3 capable'},
+  {model:'Bifold FP10P 5/2 (1/4" NPT)', cv:0.75, port:'1/4" NPT', note:'Direct acting, 10 bar, SIL 3 capable'},
+  {model:'Bifold FP12P 5/2 (1/2" NPT)', cv:2.5,  port:'1/2" NPT', note:'Direct acting, 10 bar, SIL 3 capable'},
+  {model:'Bifold BXS 5/2 (1/4" NPT, NAMUR)', cv:0.73, port:'1/4" NPT', note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
+  {model:'Bifold SPR-08 5/2 (3/8" NPT)', cv:3.0, port:'3/8" NPT', note:'Pilot operated high flow, 10 bar, SIL 3'},
+  {model:'Bifold SPR-16 5/2 (1" NPT)',   cv:11.1,port:'1" NPT',   note:'Pilot operated high flow, 10 bar, SIL 3'},
+];
+// Bifold FCV (Flow Control Valves) & NV (Needle Valves) — Bifold FCV/NV catalogue
+// FCV Cv = fully open; valve is throttled in service to achieve target stroke time
+const BIFOLD_FCV = [
+  {model:'Bifold FCV3006 (FCV, 1/4" NPT)',  cv:0.5, port:'1/4" NPT', note:'Fully open Cv; 0–12 bar. Throttle to required Cv.'},
+  {model:'Bifold S06-NV  (Needle Valve, 1/4" NPT)', cv:0.6, port:'1/4" NPT', note:'Needle valve, fully open Cv; 1–12 bar'},
+  {model:'Bifold FCV3009 (FCV, 3/8" NPT)',  cv:0.9, port:'3/8" NPT', note:'Fully open Cv; 0–12 bar'},
+  {model:'Bifold S09-NV  (Needle Valve, 3/8" NPT)', cv:0.9, port:'3/8" NPT', note:'Needle valve, fully open Cv; 0–12 bar'},
+  {model:'Bifold FCV3012 (FCV, 1/2" NPT)',  cv:1.1, port:'1/2" NPT', note:'Fully open Cv; 0–12 bar'},
+  {model:'Bifold S12-NV  (Needle Valve, 1/2" NPT)', cv:1.2, port:'1/2" NPT', note:'Needle valve, fully open Cv; 0–12 bar'},
+  {model:'Bifold FCV3019 (FCV, 3/4" NPT)',  cv:2.0, port:'3/4" NPT', note:'Fully open Cv; 0–12 bar'},
+  {model:'Bifold FCV3025 (FCV, 1" NPT)',    cv:2.2, port:'1" NPT',   note:'Fully open Cv; 0–12 bar'},
+];
+// Bifold QEV (Quick Exhaust Valves) — S-series catalogue, Cv = cylinder→exhaust path
+const BIFOLD_QEV = [
+  {model:'Bifold S06-QEV-01  (1/4" NPT)', cv:1.1, port:'1/4" NPT', note:'Cv cyl→exh 1.1 / in→cyl 0.9; 0–12 bar'},
+  {model:'Bifold S09-QEV     (3/8" NPT)', cv:3.0, port:'3/8" NPT', note:'Cv cyl→exh 3.0 / in→cyl 1.7; 0–12 bar'},
+  {model:'Bifold S12-QEV-01  (1/2" NPT)', cv:3.5, port:'1/2" NPT', note:'Cv cyl→exh 3.5 / in→cyl 1.9; 0–12 bar'},
+  {model:'Bifold S19-QEV     (3/4" NPT)', cv:8.3, port:'3/4" NPT', note:'Cv cyl→exh 8.3 / in→cyl 6.5; 0–12 bar'},
+  {model:'Bifold S25-QEV     (1" NPT)',   cv:10.0,port:'1" NPT',   note:'Cv cyl→exh 10.0 / in→cyl 8.2; 0–12 bar'},
+  {model:'Bifold QEV15       (high flow)',cv:20.0,port:'1" NPT',   note:'High flow QEV, 12 bar'},
+];
+// I/P Positioner — Bifold / Rotork YTC/Fairchild equivalents
+const BIFOLD_POS = [
+  {model:'Bifold EXP200C I/P Transducer  (1/4" NPT)', cv:0.8, port:'1/4" NPT', note:'4–20 mA → 3–15 PSI; ATEX, 10 bar'},
+  {model:'Rotork Fairchild T9000 I/P     (1/4" NPT)', cv:0.7, port:'1/4" NPT', note:'4–20 mA → 3–15 PSI; SIL 2'},
+  {model:'Rotork YTC YT-1000 Positioner  (1/4" NPT)', cv:0.6, port:'1/4" NPT', note:'Smart positioner, HART, ATEX'},
+];
+
+// Map checkbox id → dataset + label
+const COMP_DEFS = [
+  {id:'cv-fr',        label:'Filter-Regulator (FR)',       chk:'chk-fr',          data:BIFOLD_FR,      keyComp:true,  keyLabel:'FR'},
+  {id:'cv-sov',       label:'Solenoid Valve (SOV)',         chk:'chk-solenoid',    data:null,           keyComp:true,  keyLabel:'SOV'},
+  {id:'cv-pos',       label:'I/P Positioner',              chk:'chk-positioner',  data:BIFOLD_POS,     keyComp:false},
+  {id:'cv-fcv-open',  label:'FCV — Open Speed Control',    chk:'chk-speed-open',  data:BIFOLD_FCV,     keyComp:false},
+  {id:'cv-fcv-close', label:'FCV — Close Speed Control',   chk:'chk-speed-close', data:BIFOLD_FCV,     keyComp:false, daOnly:true},
+  {id:'cv-qev',       label:'Quick Exhaust Valve',         chk:'chk-qev',         data:BIFOLD_QEV,     keyComp:false},
+];
+
+function getSovData(){return actuatorType==='double'?BIFOLD_SOV_52:BIFOLD_SOV_32;}
+
+function getCompData(comp){
+  if(comp.id==='cv-sov') return getSovData();
+  return comp.data||[];
+}
+
+function getSelectedModel(compId){
+  const sel=GE('sel-'+compId);
+  return sel?parseInt(sel.value)||0:0;
+}
+
+function getModelCv(comp){
+  const data=getCompData(comp);
+  const idx=getSelectedModel(comp.id);
+  return data[idx]?data[idx].cv:1.0;
+}
+
+function getCvInputArray(){
+  return COMP_DEFS.filter(c=>{
+    if(!C(c.chk))return false;
+    if(c.daOnly&&actuatorType==='single')return false;
+    return true;
+  }).map(c=>getModelCv(c));
+}
+
+function updateCompVisibility(){
+  const grp=GE('cvInputGroup');
+  grp.innerHTML='';
+  COMP_DEFS.forEach(comp=>{
+    if(!C(comp.chk))return;
+    if(comp.daOnly&&actuatorType==='single')return;
+    const data=getCompData(comp);
+    const row=document.createElement('div');
+    row.className='comp-cv-row';
+    const opts=data.map((m,i)=>`<option value="${i}">${m.model} — Cv ${m.cv}</option>`).join('');
+    row.innerHTML=`<div class="comp-cv-top">
+      <label>${comp.label}</label>
+      <span class="cv-badge" id="cvbadge-${comp.id}">Cv ${data[0]?data[0].cv.toFixed(2):'—'}</span>
+    </div>
+    <select class="model-select" id="sel-${comp.id}" onchange="onModelChange('${comp.id}')">${opts}</select>`;
+    grp.appendChild(row);
+  });
+  updateCalcs();
+}
+
+function onModelChange(compId){
+  const comp=COMP_DEFS.find(c=>c.id===compId);
+  if(!comp)return;
+  const data=getCompData(comp);
+  const idx=getSelectedModel(compId);
+  const badge=GE('cvbadge-'+compId);
+  if(badge&&data[idx]) badge.textContent='Cv '+data[idx].cv.toFixed(2);
+  updateCalcs();
+}
+
+function selectType(t){
+  actuatorType=t;
+  GE('btn-single').classList.toggle('active',t==='single');
+  GE('btn-double').classList.toggle('active',t==='double');
+  updateCompVisibility();
+}
+
+function updateCalcs(){
+  const psi=V('supplyPSI'),gal=V('displacement'),openT=V('openTime'),closeT=V('closeTime');
+  const oR=calcRequiredCv(gal,openT,psi), cR=calcRequiredCv(gal,closeT,psi);
+  GE('reqFlowOpen').textContent=oR.scfm.toFixed(3)+' SCFM';
+  GE('reqFlowClose').textContent=actuatorType==='single'?'(spring return)':cR.scfm.toFixed(3)+' SCFM';
+  GE('openCvDisp').textContent=oR.cv.toFixed(4);
+  GE('closeCvDisp').textContent=actuatorType==='single'?'(spring)':cR.cv.toFixed(4);
+  // update all cv badges
+  COMP_DEFS.forEach(comp=>{
+    const badge=GE('cvbadge-'+comp.id);
+    if(!badge)return;
+    badge.textContent='Cv '+getModelCv(comp).toFixed(2);
+  });
+}
+
+// ── Validation Engine ─────────────────────────────────────────────────────────
+function findNextBifoldModel(data, minCv){
+  for(const m of data.slice().sort((a,b)=>a.cv-b.cv)){
+    if(m.cv>=minCv) return m;
+  }
+  return data[data.length-1]||null;
+}
+
+function validateDesign({psi,gal,openT,closeT,aType,cvArr}){
+  const oR=calcRequiredCv(gal,openT,psi);
+  const cR=calcRequiredCv(gal,closeT,psi);
+  const sysCv=systemCv(cvArr);
+  const checks=[];
+  let fail=false,warn=false;
+  const push=(status,title,detail,rec,model)=>{checks.push({status,title,detail,rec,model});if(status==='fail')fail=true;if(status==='warn')warn=true;};
+
+  // ── A. Control valve ──────────────────────────────────────────────────────
+  if(!C('chk-solenoid')&&!C('chk-positioner')){
+    push('fail','No Control Valve Configured',
+      'A solenoid valve or I/P positioner is required to direct air to and from the actuator.',
+      `Add a ${aType==='double'?'5/2':'3/2'} spring-return solenoid valve.`);
+  } else {
+    const sovComp=COMP_DEFS.find(c=>c.id==='cv-sov');
+    const sovData=getSovData();
+    const selIdx=getSelectedModel('cv-sov');
+    const sovModel=sovData[selIdx];
+    push('pass','Control Valve — CONFIGURED',
+      `${sovModel?sovModel.model:C('chk-positioner')?'I/P Positioner':'SOV'} selected.${sovModel?' ('+sovModel.note+')':''}`,
+      null, sovModel?sovModel.model:null);
+  }
+
+  // ── B. SOV Cv check (primary limiting factor) ─────────────────────────────
+  if(C('chk-solenoid')){
+    const sovData=getSovData();
+    const selIdx=getSelectedModel('cv-sov');
+    const sovModel=sovData[selIdx];
+    const sovCv=sovModel?sovModel.cv:0;
+    const reqWithMargin=oR.cv*1.25;
+    if(sovCv>=reqWithMargin){
+      push('pass',`SOV Cv — PASS (${sovModel?sovModel.model:'—'})`,
+        `SOV Cv ${sovCv} ≥ required Cv ${oR.cv.toFixed(4)} with margin. SOV is not the limiting factor.`,
+        null, sovModel?sovModel.model+' — Cv '+sovCv:null);
+    } else if(sovCv>=oR.cv){
+      const nextModel=findNextBifoldModel(sovData,reqWithMargin);
+      push('warn',`SOV Cv — MARGINAL (${sovModel?sovModel.model:'—'})`,
+        `SOV Cv ${sovCv} meets required Cv ${oR.cv.toFixed(4)} but has less than 25% margin (${(((sovCv/oR.cv)-1)*100).toFixed(0)}%). SOV may be the bottleneck.`,
+        `Upgrade to minimum Cv ${reqWithMargin.toFixed(4)}.`,
+        nextModel?`Recommended upgrade: ${nextModel.model} — Cv ${nextModel.cv}`:null);
+    } else {
+      const nextModel=findNextBifoldModel(sovData,reqWithMargin);
+      push('fail',`SOV Cv — FAIL ✘ (${sovModel?sovModel.model:'—'})`,
+        `SOV Cv ${sovCv} is less than the required Cv ${oR.cv.toFixed(4)} for the open stroke. The SOV is the primary limiting component and will prevent achieving ${openT}s open time.`,
+        `Minimum SOV Cv required (with 25% margin): ${reqWithMargin.toFixed(4)}.`,
+        nextModel?`Recommended: ${nextModel.model} — Cv ${nextModel.cv}`:null);
+    }
+  }
+
+  // ── C. FR Cv check (key limiting factor) ─────────────────────────────────
+  if(C('chk-fr')){
+    const comp=COMP_DEFS.find(c=>c.id==='cv-fr');
+    const data=getCompData(comp);
+    const selIdx=getSelectedModel('cv-fr');
+    const m=data[selIdx];
+    const cv=m?m.cv:0;
+    const reqWithMargin=oR.cv*1.25;
+    if(cv>=reqWithMargin){
+      push('pass','Filter-Regulator Cv — PASS',
+        `${m?m.model:'Selected FR'} Cv ${cv} ≥ required Cv ${oR.cv.toFixed(4)}. FR is not the limiting factor.`,
+        null, m?m.model+' — Cv '+cv:null);
+    } else if(cv>=oR.cv){
+      const next=findNextBifoldModel(data,reqWithMargin);
+      push('warn','Filter-Regulator Cv — MARGINAL',
+        `${m?m.model:'FR'} Cv ${cv} meets required Cv ${oR.cv.toFixed(4)} but with <25% margin. FR may be a bottleneck.`,
+        `Upgrade to an FR with Cv ≥ ${reqWithMargin.toFixed(4)}.`,
+        next?`Recommended: ${next.model} — Cv ${next.cv}`:null);
+    } else {
+      const next=findNextBifoldModel(data,reqWithMargin);
+      push('fail','Filter-Regulator Cv — FAIL ✘',
+        `${m?m.model:'FR'} Cv ${cv} is less than required Cv ${oR.cv.toFixed(4)}. The FR is a flow bottleneck and will prevent achieving ${openT}s open time.`,
+        `Minimum FR Cv required (with 25% margin): ${reqWithMargin.toFixed(4)}.`,
+        next?`Recommended: ${next.model} — Cv ${next.cv}`:null);
+    }
+  }
+
+  // ── D. Supply conditioning present ────────────────────────────────────────
+  if(!C('chk-fr')){
+    push('warn','No Supply Conditioning',
+      'No filter-regulator configured. Unfiltered, unregulated air will damage solenoid valves and seals.',
+      'Add a Bifold SH-series FR upstream of all control components.');
+  }
+
+  // ── E. Supply pressure ────────────────────────────────────────────────────
+  if(psi<40) push('fail','Supply Pressure Too Low',`${psi} PSI is below minimum operating pressure for pneumatic actuators.`,'Minimum 40 PSI required. Verify actuator datasheet.');
+  else if(psi<60) push('warn','Supply Pressure — Low',`${psi} PSI is below typical instrument air range (60–100 PSI).`,'Verify actuator torque is adequate at this pressure.');
+  else push('pass','Supply Pressure — Adequate',`${psi} PSI is within standard instrument air range.`);
+
+  // ── F. Open speed — system Cv ─────────────────────────────────────────────
+  if(cvArr.length>0){
+    const margin=sysCv/oR.cv;
+    const pct=((margin-1)*100).toFixed(0);
+    const minRec=(oR.cv*1.25).toFixed(4);
+    if(margin>=1.25){
+      push('pass','Open Speed — ✔ ACHIEVABLE',
+        `System Cv ${sysCv.toFixed(4)} meets required Cv ${oR.cv.toFixed(4)} with ${pct}% margin.\nTarget: ${openT}s @ ${psi} PSI, ${gal} gal (${oR.scfm.toFixed(3)} SCFM).`);
+    } else if(margin>=1.0){
+      push('warn','Open Speed — ⚠ MARGINAL',
+        `System Cv ${sysCv.toFixed(4)} meets Cv ${oR.cv.toFixed(4)} with only ${pct}% margin. Field conditions may prevent achieving ${openT}s.`,
+        `Increase lowest-Cv component. Min recommended system Cv: ${minRec}.`);
+    } else {
+      push('fail','Open Speed — ✘ NOT ACHIEVABLE',
+        `System Cv ${sysCv.toFixed(4)} < required Cv ${oR.cv.toFixed(4)} (${Math.abs(pct)}% deficient). Cannot achieve ${openT}s open stroke.`,
+        `Required system Cv (25% margin): ${minRec}. Upgrade lowest-Cv component or allow more time.`);
+    }
+  } else {
+    push('fail','No Components Configured','Cannot evaluate flow. Select components above.','Add at minimum a solenoid valve.');
+  }
+
+  // ── G. Close speed ────────────────────────────────────────────────────────
+  if(aType==='single'){
+    push('info','Close Speed — Spring Return',
+      `Spring-driven return. Close time (${closeT}s) depends on spring rate vs. valve load. Not pneumatically controlled.\nIf overspeed is a concern, add a meter-out FCV on the exhaust port.`);
+  } else if(cvArr.length>0){
+    const margin=sysCv/cR.cv, pct=((margin-1)*100).toFixed(0), minRec=(cR.cv*1.25).toFixed(4);
+    if(margin>=1.25) push('pass','Close Speed — ✔ ACHIEVABLE',`System Cv ${sysCv.toFixed(4)} meets required Cv ${cR.cv.toFixed(4)} with ${pct}% margin for ${closeT}s close.`);
+    else if(margin>=1.0) push('warn','Close Speed — ⚠ MARGINAL',`System Cv ${sysCv.toFixed(4)} meets close Cv ${cR.cv.toFixed(4)} with only ${pct}% margin.`,`Min system Cv for close: ${minRec}.`);
+    else push('fail','Close Speed — ✘ NOT ACHIEVABLE',`System Cv ${sysCv.toFixed(4)} < required close Cv ${cR.cv.toFixed(4)} (${Math.abs(pct)}% deficient).`,`Required system Cv (25% margin): ${minRec}.`);
+  }
+
+  // ── H. Speed controls ─────────────────────────────────────────────────────
+  if(!C('chk-speed-open')) push('warn','Open FCV Not Included','No flow control valve on open circuit. Actuator will stroke at full speed — potential shock loading.','Add meter-out FCV on Port A.');
+  if(aType==='double'&&!C('chk-speed-close')) push('warn','Close FCV Not Included','No close speed control on double-acting actuator. Rapid closing risks water hammer or seat damage.','Add meter-out FCV on Port B.');
+
+  // ── I. Fail position ──────────────────────────────────────────────────────
+  if(aType==='single') push('info','Fail Position — Spring Return (Defined)','On loss of air/signal, actuator springs to fail position. Confirm spring torque ≥ 1.3× valve max break-out torque.');
+  else if(C('chk-solenoid')) push('pass','Fail Position — Defined by SOV Spring Return','Spring-return SOV ensures defined fail position on signal/air loss.');
+  else push('warn','Fail Position — Undefined (Double Acting)','No spring-return SOV configured. Double-acting actuator has no inherent fail position.','Use spring-return 5/2 SOV to establish safe fail position.');
+
+  // ── J. Position feedback ──────────────────────────────────────────────────
+  if(!C('chk-limit')) push('warn','No Position Feedback','No limit switches. DCS/PLC cannot confirm valve position — not suitable for process or safety applications.','Add ZSO and ZSC limit switches with DCS/PLC wiring.');
+  else push('pass','Position Feedback — ZSO / ZSC Configured','Open and close limit switches included for DCS/PLC feedback.');
+
+  const verdict=fail?'rejected':(warn?'warning':'approved');
+  return{checks,verdict,sysCv,openR:oR,closeR:cR};
+}
+
+// ── SVG Diagram ───────────────────────────────────────────────────────────────
+const NS='http://www.w3.org/2000/svg';
+// ═══════════════════════════════════════════════════════════════════
+// SVG PRIMITIVES
+// ═══════════════════════════════════════════════════════════════════
+function mkEl(tag,a){const e=document.createElementNS(NS,tag);if(a)for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;}
+
+// text
+function st(p,x,y,s,o={}){
+  const t=mkEl('text',{x,y,fill:o.f||'#8aa8c8',
+    'font-family':o.m?"'Share Tech Mono',monospace":"'Rajdhani',sans-serif",
+    'font-size':o.sz||10,'text-anchor':o.a||'middle','font-weight':o.b?'700':'400'});
+  t.textContent=s; p.appendChild(t); return t;
+}
+// line
+function sl(p,x1,y1,x2,y2,c,w,d){
+  p.appendChild(mkEl('line',{x1,y1,x2,y2,stroke:c||'#1e2d42',
+    'stroke-width':w||1.5,'stroke-dasharray':d||'none'}));
+}
+// rect
+function sr(p,x,y,w,h,f,s,sw,rx){
+  p.appendChild(mkEl('rect',{x,y,width:w,height:h,fill:f||'#0d1720',
+    stroke:s||'#1e2d42','stroke-width':sw||1.5,rx:rx||2}));
+}
+// circle
+function sc(p,cx,cy,r,f,s,sw){
+  p.appendChild(mkEl('circle',{cx,cy,r,fill:f||'none',stroke:s||'#546e8a','stroke-width':sw||1.5}));
+}
+// polyline
+function spoly(p,pts,s,sw,d){
+  p.appendChild(mkEl('polyline',{points:pts.map(([x,y])=>`${x},${y}`).join(' '),
+    fill:'none',stroke:s||'#546e8a','stroke-width':sw||1.5,'stroke-dasharray':d||'none'}));
+}
+// junction dot
+function jdot(p,x,y,col){sc(p,x,y,3.5,col||'#00d4ff',col||'#00d4ff',0);}
+// pipe connection endpoint marker
+function endcap(p,x,y,col){sc(p,x,y,2.5,col,col,0);}
+
+// arrow marker — returns id
+let _arrowIdx=0;
+function mkArrow(p,col,sz=6){
+  const id=`arr${_arrowIdx++}`;
+  let defs=p.querySelector('defs');
+  if(!defs){defs=mkEl('defs');p.insertBefore(defs,p.firstChild);}
+  const mk=mkEl('marker',{id,markerWidth:sz,markerHeight:sz,refX:sz-1,refY:sz/2,orient:'auto'});
+  mk.appendChild(mkEl('path',{d:`M0,1 L${sz-1},${sz/2} L0,${sz-1} Z`,fill:col}));
+  defs.appendChild(mk);
+  return id;
+}
+function arrowLine(p,x1,y1,x2,y2,col,w){
+  const id=mkArrow(p,col);
+  p.appendChild(mkEl('line',{x1,y1,x2,y2,stroke:col,'stroke-width':w||1.5,'marker-end':`url(#${id})`}));
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ISO 1219 / ISA S5.1 PNEUMATIC SYMBOLS
+// Each symbol drawn at given centre cx,cy with label below
+// ═══════════════════════════════════════════════════════════════════
+
+// Filter-Regulator: ISO bowl/filter + regulator diamond, gauge circle
+function symFR(p,cx,cy,tag){
+  const C='#607d8b';
+  // Outer envelope box
+  sr(p,cx-26,cy-22,52,44,C+'11',C,1.2,2);
+  // Filter bowl (inverted triangle + horizontal bar = ISO filter symbol)
+  p.appendChild(mkEl('polygon',{points:`${cx-11},${cy-13} ${cx+11},${cy-13} ${cx},${cy+2}`,
+    fill:'none',stroke:C,'stroke-width':1.5}));
+  sl(p,cx-13,cy-13,cx+13,cy-13,C,1.5);
+  // Regulator (circle with diagonal arrow through it)
+  sc(p,cx,cy+10,9,'#0d1720',C,1.5);
+  p.appendChild(mkEl('line',{x1:cx-7,y1:cy+17,x2:cx+7,y2:cy+3,stroke:C,'stroke-width':1.5}));
+  // Arrow on regulator
+  const aid=mkArrow(p,C,5);
+  p.appendChild(mkEl('line',{x1:cx-5,y1:cy+14,x2:cx+3,y2:cy+6,stroke:C,'stroke-width':1.5,'marker-end':`url(#${aid})`}));
+  // Port labels — top IN, bottom OUT
+  st(p,cx,cy-30,tag,{m:true,sz:8,f:C,b:true});
+  st(p,cx-26,cy,'IN',{m:true,sz:7,f:C,a:'end'});
+  st(p,cx+26,cy,'OUT',{m:true,sz:7,f:C,a:'start'});
+}
+
+// Pressure gauge (circle + needle) — ISA circle instrument symbol
+function symGauge(p,cx,cy,tag,col){
+  col=col||'#ff6b2b';
+  sc(p,cx,cy,10,'#0a0e13',col,1.2);
+  // Needle at ~45°
+  p.appendChild(mkEl('line',{x1:cx,y1:cy,x2:cx+7,y2:cy-7,stroke:col,'stroke-width':1.2}));
+  sl(p,cx-10,cy+10,cx+10,cy+10,col,0.5); // baseline
+  st(p,cx,cy+20,tag,{m:true,sz:8,f:col});
+}
+
+// 3/2 or 5/2 Directional Control Valve — proper ISO box symbol
+// ISO 1219: each position is a box; arrows show flow paths; spring/solenoid shown outside
+function symSOV(p,cx,cy,aType,tag){
+  const C='#00d4ff', W=aType==='double'?110:84, H=36, boxW=aType==='double'?52:42;
+  const by=cy-H/2;
+
+  // ── Energised position box (left) ─────────────────────────────
+  const b1x=cx-W/2;
+  sr(p,b1x,by,boxW,H,'#001a26',C,1.5,1);
+  if(aType==='double'){
+    // 5/2: P→A, B→T  (arrows across the box)
+    arrowLine(p,b1x+8,cy+10,b1x+8,cy-10,C,1.5); // P→A up-left
+    sl(p,b1x+8,cy-10,b1x+20,cy-10,C,1.5);
+    sl(p,b1x+20,cy-10,b1x+20,cy+10,C,1.5);       // B→T down-right
+    arrowLine(p,b1x+32,cy+10,b1x+32,cy-10,C,1.5);
+    sl(p,b1x+32,cy-10,b1x+44,cy-10,C,1.5);
+  } else {
+    // 3/2: P→A up
+    arrowLine(p,b1x+12,cy+10,b1x+12,cy-10,C,1.5);
+    sl(p,b1x+12,cy-10,b1x+28,cy-10,C,1.5);
+    sl(p,b1x+28,cy-10,b1x+28,cy+4,'#546e8a',1.5);
+    // exhaust cross
+    sl(p,b1x+22,cy+4,b1x+34,cy+4,'#546e8a',1.5);
+  }
+
+  // ── De-energised (spring return) position box (right) ─────────
+  const b2x=b1x+boxW;
+  sr(p,b2x,by,boxW,H,'#0a0e13','#546e8a',1.2,1);
+  if(aType==='double'){
+    // 5/2 spring: A→T, P blocked → B
+    sl(p,b2x+8,cy-10,b2x+8,cy+10,'#546e8a',1.5);  // blocked P
+    sl(p,b2x+8,cy-10,b2x+18,cy-10,'#546e8a',1.5);
+    arrowLine(p,b2x+30,cy-10,b2x+30,cy+10,'#546e8a',1.5);
+    sl(p,b2x+30,cy-10,b2x+44,cy-10,'#546e8a',1.5);
+    arrowLine(p,b2x+44,cy-10,b2x+44,cy+10,'#546e8a',1.5);
+  } else {
+    // 3/2 NC spring: A→T, P blocked
+    sl(p,b2x+8,cy-10,b2x+8,cy+4,'#546e8a',1.5);
+    sl(p,b2x+8,cy-10,b2x+20,cy-10,'#546e8a',1.5);
+    sl(p,b2x+16,cy-8,b2x+24,cy+8,'#546e8a',1.5);
+    sl(p,b2x+24,cy-8,b2x+32,cy+8,'#546e8a',1.5);
+  }
+
+  // ── Solenoid operator (left side) ─────────────────────────────
+  const sox=b1x-22;
+  sr(p,sox,cy-8,20,16,'#001832',C,1.2,1);
+  // Coil lines
+  for(let i=0;i<4;i++) sl(p,sox+2+i*4,cy-8,sox+2+i*4,cy+8,C,0.8);
+  sl(p,sox,cy-8,sox,cy+8,C,1);  // solenoid left wall
+  // Arrow from solenoid to valve
+  sl(p,sox+20,cy,b1x,cy,C,1.5);
+
+  // ── Spring operator (right side) ──────────────────────────────
+  const srx=b2x+boxW;
+  const springPts=Array.from({length:8},(_,i)=>[srx+2+i*3, cy+(i%2===0?-5:5)]);
+  spoly(p,springPts,'#546e8a',1.2);
+  sl(p,srx+26,cy,srx+30,cy,'#546e8a',1.5);
+
+  // ── Port stubs ─────────────────────────────────────────────────
+  // Bottom ports: P (supply), A (cylinder port A), [B (cylinder port B)], EXH
+  const ports = aType==='double'
+    ? [{l:'1(P)', x:cx-W/2+14},{l:'4(A)', x:cx-W/2+34},{l:'2(B)', x:cx-W/2+66},{l:'3(R)', x:cx-W/2+88}]
+    : [{l:'1(P)', x:cx-W/2+14},{l:'2(A)', x:cx-W/2+36},{l:'3(R)', x:cx-W/2+62}];
+  ports.forEach(({l,x:px})=>{
+    sl(p,px,cy+H/2,px,cy+H/2+12,'#546e8a',1.5);
+    st(p,px,cy+H/2+21,l,{m:true,sz:8,f:'#546e8a'});
+  });
+
+  // Top ports: 14(pilot) for 5/2
+  if(aType==='double'){
+    sl(p,cx-W/2+8,cy-H/2-12,cx-W/2+8,cy-H/2,'#a78bfa',1.2,'3,2');
+    st(p,cx-W/2+8,cy-H/2-18,'14(Z)',{m:true,sz:7,f:'#a78bfa'});
+  }
+
+  // Tag above
+  st(p,cx,cy-H/2-10,tag,{m:true,sz:8,f:C,b:true});
+}
+
+// I/P Positioner — ISA diamond instrument bubble
+function symIYP(p,cx,cy,tag){
+  const C='#a78bfa';
+  // Diamond
+  p.appendChild(mkEl('polygon',{points:`${cx},${cy-18} ${cx+14},${cy} ${cx},${cy+18} ${cx-14},${cy}`,
+    fill:'#0d0a1a',stroke:C,'stroke-width':1.5}));
+  st(p,cx,cy-5,'I/P',{m:true,sz:10,f:C,b:true});
+  st(p,cx,cy+7,'4-20mA',{m:true,sz:7,f:'#7c5fc0'});
+  st(p,cx,cy+30,tag,{m:true,sz:8,f:C,b:true});
+  // Port labels
+  st(p,cx-14,cy-6,'IN',{m:true,sz:7,f:C,a:'end'});
+  st(p,cx+14,cy-6,'OUT',{m:true,sz:7,f:C,a:'start'});
+}
+
+// Flow Control Valve — ISO needle valve symbol (triangle + needle line)
+function symFCV(p,cx,cy,tag,col){
+  col=col||'#ff8c42';
+  // Two opposing triangles (needle valve ISO symbol)
+  p.appendChild(mkEl('polygon',{points:`${cx-14},${cy-12} ${cx+14},${cy-12} ${cx},${cy}`,
+    fill:'#1a0e06',stroke:col,'stroke-width':1.5}));
+  p.appendChild(mkEl('polygon',{points:`${cx-14},${cy+12} ${cx+14},${cy+12} ${cx},${cy}`,
+    fill:'#1a0e06',stroke:col,'stroke-width':1.5}));
+  // Diagonal adjustment arrow
+  p.appendChild(mkEl('line',{x1:cx-16,y1:cy+16,x2:cx+16,y2:cy-16,stroke:col,'stroke-width':1.2}));
+  const aid=mkArrow(p,col,5);
+  p.appendChild(mkEl('line',{x1:cx+8,y1:cy-8,x2:cx+16,y2:cy-16,stroke:col,'stroke-width':1.2,'marker-end':`url(#${aid})`}));
+  // Port lines (top IN, bottom OUT for vertical)
+  st(p,cx,cy-28,tag,{m:true,sz:8,f:col,b:true});
+}
+
+// Quick Exhaust Valve — ISO 3/2 QEV (triangle with exhaust port)
+function symQEV(p,cx,cy,tag){
+  const C='#ffc107';
+  // Poppet symbol: large triangle
+  p.appendChild(mkEl('polygon',{points:`${cx-16},${cy-14} ${cx+16},${cy-14} ${cx},${cy+14}`,
+    fill:'#1a1200',stroke:C,'stroke-width':1.5}));
+  // Cross (exhaust through symbol)
+  sl(p,cx-8,cy-14,cx+8,cy-14,C,2);
+  // Exhaust port stub (bottom-right diagonal)
+  sl(p,cx,cy+14,cx+18,cy+26,C,1.5);
+  // Muffler on exhaust
+  sr(p,cx+18,cy+22,12,10,'#0a0a0a','#2d3d10',1,1);
+  for(let i=1;i<4;i++) sl(p,cx+18+i*2.5,cy+22,cx+18+i*2.5,cy+32,'#546e8a',0.8);
+  st(p,cx+24,cy+38,'EXH',{m:true,sz:7,f:'#546e8a'});
+  st(p,cx,cy-28,tag,{m:true,sz:8,f:C,b:true});
+}
+
+// Pneumatic actuator — ISO quarter-turn (rectangle + arc for rotation)
+function symACT(p,cx,cy,aType,tag){
+  const C='#00d4ff', W=100,H=60;
+  sr(p,cx-W/2,cy-H/2,W,H,'#020d14',C,2,2);
+  // Quarter-turn arc inside
+  p.appendChild(mkEl('path',{d:`M ${cx-18} ${cy+10} A 22 22 0 0 1 ${cx+10} ${cy-18}`,
+    fill:'none',stroke:C,'stroke-width':1.8}));
+  // Arrow on arc
+  const aid2=mkArrow(p,C,6);
+  p.appendChild(mkEl('line',{x1:cx+8,y1:cy-20,x2:cx+10,y2:cy-18,stroke:C,'stroke-width':2,'marker-end':`url(#${aid2})`}));
+  // Shaft stub right
+  sl(p,cx+W/2,cy,cx+W/2+14,cy,C,2.5);
+  sc(p,cx+W/2+14,cy,5,'#020d14',C,2);
+  // Port labels inside corners
+  st(p,cx-W/2+10,cy-H/2+12,'A',{m:true,sz:10,f:C,b:true});
+  if(aType==='double') st(p,cx+W/2-10,cy-H/2+12,'B',{m:true,sz:10,f:'#ff6b2b',b:true});
+  st(p,cx,cy+10,aType==='single'?'SA/SR':'D/A',{m:true,sz:9,f:'#546e8a'});
+  st(p,cx,cy-H/2-10,tag,{m:true,sz:8,f:C,b:true});
+}
+
+// Limit switch — ISA/ISO contact symbol
+function symLS(p,cx,cy,tag,col){
+  col=col||'#00e676';
+  // Actuator arm
+  sl(p,cx-14,cy-8,cx+14,cy-8,col,1.5);
+  // Switch contact (NC shown open = normally-open for ZSO/ZSC)
+  sl(p,cx-8,cy,cx+8,cy,col,2); // contact bar
+  sl(p,cx-8,cy+8,cx+8,cy+8,col,1.5); // fixed contact
+  sl(p,cx-8,cy-8,cx-8,cy,col,1.2); // left lead
+  sl(p,cx+8,cy-8,cx+8,cy,col,1.2); // right lead
+  // Cam roller (small circle on arm)
+  sc(p,cx,cy-8,4,'#0a0e13',col,1.2);
+  st(p,cx,cy+22,tag,{m:true,sz:8,f:col,b:true});
+}
+
+// Silencer/muffler on exhaust port
+function symMuff(p,cx,cy){
+  sr(p,cx-7,cy-8,14,16,'#080e14','#2d4060',1,1);
+  for(let i=-4;i<=4;i+=2.5) sl(p,cx+i,cy-8,cx+i,cy+8,'#2d4060',0.6);
+  st(p,cx,cy+20,'ATM',{m:true,sz:7,f:'#2d4060'});
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// MAIN SCHEMATIC BUILDER
+// Fixed-position layout; proper line routing with labelled rails
+// ═══════════════════════════════════════════════════════════════════
+function buildSVG(params){
+  const{psi,gal,openT,closeT,aType,validation,hasSov,hasPos,hasFR,hasFCVopen,hasFCVclose,hasQEV,hasLimit,hasGauge}=params;
+
+  const W=1060, H=820;
+  const svg=mkEl('svg');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.setAttribute('xmlns',NS);
+  svg.setAttribute('style','width:100%;height:auto;');
+
+  // ── Background ───────────────────────────────────────────────
+  svg.appendChild(mkEl('rect',{x:0,y:0,width:W,height:H,fill:'#080e14'}));
+  // Grid
+  const grid=mkEl('g',{opacity:'0.04'});
+  for(let gx=0;gx<W;gx+=40) sl(grid,gx,0,gx,H,'#00d4ff',0.5);
+  for(let gy=0;gy<H;gy+=40) sl(grid,0,gy,W,gy,'#00d4ff',0.5);
+  svg.appendChild(grid);
+
+  const defs=mkEl('defs');
+  svg.insertBefore(defs,svg.firstChild);
+
+  // ── Title block ──────────────────────────────────────────────
+  sr(svg,0,0,W,36,'#050b12','none',0);
+  sl(svg,0,36,W,36,'#1e2d42',1);
+  st(svg,20,23,'PNEUMATIC ACTUATOR CONTROL PANEL — INSTRUMENT SCHEMATIC',{m:true,sz:11,f:'#00d4ff',a:'start',b:true});
+  st(svg,W-16,23,`${psi} PSI IA  ·  ${gal} gal  ·  ${aType.toUpperCase()} ACTING  ·  OPEN ${openT}s  CLOSE ${closeT}s`,{m:true,sz:9,f:'#546e8a',a:'end'});
+
+  // ── Layout constants ──────────────────────────────────────────
+  // Y levels (top-down):
+  //   Y_RAIL   = 90   instrument air supply rail (horizontal)
+  //   Y_COND   = 180  conditioning layer (FR)
+  //   Y_CTRL   = 310  control layer (SOV, IYP)
+  //   Y_TUBE_A = 430  Port A tubing rail
+  //   Y_TUBE_B = 500  Port B tubing rail (DA only)
+  //   Y_FCV    = 560  FCV / QEV layer
+  //   Y_ACT    = 680  actuator
+  //   Y_LS     = 760  limit switches
+
+  const Y_RAIL=90, Y_COND=195, Y_CTRL=330, Y_TUBE_A=450, Y_TUBE_B=510, Y_FCV=590, Y_ACT=700, Y_LS=770;
+
+  // X positions
+  const X_SUPPLY=80;  // supply inlet
+  const X_FR=210;     // filter-regulator
+  const X_IYP=360;    // I/P positioner (if present)
+  const X_SOV=hasSov?(hasPos?520:430):430; // solenoid valve centre
+  const X_ACT=650;    // actuator centre
+  const X_FCVO=X_ACT-80; // FCV open (Port A path)
+  const X_FCVC=X_ACT+60; // FCV close (Port B path)
+  const X_QEV=X_ACT-120;  // QEV (if present)
+
+  // ── Line type colour/dash guide ───────────────────────────────
+  // Supply (main air):  solid #00d4ff  2px
+  // Working (Port A):   solid #00d4ff  1.5px
+  // Working (Port B):   solid #ff6b2b  1.5px
+  // Pilot/control air:  dashed #a78bfa 1px  4,3
+  // Electrical signal:  dashed #00e676 1px  6,3
+  // 4-20mA:             dashed #a78bfa 1px  2,2
+  // Exhaust:            solid  #546e8a 1px
+  const CS='#00d4ff', CB='#ff6b2b', CE='#546e8a', CG='#00e676', CP='#a78bfa', CY2='#ffc107';
+
+  // ── ZONE LABELS (left margin) ─────────────────────────────────
+  const zoneLabel=(y,label,col)=>{
+    sl(svg,16,y-2,24,y-2,col||CE,0.5);
+    st(svg,14,y+4,label,{m:true,sz:7,f:col||CE,a:'end'});
+  };
+  zoneLabel(Y_RAIL,  'SUPPLY RAIL',CS);
+  zoneLabel(Y_COND,  'CONDITIONING',CE);
+  zoneLabel(Y_CTRL,  'CONTROL VALVE',CS);
+  zoneLabel(Y_TUBE_A,'PORT A (OPEN)',CS);
+  if(aType==='double') zoneLabel(Y_TUBE_B,'PORT B (CLOSE)',CB);
+  zoneLabel(Y_FCV,   'SPEED CTRL',CB);
+  zoneLabel(Y_ACT,   'ACTUATOR',CS);
+  if(hasLimit) zoneLabel(Y_LS,'POSITION FB',CG);
+
+  // Vertical zone separators
+  [Y_COND-30,Y_CTRL-30,Y_FCV-30,Y_ACT-30].forEach(yz=>{
+    sl(svg,30,yz,W-30,yz,CE,0.3,'8,6');
+  });
+
+  // ── SUPPLY RAIL ───────────────────────────────────────────────
+  // Source: IA SUPPLY block on left
+  sr(svg,X_SUPPLY-34,Y_RAIL-16,68,30,'#020d14',CS,1.5,3);
+  st(svg,X_SUPPLY,Y_RAIL-3,'IA SUPPLY',{m:true,sz:8,f:CS,b:true});
+  st(svg,X_SUPPLY,Y_RAIL+9,`${psi} PSI`,{m:true,sz:9,f:CS});
+  // Main horizontal supply rail — runs right to SOV (or IYP)
+  const X_RAIL_END = hasSov ? X_SOV+2 : X_IYP+2;
+  sl(svg,X_SUPPLY+34,Y_RAIL,X_RAIL_END,Y_RAIL,CS,2.5);
+  // Rail label
+  st(svg,(X_SUPPLY+34+X_RAIL_END)/2,Y_RAIL-8,'INSTRUMENT AIR — SUPPLY',{m:true,sz:7,f:CS});
+
+  // ── FILTER-REGULATOR ─────────────────────────────────────────
+  if(hasFR){
+    // Drop from rail down to FR
+    sl(svg,X_FR,Y_RAIL,X_FR,Y_COND-22,CS,2);
+    jdot(svg,X_FR,Y_RAIL,CS);
+    symFR(svg,X_FR,Y_COND,'FR-01');
+    // Continue supply rail right of FR (horizontal to next component)
+    sl(svg,X_FR+26,Y_COND,hasSov?X_SOV-52:X_RAIL_END,Y_COND,CS,1.5);
+    // Vertical drop from FR outlet to continue down
+    sl(svg,X_FR,Y_COND+22,X_FR,Y_CTRL-10,CS,1.5);
+    // FR IN label on supply rail
+    st(svg,X_FR,Y_COND-36,'FR-01',{m:true,sz:7,f:CE});
+
+    // Gauge PI-01 off the FR outlet
+    const GX=X_FR+46, GY=Y_COND;
+    sl(svg,X_FR+26,Y_COND,GX-10,GY,CS,1);
+    jdot(svg,X_FR+26,Y_COND,CS);
+    symGauge(svg,GX,GY,'PI-01','#ff6b2b');
+  }
+
+  // ── I/P POSITIONER ────────────────────────────────────────────
+  if(hasPos){
+    // Supply tap to IYP
+    sl(svg,X_IYP,hasFR?Y_COND:Y_RAIL,X_IYP,Y_CTRL-18,CS,1.5);
+    if(!hasFR) jdot(svg,X_IYP,Y_RAIL,CS);
+    symIYP(svg,X_IYP,Y_CTRL,'IPY-01');
+    // 4-20mA from left DCS boundary — horizontal dashed line at Y_CTRL-60
+    sl(svg,30,Y_CTRL-60,X_IYP-14,Y_CTRL-60,CP,1,'2,2');
+    arrowLine(svg,X_IYP-16,Y_CTRL-60,X_IYP-14,Y_CTRL-18,CP,1);
+    st(svg,32,Y_CTRL-68,'4–20 mA (FROM DCS)',{m:true,sz:7,f:CP,a:'start'});
+    // IYP output down to SOV pilot
+    sl(svg,X_IYP+14,Y_CTRL,X_SOV-52,Y_CTRL,CS,1.5,'4,3');
+    st(svg,(X_IYP+X_SOV)/2,Y_CTRL-10,'PILOT / SIGNAL',{m:true,sz:7,f:CE});
+  }
+
+  // ── SOLENOID VALVE ────────────────────────────────────────────
+  if(hasSov){
+    // Supply into SOV port P (vertical drop or horizontal from rail)
+    const pPort = aType==='double' ? {x:X_SOV-38} : {x:X_SOV-28};
+    // Horizontal supply from rail/FR level to P port of SOV
+    sl(svg,hasFR?X_FR:X_SUPPLY+34,Y_CTRL,pPort.x,Y_CTRL,CS,1.5);
+    sl(svg,pPort.x,hasFR?Y_COND+22:Y_RAIL,pPort.x,Y_CTRL,CS,1.5);
+    if(!hasFR) jdot(svg,pPort.x,Y_RAIL,CS);
+    else jdot(svg,X_FR,Y_CTRL,CS);
+
+    symSOV(svg,X_SOV,Y_CTRL,aType,'SOV-01');
+
+    // Electrical signal to SOV coil (from left boundary)
+    const SIG_Y=Y_CTRL-62;
+    sl(svg,30,SIG_Y,X_SOV-57,SIG_Y,CG,1,'6,3');
+    arrowLine(svg,X_SOV-58,SIG_Y,X_SOV-56,Y_CTRL-18,CG,1);
+    st(svg,32,SIG_Y-8,'24 VDC CONTROL SIGNAL',{m:true,sz:7,f:CG,a:'start'});
+
+    // Exhaust (R port) to muffler
+    const exhaust_x=aType==='double'?X_SOV+38:X_SOV+28;
+    sl(svg,exhaust_x,Y_CTRL+18,exhaust_x,Y_CTRL+50,CE,1.5);
+    symMuff(svg,exhaust_x,Y_CTRL+62);
+
+    // ── PORT A line (from SOV port 2 or 4 down) ───────────────
+    const portA_x = aType==='double' ? X_SOV-18 : X_SOV-8;
+    sl(svg,portA_x,Y_CTRL+18,portA_x,Y_TUBE_A,CS,1.5);
+    // Horizontal Port A rail
+    sl(svg,portA_x,Y_TUBE_A,X_ACT-26,Y_TUBE_A,CS,1.5);
+    // Port A label
+    st(svg,portA_x-6,Y_TUBE_A+14,'PORT A',{m:true,sz:7,f:CS,a:'end'});
+
+    // ── PORT B line (DA only, from SOV port 2 down right) ─────
+    if(aType==='double'){
+      const portB_x=X_SOV+18;
+      sl(svg,portB_x,Y_CTRL+18,portB_x,Y_TUBE_B,CB,1.5);
+      sl(svg,portB_x,Y_TUBE_B,X_ACT+26,Y_TUBE_B,CB,1.5);
+      st(svg,portB_x+6,Y_TUBE_B+14,'PORT B',{m:true,sz:7,f:CB,a:'start'});
+    }
+  }
+
+  // ── FCV OPEN (in Port A line) ─────────────────────────────────
+  if(hasFCVopen && hasSov){
+    const fcvComp=COMP_DEFS.find(c=>c.id==='cv-fcv-open');
+    const fcvCv=fcvComp?getModelCv(fcvComp).toFixed(2):'?';
+    const FX=X_FCVO, FY2=Y_TUBE_A;
+    // Break port A rail at FCV
+    sl(svg,X_SOV-18,Y_TUBE_A,FX-14,FY2,CS,1.5); // upstream of FCV
+    sl(svg,FX+14,FY2,X_ACT-26,Y_TUBE_A,CS,1.5);  // downstream of FCV
+    symFCV(svg,FX,FY2,'FCV-01',CS);
+    // Cv annotation
+    st(svg,FX+26,FY2+4,`Cv ${fcvCv}`,{m:true,sz:7,f:'#6e4020',a:'start'});
+    // Meter-out arrow (downstream direction)
+    const moid=mkArrow(svg,CS,5);
+    svg.appendChild(mkEl('line',{x1:FX+2,y1:FY2-20,x2:FX+2,y2:FY2-15,stroke:CS,'stroke-width':1,'marker-end':`url(#${moid})`}));
+    st(svg,FX+14,FY2-22,'METER-OUT',{m:true,sz:6,f:CE,a:'start'});
+  }
+
+  // ── FCV CLOSE (in Port B line, DA only) ───────────────────────
+  if(hasFCVclose && aType==='double' && hasSov){
+    const fcvComp=COMP_DEFS.find(c=>c.id==='cv-fcv-close');
+    const fcvCv=fcvComp?getModelCv(fcvComp).toFixed(2):'?';
+    const FX=X_FCVC, FY2=Y_TUBE_B;
+    sl(svg,X_SOV+18,Y_TUBE_B,FX-14,FY2,CB,1.5);
+    sl(svg,FX+14,FY2,X_ACT+26,Y_TUBE_B,CB,1.5);
+    symFCV(svg,FX,FY2,'FCV-02',CB);
+    st(svg,FX+26,FY2+4,`Cv ${fcvCv}`,{m:true,sz:7,f:'#6e2010',a:'start'});
+  }
+
+  // ── QEV ───────────────────────────────────────────────────────
+  if(hasQEV && hasSov){
+    const QX=X_QEV, QY=Y_TUBE_A+30;
+    // Tee off Port A rail
+    jdot(svg,X_FCVO-40,Y_TUBE_A,CS);
+    sl(svg,X_FCVO-40,Y_TUBE_A,QX,Y_TUBE_A,CY2,1.5);
+    sl(svg,QX,Y_TUBE_A,QX,QY-14,CY2,1.5);
+    symQEV(svg,QX,QY,'QEV-01');
+    // QEV output to actuator port A
+    sl(svg,QX,QY+14,QX,Y_ACT-30,CY2,1.5,'3,2');
+  }
+
+  // ── CYLINDER PORT GAUGES (PI-A / PI-B) ───────────────────────
+  if(hasGauge && hasSov){
+    // PI-A tee off Port A rail close to actuator
+    const GAX=X_ACT-26;
+    jdot(svg,GAX,Y_TUBE_A,CS);
+    sl(svg,GAX,Y_TUBE_A,GAX,Y_TUBE_A+22,CS,1);
+    symGauge(svg,GAX,Y_TUBE_A+36,'PI-A','#ff6b2b');
+    if(aType==='double'){
+      const GBX=X_ACT+26;
+      jdot(svg,GBX,Y_TUBE_B,CB);
+      sl(svg,GBX,Y_TUBE_B,GBX,Y_TUBE_B+22,CB,1);
+      symGauge(svg,GBX,Y_TUBE_B+36,'PI-B','#ff6b2b');
+    }
+  }
+
+  // ── ACTUATOR ──────────────────────────────────────────────────
+  symACT(svg,X_ACT,Y_ACT,aType,'ACT-01');
+  // Port A connection (from rail or QEV) into actuator
+  sl(svg,X_ACT-26,Y_TUBE_A,X_ACT-26,Y_ACT-30,CS,1.5);
+  endcap(svg,X_ACT-26,Y_ACT-30,CS);
+  // Port B connection (DA)
+  if(aType==='double'){
+    sl(svg,X_ACT+26,Y_TUBE_B,X_ACT+26,Y_ACT-30,CB,1.5);
+    endcap(svg,X_ACT+26,Y_ACT-30,CB);
+  }
+  // Spring return label (SA)
+  if(aType==='single'){
+    st(svg,X_ACT+80,Y_ACT,'SPRING',{m:true,sz:7,f:CE,a:'start'});
+    st(svg,X_ACT+80,Y_ACT+10,'RETURN',{m:true,sz:7,f:CE,a:'start'});
+    // Zigzag spring
+    const spx=X_ACT+64, spy=Y_ACT;
+    spoly(svg,Array.from({length:9},(_,i)=>[spx+i*5,spy+(i%2===0?-6:6)]),'#546e8a',1.2);
+  }
+
+  // ── LIMIT SWITCHES ────────────────────────────────────────────
+  if(hasLimit){
+    const ZSO_X=X_ACT-80, ZSC_X=X_ACT+80;
+    // Physical cam connection from actuator
+    sl(svg,X_ACT-30,Y_ACT+30,ZSO_X,Y_ACT+30,CG,0.8,'3,2');
+    sl(svg,ZSO_X,Y_ACT+30,ZSO_X,Y_LS-22,CG,0.8,'3,2');
+    sl(svg,X_ACT+30,Y_ACT+30,ZSC_X,Y_ACT+30,CG,0.8,'3,2');
+    sl(svg,ZSC_X,Y_ACT+30,ZSC_X,Y_LS-22,CG,0.8,'3,2');
+    symLS(svg,ZSO_X,Y_LS,'ZSO',CG);
+    symLS(svg,ZSC_X,Y_LS,'ZSC',CG);
+    // Signal cables to DCS (vertical down with arrow)
+    sl(svg,ZSO_X,Y_LS+22,ZSO_X,Y_LS+40,CG,1,'4,3');
+    arrowLine(svg,ZSO_X,Y_LS+36,ZSO_X,Y_LS+50,CG,1);
+    st(svg,ZSO_X,Y_LS+58,'→ DCS',{m:true,sz:7,f:CE});
+    sl(svg,ZSC_X,Y_LS+22,ZSC_X,Y_LS+40,CG,1,'4,3');
+    arrowLine(svg,ZSC_X,Y_LS+36,ZSC_X,Y_LS+50,CG,1);
+    st(svg,ZSC_X,Y_LS+58,'→ DCS',{m:true,sz:7,f:CE});
+  }
+
+  // ── SYSTEM Cv BADGE ───────────────────────────────────────────
+  const sv=validation.sysCv, rv=validation.openR.cv;
+  const cvCol=sv>=rv*1.25?'#00e676':sv>=rv?'#ffc107':'#ff3d3d';
+  const CVX=W-140, CVY=55;
+  sr(svg,CVX-90,CVY-22,180,50,'#020a0d',cvCol,1.5,4);
+  st(svg,CVX,CVY-8,'SYSTEM Cv',{m:true,sz:8,f:cvCol});
+  st(svg,CVX,CVY+12,sv.toFixed(4),{m:true,sz:18,f:cvCol,b:true});
+  st(svg,CVX,CVY+24,`REQ: ${rv.toFixed(4)}`,{m:true,sz:8,f:CE});
+
+  // ── LEGEND ────────────────────────────────────────────────────
+  const LX=W-190, LY=H-190;
+  sr(svg,LX-8,LY-18,188,175,'#030810','#1e2d42',1,3);
+  st(svg,LX+86,LY-4,'LINE TYPE LEGEND',{m:true,sz:8,f:CE,b:true});
+  const legItems=[
+    [CS,2,'none',  'Supply / Working Air (Port A)'],
+    [CB,2,'none',  'Working Air — Port B (D/A)'],
+    [CE,1.5,'none','Exhaust / Vent to Atmosphere'],
+    [CP,1,'4,3',   'Pilot Air / Control Signal'],
+    [CP,1,'2,2',   '4–20 mA Instrument Signal'],
+    [CG,1,'6,3',   'Electrical / 24 VDC Signal'],
+    [CY2,1.5,'none','Quick Exhaust Path'],
+  ];
+  legItems.forEach(([c,w,d,lbl],i)=>{
+    const ly2=LY+14+i*22;
+    sl(svg,LX,ly2,LX+28,ly2,c,w,d);
+    st(svg,LX+34,ly2+4,lbl,{m:true,sz:8,f:'#607d8b',a:'start'});
+  });
+
+  // ── BORDER ────────────────────────────────────────────────────
+  svg.appendChild(mkEl('rect',{x:2,y:2,width:W-4,height:H-4,fill:'none',stroke:'#1e2d42','stroke-width':1.5,rx:3}));
+  // Title block bottom line + revision
+  sr(svg,0,H-24,W,24,'#040c14','none',0);
+  sl(svg,0,H-24,W,H-24,'#1e2d42',1);
+  const now=new Date();
+  st(svg,W/2,H-9,`PNEUMAPANEL v1.3  ·  ISO 1219 / ISA S5.1  ·  BIFOLD COMPONENT REFERENCE  ·  ${now.toLocaleDateString()}`,
+    {m:true,sz:7,f:'#2d4060'});
+  return svg;
+}
+
+function buildBOM(params){
+  const{psi,gal,openT,closeT,aType,validation,hasSov,hasPos,hasFR,hasFCVopen,hasFCVclose,hasQEV,hasLimit,hasGauge}=params;
+  const{openR,closeR}=validation;
+  const items=[];
+  const getM=(compId)=>{const comp=COMP_DEFS.find(c=>c.id===compId);if(!comp)return null;const data=getCompData(comp);const idx=getSelectedModel(compId);return data[idx]||null;};
+  if(hasFR){const m=getM('cv-fr');items.push({tag:'FR-01',desc:'Filter-Regulator + Pressure Gauge (PI-01)',spec:`20–30µm, 0–${Math.ceil(psi*1.3/10)*10} PSI range, ${psi} PSI set`,minCv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
+  if(hasSov){const m=getM('cv-sov');items.push({tag:'SOV-01',desc:`${aType==='double'?'5/2':'3/2'} Solenoid Valve — Spring Return`,spec:m?m.note||`${psi} PSI, 24VDC`:`${psi} PSI, 24VDC`,minCv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Electrical'});}
+  if(hasPos){const m=getM('cv-pos');items.push({tag:'IPY-01',desc:'I/P Electropneumatic Transducer',spec:'4–20 mA → 3–15 PSI',minCv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Electrical'});}
+  if(hasFCVopen){const m=getM('cv-fcv-open');items.push({tag:'FCV-01',desc:'Flow Control Valve — Open (Meter-Out)',spec:`Set to Cv ${openR.cv.toFixed(4)}`,minCv:`≥ ${openR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
+  if(hasFCVclose&&aType==='double'){const m=getM('cv-fcv-close');items.push({tag:'FCV-02',desc:'Flow Control Valve — Close (Meter-Out)',spec:`Set to Cv ${closeR.cv.toFixed(4)}`,minCv:`≥ ${closeR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
+  if(hasQEV){const m=getM('cv-qev');items.push({tag:'QEV-01',desc:'Quick Exhaust Valve',spec:`${psi} PSI rated`,minCv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
+  if(hasGauge){items.push({tag:'PI-A'+(aType==='double'?'/PI-B':''),desc:`Cylinder Port Pressure Gauge${aType==='double'?' (×2)':''}`,spec:`0–${Math.ceil(psi*1.3/10)*10} PSI, glycerine`,minCv:'N/A',model:'Any 2.5" panel gauge',type:'Pneumatic'});}
+  items.push({tag:'ACT-01',desc:`Quarter-Turn Pneumatic Actuator — ${aType==='single'?'Single Acting Spring Return':'Double Acting'}`,spec:`${gal} gal displacement`,minCv:'N/A',model:'Per actuator vendor',type:'Mechanical'});
+  if(hasLimit){items.push({tag:'ZSO',desc:'Limit Switch — Open Position',spec:'SPDT, cylinder mounted, NEMA 4X',minCv:'N/A',model:'Soldo / proximity switch',type:'Electrical'});items.push({tag:'ZSC',desc:'Limit Switch — Close Position',spec:'SPDT, cylinder mounted, NEMA 4X',minCv:'N/A',model:'Soldo / proximity switch',type:'Electrical'});}
+  return items;
+}
+
+// ── Main Entry ────────────────────────────────────────────────────────────────
+window.generateAll=function(){
+  const psi=V('supplyPSI'),gal=V('displacement'),openT=V('openTime'),closeT=V('closeTime'),aType=actuatorType;
+  const hasSov=C('chk-solenoid'),hasPos=C('chk-positioner'),hasFR=C('chk-fr');
+  const hasFCVopen=C('chk-speed-open'),hasFCVclose=C('chk-speed-close')&&aType==='double';
+  const hasQEV=C('chk-qev'),hasLimit=C('chk-limit'),hasGauge=C('chk-gauge');
+  const cvArr=getCvInputArray();
+  const validation=validateDesign({psi,gal,openT,closeT,aType,cvArr});
+  const params={psi,gal,openT,closeT,aType,validation,cvArr,hasSov,hasPos,hasFR,hasFCVopen,hasFCVclose,hasQEV,hasLimit,hasGauge};
+  const diagramSVG=buildSVG(params);
+  const bom=buildBOM(params);
+  const{verdict,checks,sysCv,openR,closeR}=validation;
+  const vText={approved:'✔ DESIGN APPROVED',warning:'⚠ APPROVED WITH WARNINGS',rejected:'✘ DESIGN NOT APPROVED'}[verdict];
+  const vSub={approved:`All critical checks passed. System Cv ${sysCv.toFixed(4)} satisfies requirements with adequate margin.`,warning:`Design conditionally meets requirements. Review warnings below before fabrication.`,rejected:`One or more critical checks failed. Design cannot achieve required stroke times or is missing required components.`}[verdict];
+  const imap={pass:'✔',fail:'✘',warn:'⚠',info:'ℹ'};
+  const checksHTML=checks.map(c=>`<div class="check-item ${c.status}"><span class="check-icon">${imap[c.status]}</span><div class="check-body"><div class="check-title">${c.title}</div><div class="check-detail">${c.detail.replace(/\n/g,'<br>')}</div>${c.rec?`<div class="check-rec">→ ${c.rec}</div>`:''}${c.model?`<div class="check-model">✦ ${c.model}</div>`:''}</div></div>`).join('');
+  const cvCol=verdict==='rejected'?'c-orange':verdict==='warning'?'c-orange':'c-green';
+  const badges=[
+    {l:aType==='single'?'SINGLE ACTING — SPRING RETURN':'DOUBLE ACTING',c:'c-cyan'},
+    {l:`${psi} PSI SUPPLY`,c:''},
+    {l:`${gal} GAL DISPLACEMENT`,c:''},
+    {l:`OPEN: ${openT}s → Cv ${openR.cv.toFixed(4)}`,c:'c-cyan'},
+    aType==='double'?{l:`CLOSE: ${closeT}s → Cv ${closeR.cv.toFixed(4)}`,c:'c-orange'}:{l:`CLOSE: ${closeT}s (SPRING)`,c:''},
+    {l:`SYS Cv: ${sysCv.toFixed(4)}`,c:cvCol},
+  ].map(b=>`<span class="config-badge ${b.c}">${b.l}</span>`).join('');
+  const bomHTML=bom.map(item=>`<tr><td class="tag-cell">${item.tag}</td><td>${item.desc}</td><td class="spec-cell">${item.spec}</td><td class="mincv-cell">${item.minCv}</td><td class="model-cell">${item.model}</td><td class="spec-cell">${item.type}</td></tr>`).join('');
+  const content=GE('diagramContent');
+  content.innerHTML=`<div class="diagram-content"><div class="diagram-title-row"><div><div class="diagram-title">CONTROL <span>PANEL</span> DIAGRAM</div><div class="diagram-subtitle">QUARTER-TURN PNEUMATIC ACTUATOR — INSTRUMENT AIR — BIFOLD COMPONENT REFERENCE</div></div><button class="print-btn" onclick="window.print()">⎙ PRINT / PDF</button></div><div class="config-badge-row">${badges}</div><div class="approval-block ${verdict}"><div class="approval-verdict"><div class="verdict-badge ${verdict}">${vText}</div><div class="verdict-sub">${vSub}</div></div><div class="check-list">${checksHTML}</div></div><div class="diagram-svg-wrap" id="svgWrap"></div><div style="margin-top:0"><div class="bom-title">BILL OF MATERIALS — BIFOLD REFERENCE</div><table class="bom-table"><thead><tr><th>Tag</th><th>Description</th><th>Specification</th><th>Min Cv</th><th>Bifold Model Ref</th><th>Type</th></tr></thead><tbody>${bomHTML}</tbody></table></div></div>`;
+  GE('svgWrap').appendChild(diagramSVG);
+  GE('emptyState').style.display='none';
+  content.style.display='block';
+  const statusEl=GE('hdrStatus');
+  statusEl.textContent=verdict.toUpperCase();
+  statusEl.style.color=verdict==='approved'?'var(--green)':verdict==='warning'?'var(--yellow)':'var(--red)';
+};
+
+updateCompVisibility();
+</script>
+</body>
+</html>
