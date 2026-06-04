@@ -23,11 +23,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(227,0,15,.05) 0%,transparent 70%)}
 
-/* HEADER */
 header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
   padding:12px 30px;border-bottom:1px solid var(--border);
   background:linear-gradient(180deg,rgba(255,255,255,.98) 0%,rgba(245,245,245,.0) 100%)}
-.logo-hex{width:36px;height:36px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center}
+.logo-hex{width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .logo-hex svg{width:36px;height:36px}
 .logo-copy h1{font-family:var(--head);font-size:22px;letter-spacing:4px;color:var(--cyan);line-height:1}
 .logo-copy p{font-family:var(--mono);font-size:7.5px;color:var(--text-dim);letter-spacing:2.5px;margin-top:1px}
@@ -38,17 +37,14 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .hdr-tag.st-warn span{color:var(--yellow)}
 .hdr-tag.st-fail span{color:var(--red)}
 
-/* LAYOUT */
 .app{position:relative;z-index:1;display:grid;grid-template-columns:362px 1fr;min-height:calc(100vh - 62px)}
 
-/* SIDEBAR */
 .sidebar{background:var(--surface);border-right:1px solid var(--border);
   padding:18px 16px;display:flex;flex-direction:column;gap:18px;overflow-y:auto}
 .sec-hd{font-family:var(--mono);font-size:7.5px;color:var(--cyan-dim);letter-spacing:3px;
   text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .sec-hd::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* Type cards */
 .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .type-card{background:#ffffff;border:2px solid var(--border);border-radius:5px;
   padding:12px 8px;cursor:pointer;text-align:center;position:relative;overflow:hidden;
@@ -64,7 +60,6 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .tc-sub{font-family:var(--mono);font-size:7px;color:var(--text-muted);margin-top:2px}
 .type-card.active .tc-sub{color:var(--text-dim)}
 
-/* Inputs */
 .fgroup{display:flex;flex-direction:column;gap:9px}
 .field{display:flex;flex-direction:column;gap:3px}
 .field label{font-family:var(--mono);font-size:7.5px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase}
@@ -78,7 +73,6 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .iunit{position:absolute;right:8px;font-family:var(--mono);font-size:8px;color:var(--text-muted);pointer-events:none}
 .iwrap input:focus~.iunit{color:var(--cyan-dim)}
 
-/* Calc readouts */
 .cr{background:rgba(227,0,15,.04);border:1px solid rgba(227,0,15,.12);border-radius:4px;
   padding:5px 10px;display:flex;justify-content:space-between;align-items:center}
 .cr .cl{font-family:var(--mono);font-size:8px;color:var(--text-dim)}
@@ -86,9 +80,11 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .cr.hipex{background:rgba(255,179,0,.06);border-color:rgba(255,179,0,.2)}
 .cr.hipex .cl{color:var(--yellow)}
 .cr.hipex .cv{color:var(--yellow)}
+.cr.exh-inferred{background:rgba(124,58,237,.06);border-color:rgba(124,58,237,.2)}
+.cr.exh-inferred .cl{color:var(--purple)}
+.cr.exh-inferred .cv{color:var(--purple)}
 .fnote{font-family:var(--mono);font-size:7px;color:var(--text-dim);line-height:1.7;padding:2px 0}
 
-/* Checkboxes */
 .chk-list{display:flex;flex-direction:column;gap:7px}
 .chk-list label{display:flex;align-items:center;gap:8px;cursor:pointer;
   font-family:var(--mono);font-size:9.5px;color:var(--text-dim)}
@@ -97,7 +93,6 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
   background:rgba(255,193,7,.09);border:1px solid rgba(255,193,7,.22);
   padding:1px 5px;border-radius:2px;margin-left:3px}
 
-/* Component model rows */
 .comp-group{display:flex;flex-direction:column;gap:5px}
 .comp-row{background:#ffffff;border:1px solid var(--border);border-radius:4px;padding:6px 9px}
 .comp-top{display:flex;align-items:center;gap:7px;margin-bottom:4px}
@@ -105,39 +100,41 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .cvbadge{font-family:var(--mono);font-size:11px;font-weight:bold;color:var(--cyan);
   background:rgba(227,0,15,.07);border:1px solid rgba(227,0,15,.25);
   padding:1px 7px;border-radius:2px;min-width:48px;text-align:right}
+.cvbadge.pinned{color:var(--orange);background:rgba(212,85,0,.07);border-color:rgba(212,85,0,.22)}
+.cvbadge.warn{color:var(--yellow);background:rgba(197,122,0,.07);border-color:rgba(197,122,0,.22)}
+
 .val-sec-hdr{display:flex;align-items:center;gap:12px;padding:10px 14px;margin:14px 0 2px;
   background:linear-gradient(90deg,rgba(227,0,15,.06) 0%,transparent 100%);
   border-left:3px solid var(--cyan);border-radius:0 4px 4px 0}
 .val-sec-num{font-family:var(--head);font-size:22px;color:var(--cyan);line-height:1;min-width:28px}
 .val-sec-title{font-family:var(--head);font-size:13px;letter-spacing:1.5px;color:var(--text)}
-.val-sec-sub{font-family:var(--mono);font-size:8.5px;color:var(--text-dim);margin-top:2px;letter-spacing:.3px}
+.val-sec-sub{font-family:var(--mono);font-size:8.5px;color:var(--text-dim);margin-top:2px}
 .val-path-pill{margin-left:auto;font-family:var(--mono);font-size:8px;font-weight:700;
   letter-spacing:1.5px;padding:3px 9px;border-radius:20px;white-space:nowrap}
 .val-path-pill.power{color:#c00;background:rgba(227,0,15,.09);border:1px solid rgba(227,0,15,.25)}
 .val-path-pill.pilot{color:#1a7a3a;background:rgba(0,122,58,.08);border:1px solid rgba(0,122,58,.22)}
 .val-path-pill.arch{color:#7c3aed;background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.2)}
-.cvbadge.pinned{color:var(--orange);background:rgba(212,85,0,.07);border-color:rgba(212,85,0,.22)}
+
 .applybtn{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:1px;
   color:#ffffff;background:var(--cyan);border:none;border-radius:3px;
   padding:5px 12px;cursor:pointer;white-space:nowrap;transition:background .15s,transform .1s}
 .applybtn:hover{background:var(--cyan-dim);transform:translateY(-1px)}
-.applybtn:active{transform:translateY(0)}
 .applybtn-lg{font-size:9.5px;padding:8px 16px;border-radius:4px;box-shadow:0 2px 8px rgba(227,0,15,.25)}
-  border:1px solid rgba(227,0,15,.2);border-radius:2px;padding:1px 5px;cursor:pointer;
-  letter-spacing:.5px;margin-left:4px;vertical-align:middle}
+
+.unpinbtn{font-family:var(--mono);font-size:7px;color:var(--cyan-dim);
+  background:rgba(227,0,15,.07);border:1px solid rgba(227,0,15,.2);border-radius:2px;
+  padding:1px 5px;cursor:pointer;letter-spacing:.5px;margin-left:4px;vertical-align:middle}
 .unpinbtn:hover{background:rgba(227,0,15,.15)}
 .msel{width:100%;background:#ffffff;border:1px solid var(--border2);border-radius:3px;
   color:var(--text-mid);font-family:var(--mono);font-size:8.5px;padding:4px 6px;outline:none;cursor:pointer}
 .msel:focus{border-color:var(--cyan)}
 .msel option{background:var(--bg)}
 
-/* Generate button */
 .genbtn{width:100%;background:var(--cyan);color:#ffffff;border:none;border-radius:5px;
   font-family:var(--head);font-size:19px;letter-spacing:3px;padding:12px;cursor:pointer;
   transition:all .18s;margin-top:2px}
 .genbtn:hover{background:#ff1a24;box-shadow:0 0 30px rgba(227,0,15,.5);transform:translateY(-1px)}
 
-/* OUTPUT */
 .output{background:var(--bg);padding:26px 30px;overflow-y:auto;position:relative}
 .empty-st{display:flex;flex-direction:column;align-items:center;justify-content:center;
   height:70vh;gap:14px}
@@ -145,7 +142,6 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .empty-st p{font-family:var(--mono);font-size:10px;letter-spacing:2px;
   color:var(--text-dim);text-align:center;line-height:2.2}
 
-/* Output header */
 .outhdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
 .outtitle{font-family:var(--head);font-size:25px;letter-spacing:3px;color:var(--text)}
 .outtitle span{color:var(--cyan)}
@@ -155,7 +151,6 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
   letter-spacing:1px;transition:all .15s}
 .printbtn:hover{border-color:var(--cyan);color:var(--cyan)}
 
-/* Badge strip */
 .badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
 .badge{font-family:var(--mono);font-size:8px;border:1px solid var(--border);
   padding:3px 9px;border-radius:20px;color:var(--text-dim)}
@@ -164,8 +159,8 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .badge.green{border-color:var(--green);color:var(--green)}
 .badge.yellow{border-color:var(--yellow);color:var(--yellow)}
 .badge.red{border-color:var(--red);color:var(--red)}
+.badge.purple{border-color:var(--purple);color:var(--purple)}
 
-/* Approval block */
 .appr{border-radius:6px;padding:17px 20px;margin-bottom:20px}
 .appr.approved{background:rgba(0,200,83,.05);border:1.5px solid rgba(0,200,83,.3)}
 .appr.warning{background:rgba(255,179,0,.05);border:1.5px solid rgba(255,179,0,.3)}
@@ -178,7 +173,6 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .vbadge.rejected{background:rgba(227,0,15,.12);color:var(--red)}
 .vsub{font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.8;padding-top:3px}
 
-/* Check items */
 .chklist{display:flex;flex-direction:column;gap:4px}
 .chkitem{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;border-radius:4px;background:rgba(0,0,0,.018)}
 .chkicon{font-size:11px;flex-shrink:0;margin-top:2px}
@@ -194,13 +188,11 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .chkmod{font-family:var(--mono);font-size:8px;color:var(--green);margin-top:3px;
   padding:2px 8px;background:rgba(0,230,118,.05);border-left:2px solid var(--green);display:inline-block}
 
-/* SVG wrap */
 .svgwrap{background:#f5f5f5;border:1px solid var(--border);border-radius:6px;
   padding:14px;margin-bottom:22px;overflow:hidden;position:relative}
 .svgwrap::before{content:'';position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(ellipse at 50% 0%,rgba(227,0,15,.05) 0%,transparent 55%)}
 
-/* BOM */
 .bomtitle{font-family:var(--head);font-size:17px;letter-spacing:2px;color:var(--text);margin-bottom:11px}
 .bomtable{width:100%;border-collapse:collapse}
 .bomtable th{font-family:var(--mono);font-size:7.5px;letter-spacing:2px;color:var(--text-dim);
@@ -212,6 +204,11 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 .tsp{font-family:var(--mono);font-size:8.5px;color:var(--text-dim)}
 .tcv{font-family:var(--mono);font-size:9px;color:var(--orange)}
 .tmo{font-family:var(--mono);font-size:8.5px;color:var(--green)}
+
+/* Physics assumption banner */
+.physics-banner{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);
+  border-radius:4px;padding:8px 12px;margin-top:6px}
+.physics-banner p{font-family:var(--mono);font-size:7.5px;color:var(--purple);line-height:1.8}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .outcontent{animation:fadeUp .28s ease}
@@ -239,13 +236,11 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
   </div>
   <div class="hdr-right">
     <div class="hdr-tag" id="hdrTag">DESIGN <span id="hdrStatus">PENDING</span></div>
-    <div class="hdr-tag">BEPTO METHOD <span>v2.0</span></div>
+    <div class="hdr-tag">BEPTO / ISA METHOD <span>v3.0</span></div>
   </div>
 </header>
 
 <div class="app">
-
-<!-- ═══ SIDEBAR ═══════════════════════════════════════════════════ -->
 <aside class="sidebar">
 
   <div>
@@ -281,14 +276,14 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
     <div class="sec-hd">03 — Actuator Displacement</div>
     <div class="fgroup">
       <div class="field">
-        <label>Displacement (from datasheet)</label>
+        <label>Total displacement (from datasheet)</label>
         <div class="iwrap">
           <input type="number" id="displacement" value="0.195" min="0.001" max="50" step="0.001" oninput="updateCalcs()">
           <span class="iunit">gal</span>
         </div>
       </div>
-      <div class="cr"><span class="cl">Flow req. (open stroke)</span><span class="cv" id="reqFlowOpen">—</span></div>
-      <div class="cr"><span class="cl">Flow req. (close stroke)</span><span class="cv" id="reqFlowClose">—</span></div>
+      <div class="cr"><span class="cl">SCFM req. (open / supply stroke)</span><span class="cv" id="reqFlowOpen">—</span></div>
+      <div class="cr"><span class="cl">SCFM req. (close / exhaust stroke)</span><span class="cv" id="reqFlowClose">—</span></div>
     </div>
   </div>
 
@@ -312,14 +307,23 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
         </div>
       </div>
       <div class="frow">
-        <div class="cr"><span class="cl">Req. Cv (open)</span><span class="cv" id="openCvDisp">—</span></div>
-        <div class="cr"><span class="cl">Req. Cv (close)</span><span class="cv" id="closeCvDisp">—</span></div>
+        <div class="cr"><span class="cl">Req. Cv (supply)</span><span class="cv" id="openCvDisp">—</span></div>
+        <div class="cr"><span class="cl">Req. Cv (exhaust)</span><span class="cv" id="closeCvDisp">—</span></div>
+      </div>
+      <div class="cr exh-inferred">
+        <span class="cl">⬡ Inferred exhaust back-pressure</span>
+        <span class="cv" id="inferredBackP">—</span>
       </div>
       <div class="cr hipex">
-        <span class="cl">⚡ HiPex exhaust Cv req.</span>
+        <span class="cl">⚡ Exhaust Cv req. (at inferred P₂)</span>
         <span class="cv" id="hipexCvDisp">—</span>
       </div>
-      <div class="fnote">Bepto method · ΔP=1.0 PSI · SG=1.0 · η=0.90 · SF=1.5×<br>HiPex Cv uses exhaust back-pressure (P₁≈15.7 PSIA) — often the binding constraint</div>
+      <div class="fnote" id="flowRegimeNote">Flow regime: —</div>
+      <div class="physics-banner">
+        <p>SUPPLY: Bepto/ISA choked or subcritical · ΔP=1 PSI min across each component · η=0.90 · SF=1.5×<br>
+        EXHAUST: P₁ = supply pressure (trapped in actuator) · P₂ inferred from panel config<br>
+        Exhaust back-pressure: inferred automatically from muffler / manifold selection</p>
+      </div>
     </div>
   </div>
 
@@ -327,16 +331,15 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
     <div class="sec-hd">05 — Panel Components</div>
     <div class="chk-list">
       <label><input type="checkbox" id="chk-fr"          checked onchange="updateCompVisibility()"> Filter-Regulator + Gauge (FR)</label>
-      <label><input type="checkbox" id="chk-solenoid"    checked onchange="updateCompVisibility()"> Solenoid Valve (SOV) <span class="pill" style="color:#a78bfa;border-color:#a78bfa;background:rgba(167,139,250,.1)">PILOT</span></label>
+      <label><input type="checkbox" id="chk-solenoid"    checked onchange="updateCompVisibility()"> Solenoid Valve (SOV) <span class="pill" style="color:#a78bfa;border-color:#a78bfa;background:rgba(167,139,250,.1)">PILOT / TIER-1 POWER</span></label>
       <label><input type="checkbox" id="chk-vb"                 onchange="updateCompVisibility()"> Volume Booster (VB) <span class="pill">⚡ POWER PATH</span></label>
       <label><input type="checkbox" id="chk-positioner"         onchange="updateCompVisibility()"> I/P Positioner (4–20 mA) <span class="pill" style="color:#a78bfa;border-color:#a78bfa;background:rgba(167,139,250,.1)">PILOT</span></label>
-      <label><input type="checkbox" id="chk-speed-open"  checked onchange="updateCompVisibility()"> Speed Control — Open (FCV)</label>
-      <label><input type="checkbox" id="chk-speed-close" checked onchange="updateCompVisibility()"> Speed Control — Close (FCV)</label>
+      <label><input type="checkbox" id="chk-speed-open"  checked onchange="updateCompVisibility()"> Cylinder Port FCV (open speed)</label>
+      <label><input type="checkbox" id="chk-speed-close" checked onchange="updateCompVisibility()"> Cylinder Port FCV (close speed — DA only)</label>
+      <label><input type="checkbox" id="chk-muffler"            onchange="updateCompVisibility()"> Muffler / Silencer (exhaust port) <span class="pill" style="color:#7c3aed;border-color:#7c3aed;background:rgba(124,58,237,.08)">BACK-P</span></label>
+      <label><input type="checkbox" id="chk-manifold"           onchange="updateCompVisibility()"> Shared Exhaust Manifold <span class="pill" style="color:#7c3aed;border-color:#7c3aed;background:rgba(124,58,237,.08)">BACK-P</span></label>
       <label><input type="checkbox" id="chk-qev"                onchange="updateCompVisibility()"> Quick Exhaust Valve (QEV)</label>
-      <label>
-        <input type="checkbox" id="chk-hipex" onchange="updateCompVisibility()">
-        HiPex Exhaust Valve (manufacturer)<span class="pill">⚡ HIGH SPEED</span>
-      </label>
+      <label><input type="checkbox" id="chk-hipex"              onchange="updateCompVisibility()"> HiPex Exhaust Valve <span class="pill">⚡ HIGH SPEED</span></label>
       <label><input type="checkbox" id="chk-limit"       checked onchange="updateCompVisibility()"> Limit Switches (ZSO / ZSC)</label>
       <label><input type="checkbox" id="chk-gauge"               onchange="updateCompVisibility()"> Cylinder Port Gauges (PI)</label>
     </div>
@@ -352,9 +355,9 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
     <div class="comp-group" id="cvInputGroup"></div>
     <div class="fnote" style="margin-top:8px">
       Cv from manufacturer published datasheets.<br>
-      <strong style="color:#e3000f">POWER PATH</strong> (series Cv): FR → VB (if used) → FCV → Actuator<br>
-      <strong style="color:#a78bfa">PILOT PATH</strong> (signal only, not in Cv calc): SOV → pilots VB or direct<br>
-      <strong style="color:#ffc107">EXHAUST PATH</strong>: HiPex / QEV — separate exhaust Cv check
+      <strong style="color:#e3000f">TIER 1 (no VB):</strong> SOV IS the power path — SOV Cv included in series calc<br>
+      <strong style="color:#e3000f">TIER 2+:</strong> SOV pilots VB only — SOV Cv excluded from power path<br>
+      <strong style="color:#ffc107">EXHAUST:</strong> HiPex / QEV — separate exhaust Cv check with inferred P₂
     </div>
   </div>
 
@@ -362,7 +365,6 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
 
 </aside>
 
-<!-- ═══ OUTPUT ════════════════════════════════════════════════════ -->
 <main class="output">
   <div class="empty-st" id="emptyState">
     <div class="empty-icon">⚙</div>
@@ -370,223 +372,315 @@ header{position:relative;z-index:20;display:flex;align-items:center;gap:16px;
   </div>
   <div id="outContent" style="display:none"></div>
 </main>
-
-</div><!-- .app -->
+</div>
 
 <script>
 'use strict';
 
-// ─── UTILITIES ────────────────────────────────────────────────────
-const GAL_IN3 = 231;
+// ─── CONSTANTS ────────────────────────────────────────────────────
+const GAL_IN3  = 231;
 const $ = id => document.getElementById(id);
 const V = id => parseFloat($(id).value) || 0;
-const C = id => { const e = $(id); return e ? e.checked : false; };
+const C = id => { const e=$(id); return e ? e.checked : false; };
 
 let actuatorType = 'single';
 
-// ─── PHYSICS — BEPTO PNEUMATIC METHOD ────────────────────────────
-// Ref: "Calculating The Flow Coefficient (Cv) Required For Critical
-//       Cylinder Speeds" — Bepto / rodlesspneumatic.com
+// ─── PHYSICS ENGINE v3 — BEPTO / ISA CHOKED FLOW ─────────────────
 //
-// SUPPLY-SIDE Cv (filling cylinder):
-//   Q_scfm = (V_in³/1728) / t × 60 × (P1_psia/14.7) / η
-//   Cv     = Q × √(T·SG) / (P1 × √(ΔP·(P1−ΔP)))
-//   Apply 1.5× safety factor
+// Reference: Bepto Pneumatic "How To Calculate Flow Coefficient (Cv)"
+//            ISA-75.01 gas flow equations
 //
-// EXHAUST-SIDE Cv (HiPex — venting cylinder):
-//   Same Q; P1_exh ≈ 14.7 + 1.0 = 15.7 PSIA; same formula & SF
-const T_R   = 530;    // °R standard (68°F)
-const SG    = 1.0;    // air relative to air
-const DP    = 1.0;    // assumed ΔP across component (PSI)
-const ETA   = 0.90;   // volumetric efficiency
-const SF    = 1.5;    // safety factor
+// CRITICAL FLOW REGIME CHECK (air, k=1.4):
+//   Choked when P2/P1 ≤ 0.528 (critical pressure ratio for air)
+//   At 80 PSI supply (94.7 PSIA), choked if P2 < 50 PSIA → almost always choked
+//
+// CHOKED FLOW (P2/P1 ≤ 0.528):
+//   Cv = Q × √(T × SG) / (720 × P1)
+//   where Q=SCFM, T=°R, SG=1.0 air, P1=PSIA
+//
+// SUBCRITICAL FLOW (P2/P1 > 0.528):
+//   Cv = Q × √(T × SG) / [1360 × P1 × √(1 – (2/3)×((P1-P2)/P1)²)]
+//
+// SCFM (standard free air):
+//   scfm = (V_in³/1728) / t_sec × 60 × (P1_psia/14.7) / η
+//   The (P1/14.7) term converts actual compressed volume to standard conditions.
+//
+// EXHAUST STROKE:
+//   P1_exh = supply pressure (air trapped in actuator at supply pressure)
+//   P2_exh = inferred from panel config (muffler, manifold, open exhaust)
+//   Single-acting: exhaust Cv matters — spring pushes air out through exhaust path
+//   Double-acting: both strokes need supply Cv and exhaust Cv independently
+//
+// SUPPLY-SIDE ΔP ASSUMPTION:
+//   ΔP = 1.0 PSI assumed across each series component (conservative minimum drop)
+//   P2_supply = P1_supply - ΔP = supply - 1.0 PSI
+//   At 80 PSI gauge → P1=94.7 PSIA, P2=93.7 PSIA, ratio=0.989 → always choked
+//   So choked formula always applies on supply side at typical pneumatic pressures.
 
-function calcCv(gallons, secs, supplyPSI) {
-  const in3    = gallons * GAL_IN3;
-  const p1     = supplyPSI + 14.696;                // supply PSIA
-  const scfm   = (in3/1728) / secs * 60 * (p1/14.7) / ETA;
-  const cvSupR = (scfm * Math.sqrt(T_R * SG)) / (p1 * Math.sqrt(DP * (p1 - DP)));
-  const p1e    = 14.7 + DP;                         // exhaust back-pressure ≈ 15.7 PSIA
-  const cvExhR = (scfm * Math.sqrt(T_R * SG)) / (p1e * Math.sqrt(DP * (p1e - DP)));
+const T_R  = 530;   // °R (68°F standard)
+const SG   = 1.0;   // air specific gravity relative to air
+const ETA  = 0.90;  // volumetric efficiency (actuator leakage allowance)
+const SF   = 1.5;   // safety factor on required Cv
+const DP_COMP = 1.0; // assumed ΔP across each series component (PSI) — conservative
+
+// Back-pressure constants (inferred from panel config)
+const BP_OPEN_EXHAUST  = 0.0;   // PSI — no restriction on exhaust port
+const BP_MUFFLER       = 3.0;   // PSI — typical silencer/muffler back-pressure
+const BP_MANIFOLD      = 8.0;   // PSI — shared exhaust manifold back-pressure
+const BP_MUFFLER_MANIFOLD = 10.0; // PSI — muffler + shared manifold combined
+
+// Infer exhaust back-pressure from current panel configuration
+function inferExhaustBackPressure() {
+  const hasMuffler  = C('chk-muffler');
+  const hasManifold = C('chk-manifold');
+  if (hasMuffler && hasManifold) return { bp: BP_MUFFLER_MANIFOLD, label: 'Muffler + Manifold (~10 PSI)' };
+  if (hasManifold) return { bp: BP_MANIFOLD,  label: 'Shared manifold (~8 PSI)' };
+  if (hasMuffler)  return { bp: BP_MUFFLER,   label: 'Muffler/silencer (~3 PSI)' };
+  return             { bp: BP_OPEN_EXHAUST, label: 'Open exhaust (0 PSI)' };
+}
+
+// Core Cv calculation using correct choked/subcritical check
+// Returns required Cv (with SF baked in) for a given SCFM and pressure condition
+function cvFromScfm(scfm, p1_psia, p2_psia) {
+  const ratio = p2_psia / p1_psia;
+  let cvRaw;
+  if (ratio <= 0.528) {
+    // CHOKED FLOW — sonic velocity at vena contracta
+    // Cv = Q√(T·SG) / (720 · P1)
+    cvRaw = (scfm * Math.sqrt(T_R * SG)) / (720 * p1_psia);
+  } else {
+    // SUBCRITICAL FLOW — compressible but not sonic
+    // Cv = Q√(T·SG) / [1360 · P1 · √(1 – (2/3)·((P1-P2)/P1)²)]
+    const xRatio = (p1_psia - p2_psia) / p1_psia;
+    const correction = Math.sqrt(1 - (2/3) * xRatio * xRatio);
+    cvRaw = (scfm * Math.sqrt(T_R * SG)) / (1360 * p1_psia * correction);
+  }
+  return Math.max(0.0001, cvRaw);
+}
+
+// Calculate SCFM for a given volume (gallons) and time (seconds) at supply pressure
+function calcScfm(gallons, secs, supplyPSI) {
+  const in3   = gallons * GAL_IN3;
+  const p1    = supplyPSI + 14.696; // PSIA
+  // Standard free air = swept volume × compression ratio / time
+  return (in3 / 1728) / secs * 60 * (p1 / 14.7) / ETA;
+}
+
+// Full calculation result for a single stroke
+// supplyPSI: instrument air supply (gauge)
+// gallons: actuator displacement
+// secs: stroke time
+// isExhaust: if true, P1=supply pressure trapped in actuator, P2=inferred from config
+function calcStroke(gallons, secs, supplyPSI, isExhaust) {
+  const scfm  = calcScfm(gallons, secs, supplyPSI);
+  const p1    = supplyPSI + 14.696; // PSIA
+
+  let p1_cv, p2_cv, regime;
+
+  if (!isExhaust) {
+    // SUPPLY STROKE: air flows from supply through panel components into actuator
+    // P1 = supply, P2 = supply - ΔP_component (minimal drop assumption)
+    p1_cv  = p1;
+    p2_cv  = p1 - DP_COMP;  // tiny drop → always choked at pneumatic pressures
+    regime = p2_cv / p1_cv <= 0.528 ? 'CHOKED' : 'SUBCRITICAL';
+  } else {
+    // EXHAUST STROKE: trapped air at supply pressure vents through exhaust path
+    // P1 = supply pressure (air was pressurized to this level)
+    // P2 = atmospheric + back-pressure from muffler/manifold
+    const { bp } = inferExhaustBackPressure();
+    p1_cv  = p1;  // actuator was at supply pressure
+    p2_cv  = 14.696 + bp;  // downstream of exhaust components
+    regime = p2_cv / p1_cv <= 0.528 ? 'CHOKED' : 'SUBCRITICAL';
+  }
+
+  const cvRaw = cvFromScfm(scfm, p1_cv, p2_cv);
   return {
-    cv:    Math.max(0.0001, cvSupR * SF),
-    cvExh: Math.max(0.0001, cvExhR * SF),
-    scfm, p1
+    scfm,
+    cv:    cvRaw * SF,  // with safety factor
+    cvRaw,              // without safety factor (for tier classification)
+    p1:    p1_cv,
+    p2:    p2_cv,
+    regime
   };
 }
 
-// Series system Cv (harmonic)
+// Convenience wrappers
+function calcSupply(gallons, secs, supplyPSI) {
+  return calcStroke(gallons, secs, supplyPSI, false);
+}
+function calcExhaust(gallons, secs, supplyPSI) {
+  return calcStroke(gallons, secs, supplyPSI, true);
+}
+
+// Series system Cv (harmonic sum — correct method)
 function systemCv(arr) {
   const v = arr.filter(x => x > 0);
   if (!v.length) return 0;
   return 1 / Math.sqrt(v.reduce((a, x) => a + 1/(x*x), 0));
 }
 
-// ─── BIFOLD COMPONENT DATA ────────────────────────────────────────
-// All Cv values sourced from official manufacturer datasheets
+// ─── COMPONENT DATA ───────────────────────────────────────────────
 
-// Filter-Regulators — SH/ASH Series (manufacturer datasheet Mar 2007)
 const BIFOLD_FR = [
-  {model:'SH06-FR-SR-MD-10-X3  (1/4" NPT, manual drain)',cv:1.7, note:'316L SS, self-relieving, 20–30µm, 10 bar'},
-  {model:'SH06-FR-SR-AD-10-X3  (1/4" NPT, auto drain)',  cv:1.7, note:'316L SS, self-relieving, 20–30µm, auto drain'},
-  {model:'SH12-FR-SR-MD-10-X3  (1/2" NPT, manual drain)',cv:1.9, note:'316L SS, self-relieving, 20–30µm, 10 bar'},
-  {model:'SH12-FR-SR-AD-10-X3  (1/2" NPT, auto drain)',  cv:1.9, note:'316L SS, self-relieving, 20–30µm, auto drain'},
-  {model:'SH25-FR-SR-MD-10-X3  (1" NPT, manual drain)',  cv:14.2,note:'316L SS, self-relieving, high flow, 10 bar'},
+  {model:'SH06-FR-SR-MD-10-X3 (1/4" NPT, manual drain)',  cv:1.7,  note:'316L SS, self-relieving, 20–30µm, 10 bar'},
+  {model:'SH06-FR-SR-AD-10-X3 (1/4" NPT, auto drain)',    cv:1.7,  note:'316L SS, self-relieving, 20–30µm, auto drain'},
+  {model:'SH12-FR-SR-MD-10-X3 (1/2" NPT, manual drain)',  cv:1.9,  note:'316L SS, self-relieving, 20–30µm, 10 bar'},
+  {model:'SH12-FR-SR-AD-10-X3 (1/2" NPT, auto drain)',    cv:1.9,  note:'316L SS, self-relieving, 20–30µm, auto drain'},
+  {model:'SH25-FR-SR-MD-10-X3 (1" NPT, manual drain)',    cv:14.2, note:'316L SS, self-relieving, high flow, 10 bar'},
 ];
 
-// SOV — FP/BXS/SPR Series
 const BIFOLD_SOV_32 = [
-  {model:'FP03P 3/2 (1/8" NPT)',       cv:0.1,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP06P 3/2 (1/4" NPT)',       cv:0.6,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP10P 3/2 (1/4" NPT)',       cv:0.75, note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP12P 3/2 (1/2" NPT)',       cv:2.5,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'BXS  3/2 (1/4" NPT NAMUR)', cv:0.73, note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
-  {model:'SPR-08 3/2 (3/8" NPT)',      cv:3.0,  note:'Pilot operated high flow, 10 bar, SIL 3'},
-  {model:'SPR-16 3/2 (1" NPT)',        cv:11.1, note:'Pilot operated high flow, 10 bar, SIL 3'},
-];
-const BIFOLD_SOV_52 = [
-  {model:'FP06P 5/2 (1/4" NPT)',       cv:0.6,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP10P 5/2 (1/4" NPT)',       cv:0.75, note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP12P 5/2 (1/2" NPT)',       cv:2.5,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'BXS  5/2 (1/4" NPT NAMUR)', cv:0.73, note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
-  {model:'SPR-08 5/2 (3/8" NPT)',      cv:3.0,  note:'Pilot operated high flow, 10 bar, SIL 3'},
-  {model:'SPR-16 5/2 (1" NPT)',        cv:11.1, note:'Pilot operated high flow, 10 bar, SIL 3'},
+  {model:'FP03P 3/2 (1/8" NPT)',        cv:0.1,  note:'Direct acting, 10 bar, SIL 3'},
+  {model:'FP06P 3/2 (1/4" NPT)',        cv:0.6,  note:'Direct acting, 10 bar, SIL 3'},
+  {model:'FP10P 3/2 (1/4" NPT)',        cv:0.75, note:'Direct acting, 10 bar, SIL 3'},
+  {model:'FP12P 3/2 (1/2" NPT)',        cv:2.5,  note:'Direct acting, 10 bar, SIL 3'},
+  {model:'BXS 3/2 (1/4" NPT NAMUR)',    cv:0.73, note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
+  {model:'SPR-08 3/2 (3/8" NPT)',       cv:3.0,  note:'Pilot operated high flow, 10 bar, SIL 3'},
+  {model:'SPR-16 3/2 (1" NPT)',         cv:11.1, note:'Pilot operated high flow, 10 bar, SIL 3'},
 ];
 
-// FCV / Needle Valves — Cv = fully open; throttle in service
+const BIFOLD_SOV_52 = [
+  {model:'FP06P 5/2 (1/4" NPT)',        cv:0.6,  note:'Direct acting, 10 bar, SIL 3'},
+  {model:'FP10P 5/2 (1/4" NPT)',        cv:0.75, note:'Direct acting, 10 bar, SIL 3'},
+  {model:'FP12P 5/2 (1/2" NPT)',        cv:2.5,  note:'Direct acting, 10 bar, SIL 3'},
+  {model:'BXS 5/2 (1/4" NPT NAMUR)',    cv:0.73, note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
+  {model:'SPR-08 5/2 (3/8" NPT)',       cv:3.0,  note:'Pilot operated high flow, 10 bar, SIL 3'},
+  {model:'SPR-16 5/2 (1" NPT)',         cv:11.1, note:'Pilot operated high flow, 10 bar, SIL 3'},
+];
+
 const BIFOLD_FCV = [
   {model:'FCV3006 FCV (1/4" NPT)', cv:0.5, note:'Fully open Cv; throttle to target. 0–12 bar'},
-  {model:'S06-NV  NV  (1/4" NPT)', cv:0.6, note:'Needle valve fully open Cv. 0–12 bar'},
+  {model:'S06-NV NV (1/4" NPT)',   cv:0.6, note:'Needle valve fully open Cv. 0–12 bar'},
   {model:'FCV3009 FCV (3/8" NPT)', cv:0.9, note:'Fully open Cv; 0–12 bar'},
-  {model:'S09-NV  NV  (3/8" NPT)', cv:0.9, note:'Needle valve fully open Cv. 0–12 bar'},
+  {model:'S09-NV NV (3/8" NPT)',   cv:0.9, note:'Needle valve fully open Cv. 0–12 bar'},
   {model:'FCV3012 FCV (1/2" NPT)', cv:1.1, note:'Fully open Cv; 0–12 bar'},
-  {model:'S12-NV  NV  (1/2" NPT)', cv:1.2, note:'Needle valve fully open Cv. 0–12 bar'},
+  {model:'S12-NV NV (1/2" NPT)',   cv:1.2, note:'Needle valve fully open Cv. 0–12 bar'},
   {model:'FCV3019 FCV (3/4" NPT)', cv:2.0, note:'Fully open Cv; 0–12 bar'},
   {model:'FCV3025 FCV (1" NPT)',   cv:2.2, note:'Fully open Cv; 0–12 bar'},
 ];
 
-// QEV — S-series. Cv = cylinder→exhaust path
+const BIFOLD_MUFFLER = [
+  {model:'1/4" NPT Sintered bronze silencer',  cv:2.0,  note:'Estimated Cv; typical sintered bronze, 10 bar. ~3 PSI back-pressure at design flow.'},
+  {model:'3/8" NPT Sintered bronze silencer',  cv:3.5,  note:'Estimated Cv; typical sintered bronze, 10 bar.'},
+  {model:'1/2" NPT Sintered bronze silencer',  cv:6.0,  note:'Estimated Cv; typical sintered bronze, 10 bar.'},
+  {model:'3/4" NPT Sintered bronze silencer',  cv:10.0, note:'Estimated Cv; typical sintered bronze, 10 bar.'},
+  {model:'1" NPT Sintered bronze silencer',    cv:18.0, note:'Estimated Cv; typical sintered bronze, 10 bar.'},
+];
+
 const BIFOLD_QEV = [
-  {model:'S06-QEV-01  (1/4" NPT)', cv:1.1,  note:'Cv cyl→exh 1.1 / in→cyl 0.9; 0–12 bar'},
-  {model:'S09-QEV     (3/8" NPT)', cv:3.0,  note:'Cv cyl→exh 3.0 / in→cyl 1.7; 0–12 bar'},
-  {model:'S12-QEV-01  (1/2" NPT)', cv:3.5,  note:'Cv cyl→exh 3.5 / in→cyl 1.9; 0–12 bar'},
-  {model:'S19-QEV     (3/4" NPT)', cv:8.3,  note:'Cv cyl→exh 8.3 / in→cyl 6.5; 0–12 bar'},
-  {model:'S25-QEV     (1" NPT)',   cv:10.0, note:'Cv cyl→exh 10.0 / in→cyl 8.2; 0–12 bar'},
-  {model:'QEV15       (high flow)',cv:20.0, note:'High flow QEV; 12 bar'},
+  {model:'S06-QEV-01 (1/4" NPT)', cv:1.1,  note:'Cv cyl→exh 1.1 / in→cyl 0.9; 0–12 bar'},
+  {model:'S09-QEV (3/8" NPT)',    cv:3.0,  note:'Cv cyl→exh 3.0 / in→cyl 1.7; 0–12 bar'},
+  {model:'S12-QEV-01 (1/2" NPT)', cv:3.5,  note:'Cv cyl→exh 3.5 / in→cyl 1.9; 0–12 bar'},
+  {model:'S19-QEV (3/4" NPT)',    cv:8.3,  note:'Cv cyl→exh 8.3 / in→cyl 6.5; 0–12 bar'},
+  {model:'S25-QEV (1" NPT)',      cv:10.0, note:'Cv cyl→exh 10.0 / in→cyl 8.2; 0–12 bar'},
+  {model:'QEV15 (high flow)',     cv:20.0, note:'High flow QEV; 12 bar'},
 ];
 
-// HiPex exhaust valves.  ⚠ HIPEX-08 Cv is ESTIMATED
 const BIFOLD_HIPEX = [
-  {model:'HIPEX-08  (1/2" NPT)', cv:20,  note:'⚠ Cv ~20 ESTIMATED — confirm with before procurement. Max 20 bar.'},
-  {model:'HIPEX-16  (1" NPT)',   cv:50,  note:'Cv 50 — confirmed manufacturer product page. Max 20 bar / 290 PSI.'},
-  {model:'HIPEX-24  (1½" NPT)', cv:103, note:'Cv 103 — confirmed manufacturer catalogue. Max 20 bar / 290 PSI.'},
-  {model:'HIPEX-32  (2" NPT)',   cv:150, note:'Cv 150 — confirmed manufacturer catalogue. Max 20 bar / 290 PSI.'},
+  {model:'HIPEX-08 (1/2" NPT)', cv:20,  note:'⚠ Cv ~20 ESTIMATED — confirm with Bifold before procurement. Max 20 bar.', est:true},
+  {model:'HIPEX-16 (1" NPT)',   cv:50,  note:'Cv 50 — confirmed manufacturer product page. Max 20 bar / 290 PSI.', est:false},
+  {model:'HIPEX-24 (1½" NPT)', cv:103, note:'Cv 103 — confirmed manufacturer catalogue. Max 20 bar / 290 PSI.', est:false},
+  {model:'HIPEX-32 (2" NPT)',   cv:150, note:'Cv 150 — confirmed manufacturer catalogue. Max 20 bar / 290 PSI.', est:false},
 ];
 
-// Volume Boosters — manufacturer Series
-// Cv values confirmed from bifold.co.uk product listings and finecontrols.co.uk.
-// VBP = power air path component. Pilot port takes signal from SOV (3/2 or 5/2).
-// Booster Cv is the MAIN PORT (supply → actuator) flow coefficient.
-// All 316 SS, 1:1 ratio, max 20 bar MWP, SIL 2 rated (VBP-04 to VBP-16 via exida).
 const BIFOLD_VB = [
-  {model:'VBP-04  (1/4" NPT, 1:1 ratio)', cv:1.8,  note:'Cv 1.80 — confirmed manufacturer datasheet. 316 SS, 20 bar MWP, Viton seals, SIL 2.', est:false},
-  {model:'VBP-06  (3/8" NPT, 1:1 ratio)', cv:3.6,  note:'Cv 3.60 — confirmed manufacturer datasheet. 316 SS, 20 bar MWP, Viton seals, SIL 2.', est:false},
-  {model:'VBP-08  (1/2" NPT, 1:1 ratio)', cv:3.9,  note:'Cv 3.9 — confirmed distributor datasheet (Viton, no filter variant). 316 SS, 20 bar MWP.', est:false},
-  {model:'VBP-12  (3/4" NPT, 1:1 ratio)', cv:8.5,  note:'Cv 8.50 — confirmed manufacturer datasheet. 316 SS, 20 bar MWP. Filter body variant: Cv 9.1.', est:false},
-  {model:'VBP-12  Filter Body (3/4" NPT)', cv:9.1,  note:'Cv 9.1 — confirmed distributor datasheet (with 40–50µm filter). 316 SS, 20 bar MWP.', est:false},
-  {model:'VBP-16  (1" NPT, 1:1 ratio)',   cv:11.0, note:'Cv 11.00 — confirmed manufacturer datasheet. 316 SS, 20 bar MWP, Viton seals, SIL 2.', est:false},
-  {model:'VBP-32  (2" NPT, 1:1 ratio)',   cv:35.0, note:'⚠ Cv ~35 ESTIMATED — VBP-32 Cv not published on manufacturer datasheet. Confirm with manufacturer before selection. 15 bar MWP.', est:true},
-];
-// I/P Positioners
-const BIFOLD_POS = [
-  {model:'EXP200C I/P Transducer  (1/4" NPT)', cv:0.8, note:'4–20 mA → 3–15 PSI; ATEX, 10 bar'},
-  {model:'Fairchild T9000 I/P     (1/4" NPT)', cv:0.7, note:'4–20 mA → 3–15 PSI; SIL 2'},
-  {model:'YTC YT-1000 Positioner  (1/4" NPT)', cv:0.6, note:'Smart positioner, HART, ATEX'},
+  {model:'VBP-04 (1/4" NPT, 1:1)',  cv:1.8,  note:'Cv 1.80 — confirmed datasheet. 316 SS, 20 bar, SIL 2.', est:false},
+  {model:'VBP-06 (3/8" NPT, 1:1)',  cv:3.6,  note:'Cv 3.60 — confirmed datasheet. 316 SS, 20 bar, SIL 2.', est:false},
+  {model:'VBP-08 (1/2" NPT, 1:1)',  cv:3.9,  note:'Cv 3.9 — confirmed distributor datasheet. 316 SS, 20 bar.', est:false},
+  {model:'VBP-12 (3/4" NPT, 1:1)',  cv:8.5,  note:'Cv 8.50 — confirmed datasheet. 316 SS, 20 bar.', est:false},
+  {model:'VBP-12 Filter Body (3/4")',cv:9.1,  note:'Cv 9.1 — confirmed distributor (with 40–50µm filter).', est:false},
+  {model:'VBP-16 (1" NPT, 1:1)',    cv:11.0, note:'Cv 11.00 — confirmed datasheet. 316 SS, 20 bar, SIL 2.', est:false},
+  {model:'VBP-32 (2" NPT, 1:1)',    cv:35.0, note:'⚠ Cv ~35 ESTIMATED — confirm with manufacturer. 15 bar MWP.', est:true},
 ];
 
-// Component definitions
+const BIFOLD_POS = [
+  {model:'EXP200C I/P Transducer (1/4" NPT)', cv:0.8, note:'4–20 mA → 3–15 PSI; ATEX, 10 bar'},
+  {model:'Fairchild T9000 I/P (1/4" NPT)',    cv:0.7, note:'4–20 mA → 3–15 PSI; SIL 2'},
+  {model:'YTC YT-1000 Positioner (1/4" NPT)', cv:0.6, note:'Smart positioner, HART, ATEX'},
+];
+
+// ─── COMPONENT DEFINITIONS ────────────────────────────────────────
+// path: 'power'   = Cv-critical, always in series calc
+// path: 'power-t1'= Cv-critical ONLY in Tier 1 (no VB); pilot path in Tier 2+
+// path: 'exhaust' = separate exhaust Cv check
+// path: 'pilot'   = Cv irrelevant (signal path only)
+// path: 'backp'   = back-pressure inference only (no Cv calc role)
+
 const COMP_DEFS = [
-  // ── POWER AIR PATH (Cv-critical) ──────────────────────────────────────
-  {id:'cv-fr',        label:'Filter-Regulator (FR)',       chk:'chk-fr',         data:BIFOLD_FR,    path:'power'},
-  {id:'cv-vb',        label:'Volume Booster (VB)',          chk:'chk-vb',         data:BIFOLD_VB,    path:'power'},
-  {id:'cv-fcv-open',  label:'FCV — Open Speed Control',    chk:'chk-speed-open', data:BIFOLD_FCV,   path:'power'},
-  {id:'cv-fcv-close', label:'FCV — Close Speed Control',   chk:'chk-speed-close',data:BIFOLD_FCV,   path:'power', daOnly:true},
-  // ── EXHAUST PATH (Cv-critical, separate calculation) ──────────────────
-  {id:'cv-qev',       label:'Quick Exhaust Valve (QEV)',   chk:'chk-qev',        data:BIFOLD_QEV,   path:'exhaust'},
-  {id:'cv-hipex',     label:'HiPex Exhaust Valve',         chk:'chk-hipex',      data:BIFOLD_HIPEX, path:'exhaust'},
-  // ── PILOT / CONTROL PATH (Cv-IRRELEVANT — never in Cv math) ───────────
-  {id:'cv-sov',       label:'Solenoid Valve (SOV)',         chk:'chk-solenoid',   data:null,         path:'pilot'},
-  {id:'cv-pos',       label:'I/P Positioner',              chk:'chk-positioner', data:BIFOLD_POS,   path:'pilot'},
+  {id:'cv-fr',        label:'Filter-Regulator (FR)',            chk:'chk-fr',          data:BIFOLD_FR,      path:'power'},
+  {id:'cv-vb',        label:'Volume Booster (VB)',               chk:'chk-vb',          data:BIFOLD_VB,      path:'power'},
+  {id:'cv-fcv-open',  label:'Cylinder Port FCV — Open speed',   chk:'chk-speed-open',  data:BIFOLD_FCV,     path:'power'},
+  {id:'cv-fcv-close', label:'Cylinder Port FCV — Close speed',  chk:'chk-speed-close', data:BIFOLD_FCV,     path:'power', daOnly:true},
+  {id:'cv-muffler',   label:'Muffler / Silencer',               chk:'chk-muffler',     data:BIFOLD_MUFFLER, path:'exhaust'},
+  {id:'cv-qev',       label:'Quick Exhaust Valve (QEV)',        chk:'chk-qev',         data:BIFOLD_QEV,     path:'exhaust'},
+  {id:'cv-hipex',     label:'HiPex Exhaust Valve',             chk:'chk-hipex',       data:BIFOLD_HIPEX,   path:'exhaust'},
+  // SOV: Tier 1 = power path (carries all actuator air); Tier 2+ = pilot only
+  {id:'cv-sov',       label:'Solenoid Valve (SOV)',             chk:'chk-solenoid',    data:null,           path:'power-t1'},
+  {id:'cv-pos',       label:'I/P Positioner',                  chk:'chk-positioner',  data:BIFOLD_POS,     path:'pilot'},
 ];
 
 function getSovData(){ return actuatorType==='double' ? BIFOLD_SOV_52 : BIFOLD_SOV_32; }
 function getCompData(comp){ return comp.id==='cv-sov' ? getSovData() : (comp.data||[]); }
 function getSelIdx(id){ const s=$('sel-'+id); return s ? parseInt(s.value)||0 : 0; }
 function getModelCv(comp){ const d=getCompData(comp), i=getSelIdx(comp.id); return d[i]?d[i].cv:1.0; }
-
 function hasVolumeBooster(){ return C('chk-vb'); }
 
-// ── Architecture tier based on required Cv ───────────────────────
-// Cv ≤ 10:  Simple   — FR + SOV pilot only
-// Cv ≤ 40:  Medium   — FR + SOV + VB
-// Cv ≤ 100: High     — high-flow FR + SOV + VB + HiPex
-// Cv > 100: Extreme  — high-flow FR + SOV + dual VB / parallel + HiPex
-function getArchTier(reqCv){
-  if(reqCv<=10)  return {tier:1, name:'SIMPLE',   desc:'FR + SOV (pilot) only'};
-  if(reqCv<=40)  return {tier:2, name:'MEDIUM',   desc:'FR + SOV (pilot) + Volume Booster'};
-  if(reqCv<=100) return {tier:3, name:'HIGH-FLOW',desc:'High-flow FR + SOV (pilot) + Volume Booster + HiPex'};
-  return           {tier:4, name:'EXTREME',  desc:'High-flow FR + SOV (pilot) + Dual/Parallel VB + HiPex'};
+// Is flow in Tier 1 (no VB — SOV is on the power path)?
+function isTier1(){ return C('chk-solenoid') && !C('chk-vb'); }
+
+// Architecture tier based on required supply Cv (raw, no SF)
+function getArchTier(rawCvReq){
+  if(rawCvReq<=10)  return {tier:1, name:'SIMPLE',    desc:'FR + SOV direct (SOV is power path, Cv-critical)'};
+  if(rawCvReq<=40)  return {tier:2, name:'MEDIUM',    desc:'FR + SOV (pilot) + Volume Booster'};
+  if(rawCvReq<=100) return {tier:3, name:'HIGH-FLOW', desc:'High-flow FR + SOV (pilot) + VB + HiPex exhaust'};
+  return                   {tier:4, name:'EXTREME',   desc:'High-flow FR + SOV (pilot) + Dual/Parallel VB + HiPex'};
 }
 
+// Build the power-path Cv array for the series calculation
+// KEY FIX: In Tier 1 (no VB), SOV IS in the power path
 function getCvArray(){
-  // POWER AIR PATH ONLY — pilot and exhaust paths excluded entirely.
-  // SOV is ALWAYS pilot path. It NEVER contributes to Cv calculations.
+  const tier1 = isTier1();
   return COMP_DEFS.filter(c=>{
     if(!C(c.chk)) return false;
     if(c.daOnly && actuatorType==='single') return false;
-    if(c.path==='pilot') return false;   // SOV, I/P — never in Cv math
-    if(c.path==='exhaust') return false; // HiPex, QEV — separate exhaust calc
-    return true; // path==='power': FR, VB, FCV
+    if(c.path==='pilot')   return false;
+    if(c.path==='exhaust') return false;
+    if(c.path==='backp')   return false;
+    if(c.path==='power-t1') return tier1; // SOV in series only if Tier 1
+    return true; // path==='power'
   }).map(c=>getModelCv(c));
 }
 
-// ─── AUTO-SELECT SYSTEM ──────────────────────────────────────────
-// pinnedComps: set of comp ids the user has manually overridden
+// ─── AUTO-SELECT ──────────────────────────────────────────────────
 const pinnedComps = new Set();
 
-// Return the best auto-select index for a component given required Cvs
 function autoSelectIdx(comp, reqSupplyCv, reqExhCv){
   const data = getCompData(comp);
-  if(!data || !data.length) return 0;
+  if(!data||!data.length) return 0;
   const sorted = data.map((m,i)=>({m,i})).sort((a,b)=>a.m.cv-b.m.cv);
+  const MARGIN = 1.25;
 
   if(comp.path==='exhaust'){
-    // Need Cv ≥ exhaust requirement × 1.25
-    const req = reqExhCv * 1.25;
-    const hit = sorted.find(x=>x.m.cv >= req);
+    const req = reqExhCv * MARGIN;
+    const hit = sorted.find(x=>x.m.cv>=req);
     return hit ? hit.i : sorted[sorted.length-1].i;
   }
-  if(comp.path==='pilot' || comp.id==='cv-pos' || comp.id==='cv-sov'){
-    // Pilot path (SOV, I/P positioner): Cv is IRRELEVANT. Pick smallest model.
-    return 0;
+  if(comp.path==='pilot'){
+    return 0; // smallest — signal adequacy only
   }
-  // Power path (FR, VB, SOV direct-acting, FCV open/close)
-  // Pick smallest model whose Cv ≥ reqSupplyCv × 1.25
-  const req = reqSupplyCv * 1.25;
-  const hit = sorted.find(x=>x.m.cv >= req);
+  // power or power-t1
+  const req = reqSupplyCv * MARGIN;
+  const hit = sorted.find(x=>x.m.cv>=req);
   return hit ? hit.i : sorted[sorted.length-1].i;
 }
 
-// Run auto-select on all un-pinned visible components
 function runAutoSelect(reqSupplyCv, reqExhCv){
   COMP_DEFS.forEach(comp=>{
     if(!C(comp.chk)) return;
     if(comp.daOnly && actuatorType==='single') return;
-    if(pinnedComps.has(comp.id)) return; // user has manually chosen — respect it
-    const sel = $('sel-'+comp.id);
-    if(!sel) return;
-    const idx = autoSelectIdx(comp, reqSupplyCv, reqExhCv);
-    sel.value = String(idx);
+    if(pinnedComps.has(comp.id)) return;
+    const sel=$('sel-'+comp.id); if(!sel) return;
+    sel.value = String(autoSelectIdx(comp, reqSupplyCv, reqExhCv));
     refreshBadge(comp.id);
   });
 }
@@ -596,19 +690,16 @@ function refreshBadge(id){
   const comp=COMP_DEFS.find(c=>c.id===id); if(!comp) return;
   const data=getCompData(comp), idx=getSelIdx(id), m=data[idx];
   const badge=$('cvb-'+id); if(!badge||!m) return;
-  const isEst=m.note&&m.note.includes('ESTIMATED');
-  badge.textContent='Cv '+m.cv.toFixed(2);
-  // Colour: estimated → warn, pinned → orange border, else default
+  const isEst=m.note&&(m.note.includes('ESTIMATED')||m.note.includes('Estimated'));
   const isPinned=pinnedComps.has(id);
+  badge.textContent='Cv '+m.cv.toFixed(2);
   badge.className='cvbadge'+(isEst?' warn':isPinned?' pinned':'');
-  // Estimated footnote
   const row=badge.closest('.comp-row'); if(!row) return;
   let note=row.querySelector('.est-note');
   if(isEst){
     if(!note){note=document.createElement('div');note.className='fnote est-note';note.style.marginTop='4px';note.style.color='#b06000';row.appendChild(note);}
     note.textContent='⚠ Cv estimated — confirm with manufacturer before procurement';
   } else if(note) note.remove();
-  // Pinned indicator
   let pin=row.querySelector('.pin-note');
   if(isPinned){
     if(!pin){pin=document.createElement('div');pin.className='fnote pin-note';pin.style.marginTop='3px';pin.style.color='#888';row.appendChild(pin);}
@@ -618,30 +709,35 @@ function refreshBadge(id){
 
 window.unpinComp = function(id){
   pinnedComps.delete(id);
-  updateCalcs(); // re-run auto-select
+  updateCalcs();
 };
 
 function updateCompVisibility(){
-  const grp = $('cvInputGroup');
-  grp.innerHTML = '';
+  const grp=$('cvInputGroup');
+  grp.innerHTML='';
   COMP_DEFS.forEach(comp=>{
     if(!C(comp.chk)) return;
     if(comp.daOnly && actuatorType==='single') return;
-    const data = getCompData(comp);
-    const opts = data.map((m,i)=>`<option value="${i}">${m.model} — Cv ${m.cv}</option>`).join('');
-    const cv0 = data[0] ? data[0].cv.toFixed(2) : '—';
-    const row = document.createElement('div');
-    row.className = 'comp-row';
-    row.innerHTML = `
+    const data=getCompData(comp);
+    const opts=data.map((m,i)=>`<option value="${i}">${m.model} — Cv ${m.cv}</option>`).join('');
+    const cv0=data[0]?data[0].cv.toFixed(2):'—';
+    // Path label
+    const tier1=isTier1();
+    let pathLabel='';
+    if(comp.path==='power-t1') pathLabel=tier1?'<span style="font-family:var(--mono);font-size:7px;color:#c00;margin-left:4px">POWER PATH (T1)</span>':'<span style="font-family:var(--mono);font-size:7px;color:#888;margin-left:4px">PILOT (T2+)</span>';
+    if(comp.path==='exhaust')  pathLabel='<span style="font-family:var(--mono);font-size:7px;color:#c57a00;margin-left:4px">EXHAUST PATH</span>';
+    if(comp.path==='backp')    pathLabel='<span style="font-family:var(--mono);font-size:7px;color:#7c3aed;margin-left:4px">BACK-P ONLY</span>';
+    const row=document.createElement('div');
+    row.className='comp-row';
+    row.innerHTML=`
       <div class="comp-top">
-        <label>${comp.label}</label>
+        <label>${comp.label}${pathLabel}</label>
         <span class="cvbadge" id="cvb-${comp.id}">Cv ${cv0}</span>
       </div>
       <select class="msel" id="sel-${comp.id}" onchange="onModelChange('${comp.id}')">${opts}</select>
     `;
     grp.appendChild(row);
   });
-  // Clear pins for components no longer visible
   pinnedComps.forEach(id=>{
     const comp=COMP_DEFS.find(c=>c.id===id);
     if(!comp||!C(comp.chk)) pinnedComps.delete(id);
@@ -650,7 +746,6 @@ function updateCompVisibility(){
 }
 
 function onModelChange(id){
-  // User touched this select — pin it
   pinnedComps.add(id);
   refreshBadge(id);
   updateCalcs();
@@ -658,60 +753,82 @@ function onModelChange(id){
 
 function updateCalcs(){
   const psi=V('supplyPSI'), gal=V('displacement'), ot=V('openTime'), ct=V('closeTime');
-  const oR=calcCv(gal,ot,psi), cR=calcCv(gal,ct,psi);
-  $('reqFlowOpen').textContent  = oR.scfm.toFixed(3)+' SCFM';
-  $('reqFlowClose').textContent = actuatorType==='single' ? '(spring return)' : cR.scfm.toFixed(3)+' SCFM';
-  $('openCvDisp').textContent   = oR.cv.toFixed(4);
-  $('closeCvDisp').textContent  = actuatorType==='single' ? '(spring)' : cR.cv.toFixed(4);
-  const hipexReq = Math.max(oR.cvExh, actuatorType==='single'?0:cR.cvExh);
-  const hel=$('hipexCvDisp'); if(hel) hel.textContent=hipexReq.toFixed(4);
-  // Auto-select uses the open stroke as the binding supply requirement
-  // (open is typically faster / higher Cv demand; validation checks both)
-  const reqSupply = oR.cv; // already has 1.5× SF baked in
-  const reqExh    = hipexReq;
-  runAutoSelect(reqSupply, reqExh);
-  // Refresh all badges (including non-autoselected)
+  if(!gal||!psi||!ot||!ct) return;
+
+  const oSupply  = calcSupply(gal, ot, psi);
+  const oExhaust = calcExhaust(gal, ot, psi);  // open stroke exhaust (SA: spring pushes this air out)
+  const cSupply  = calcSupply(gal, ct, psi);
+  const cExhaust = calcExhaust(gal, ct, psi);
+
+  // Display SCFM
+  $('reqFlowOpen').textContent  = oSupply.scfm.toFixed(3)+' SCFM';
+  $('reqFlowClose').textContent = actuatorType==='single'
+    ? 'spring return — exhaust only'
+    : cSupply.scfm.toFixed(3)+' SCFM';
+
+  // Supply Cv
+  $('openCvDisp').textContent  = oSupply.cv.toFixed(4);
+  $('closeCvDisp').textContent = actuatorType==='single'
+    ? oExhaust.cv.toFixed(4)+' (exh)'
+    : cSupply.cv.toFixed(4);
+
+  // Inferred back-pressure
+  const bpInfo = inferExhaustBackPressure();
+  const bpEl = $('inferredBackP');
+  if(bpEl) bpEl.textContent = bpInfo.label;
+
+  // Exhaust Cv — binding constraint across all exhaust events
+  const exhaustCvReq = actuatorType==='single'
+    ? oExhaust.cv   // SA: open stroke pushes air out on close (spring side)
+    : Math.max(oExhaust.cv, cExhaust.cv); // DA: both exhaust events matter
+  const hipEl=$('hipexCvDisp'); if(hipEl) hipEl.textContent=exhaustCvReq.toFixed(4);
+
+  // Flow regime note
+  const noteEl=$('flowRegimeNote');
+  if(noteEl) noteEl.textContent=`Supply: ${oSupply.regime} (P2/P1=${((oSupply.p2/oSupply.p1)).toFixed(3)}) · Exhaust: ${oExhaust.regime} (P2/P1=${((oExhaust.p2/oExhaust.p1)).toFixed(3)})`;
+
+  // Auto-select — use supply Cv as binding requirement for power path
+  runAutoSelect(oSupply.cv, exhaustCvReq);
   COMP_DEFS.forEach(comp=>{ if($('cvb-'+comp.id)) refreshBadge(comp.id); });
   updateAutoLabel();
 }
 
-window.resetAllPins = function(){
-  pinnedComps.clear();
-  updateCalcs();
-};
+window.resetAllPins=function(){ pinnedComps.clear(); updateCalcs(); };
 
 function updateAutoLabel(){
   const lbl=$('autoLabel'); if(!lbl) return;
-  if(pinnedComps.size===0){
-    lbl.textContent='● AUTO-SIZED'; lbl.style.color='var(--green)';
-  } else {
-    lbl.textContent=`● ${pinnedComps.size} PINNED`; lbl.style.color='var(--orange)';
-  }
+  if(pinnedComps.size===0){ lbl.textContent='● AUTO-SIZED'; lbl.style.color='var(--green)'; }
+  else { lbl.textContent=`● ${pinnedComps.size} PINNED`; lbl.style.color='var(--orange)'; }
 }
 
 function selectType(t){
   actuatorType=t;
   $('btn-single').classList.toggle('active',t==='single');
   $('btn-double').classList.toggle('active',t==='double');
-  pinnedComps.clear(); // actuator type change resets all selections
+  pinnedComps.clear();
   updateCompVisibility();
 }
 
 // ─── VALIDATION ───────────────────────────────────────────────────
 function findNext(data, minCv){
-  return data.slice().sort((a,b)=>a.cv-b.cv).find(m=>m.cv>=minCv) || data[data.length-1] || null;
+  return data.slice().sort((a,b)=>a.cv-b.cv).find(m=>m.cv>=minCv)||data[data.length-1]||null;
 }
 
 function validate({psi,gal,openT,closeT,aType,cvArr}){
-  const oR=calcCv(gal,openT,psi), cR=calcCv(gal,closeT,psi);
-  const sysCv=systemCv(cvArr);
-  // Required Cv for architecture tier is the un-safety-factored open stroke Cv
-  // (SF is already baked into oR.cv; strip it back for tier comparison)
-  const rawCvReq = oR.cv / SF;
-  const arch = getArchTier(rawCvReq);
-  const reqExh = Math.max(oR.cvExh, aType==='single'?0:cR.cvExh);
+  const oSupply  = calcSupply(gal,openT,psi);
+  const oExhaust = calcExhaust(gal,openT,psi);
+  const cSupply  = calcSupply(gal,closeT,psi);
+  const cExhaust = calcExhaust(gal,closeT,psi);
+  const sysCv    = systemCv(cvArr);
+  const rawCvReq = oSupply.cvRaw; // un-SF'd for tier classification
+  const arch     = getArchTier(rawCvReq);
+  const tier1    = isTier1();
+  const bpInfo   = inferExhaustBackPressure();
 
-  // Three output sections
+  const exhaustCvReq = aType==='single'
+    ? oExhaust.cv
+    : Math.max(oExhaust.cv, cExhaust.cv);
+
   const powerChecks=[], pilotChecks=[], archChecks=[];
   let fail=false, warn=false;
 
@@ -724,692 +841,587 @@ function validate({psi,gal,openT,closeT,aType,cvArr}){
   const pushPi=(s,t,d,r,m)=>pushTo(pilotChecks,s,t,d,r,m);
   const pushA =(s,t,d,r,m)=>pushTo(archChecks,s,t,d,r,m);
 
-  // ══════════════════════════════════════════════════════════════════
-  // SECTION 1 — POWER AIR PATH (Cv-critical)
-  // FR, VB, FCV only. SOV is NEVER in this section.
-  // ══════════════════════════════════════════════════════════════════
+  // ══ SECTION 1 — POWER AIR PATH ═══════════════════════════════════
 
-  // 1a. Supply conditioning
+  // Supply pressure check
+  if(psi<40) pushP('fail','Supply Pressure — Too Low',`${psi} PSI is below minimum for pneumatic actuators (40 PSI min).`,'Increase instrument air supply pressure.');
+  else if(psi<60) pushP('warn','Supply Pressure — Low',`${psi} PSI is below standard IA range (60–100 PSI). Verify actuator torque output at this pressure.`);
+  else pushP('pass','Supply Pressure — OK',`${psi} PSI within standard instrument air range.`);
+
+  // Flow regime advisory
+  pushP('info',`Flow Regime — ${oSupply.regime} (supply) / ${oExhaust.regime} (exhaust)`,
+    `Supply: P1=${oSupply.p1.toFixed(1)} PSIA, P2=${oSupply.p2.toFixed(1)} PSIA, ratio=${(oSupply.p2/oSupply.p1).toFixed(3)} — ${oSupply.regime==='CHOKED'?'choked flow formula applied (Bepto/ISA)':'subcritical formula applied'}\n`+
+    `Exhaust: P1=${oExhaust.p1.toFixed(1)} PSIA (supply trapped), P2=${oExhaust.p2.toFixed(1)} PSIA (${bpInfo.label}), ratio=${(oExhaust.p2/oExhaust.p1).toFixed(3)} — ${oExhaust.regime==='CHOKED'?'choked flow formula applied':'subcritical formula applied'}`);
+
+  // Tier 1 SOV check — critical fix
+  if(tier1){
+    if(!C('chk-solenoid')){
+      pushP('fail','Tier 1 — No SOV on Power Path',
+        'No Volume Booster and no SOV. There is no controlled path for supply air to reach the actuator.',
+        'Add an SOV (3/2 or 5/2) — in Tier 1 it is the power air path component.');
+    } else {
+      const sd=getSovData(), sm=sd[getSelIdx('cv-sov')], sovcv=sm?sm.cv:0;
+      const req=oSupply.cv*1.25;
+      if(sovcv>=req)
+        pushP('pass',`SOV (Tier 1 Power Path) — ✔ PASS (Cv ${sovcv})`,
+          `SOV Cv ${sovcv} ≥ required supply Cv ${oSupply.cv.toFixed(3)} (×1.25 margin).\nIn Tier 1 (no VB), the SOV carries all actuator supply air — its Cv is critical.`,null,sm?sm.model:null);
+      else if(sovcv>=oSupply.cv){
+        const nx=findNext(sd,req);
+        pushP('warn',`SOV (Tier 1 Power Path) — MARGINAL (Cv ${sovcv})`,
+          `SOV Cv ${sovcv} meets supply Cv ${oSupply.cv.toFixed(3)} but <25% margin.`,
+          `Upgrade SOV to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model} — Cv ${nx.cv}`:null);
+      } else {
+        const nx=findNext(sd,req);
+        pushP('fail',`SOV (Tier 1 Power Path) — ✘ UNDERSIZED (Cv ${sovcv}, need ${oSupply.cv.toFixed(3)})`,
+          `SOV Cv ${sovcv} < required supply Cv ${oSupply.cv.toFixed(3)} (1.5×SF). In Tier 1, the SOV is the power path — this SOV cannot achieve the required stroke speed.`,
+          `Upgrade SOV or add a Volume Booster (moves to Tier 2, SOV becomes pilot only).`,nx?`${nx.model} — Cv ${nx.cv}`:null);
+      }
+    }
+  }
+
+  // FR check
   if(!C('chk-fr')){
     pushP('warn','No Filter-Regulator',
       'No FR on power air path. Unfiltered, unregulated supply will damage seals and reduce actuator life.',
       'Add an FR upstream of all power-path components.');
   } else {
-    const m=BIFOLD_FR[getSelIdx('cv-fr')], cv=m?m.cv:0, req=oR.cv*1.25;
+    const m=BIFOLD_FR[getSelIdx('cv-fr')], cv=m?m.cv:0, req=oSupply.cv*1.25;
     if(cv>=req)
-      pushP('pass',`FR — ✔ PASS  (Cv ${cv})`,
-        `FR Cv ${cv} ≥ required power-air Cv ${oR.cv.toFixed(3)} (×1.25 margin). Not the bottleneck.`,
-        null, m?m.model:null);
-    else if(cv>=oR.cv){
+      pushP('pass',`FR — ✔ PASS (Cv ${cv})`,`FR Cv ${cv} ≥ required supply Cv ${oSupply.cv.toFixed(3)} (×1.25 margin).`,null,m?m.model:null);
+    else if(cv>=oSupply.cv){
       const nx=findNext(BIFOLD_FR,req);
-      pushP('warn',`FR — MARGINAL  (Cv ${cv})`,
-        `FR Cv ${cv} meets required Cv ${oR.cv.toFixed(3)} but <25% margin.`,
-        `Upgrade to FR Cv ≥ ${req.toFixed(3)}.`, nx?`${nx.model} — Cv ${nx.cv}`:null);
+      pushP('warn',`FR — MARGINAL (Cv ${cv})`,`FR Cv ${cv} meets Cv ${oSupply.cv.toFixed(3)} but <25% margin.`,`Upgrade to FR Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
     } else {
       const nx=findNext(BIFOLD_FR,req);
-      pushP('fail',`FR — ✘ BOTTLENECK  (Cv ${cv}, need ${oR.cv.toFixed(3)})`,
-        `FR Cv ${cv} < required power-air Cv ${oR.cv.toFixed(3)} (1.5×SF). FR is restricting the power air path.`,
-        `Min FR Cv (×1.25 margin): ${req.toFixed(3)}.`, nx?`${nx.model} — Cv ${nx.cv}`:null);
+      pushP('fail',`FR — ✘ BOTTLENECK (Cv ${cv}, need ${oSupply.cv.toFixed(3)})`,
+        `FR Cv ${cv} < required supply Cv ${oSupply.cv.toFixed(3)} (1.5×SF). FR is restricting the power air path.`,
+        `Min FR Cv (×1.25): ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
     }
   }
 
-  // 1b. Supply pressure
-  if(psi<40) pushP('fail','Supply Pressure — Too Low',`${psi} PSI is below minimum for pneumatic actuators (40 PSI min).`,'Increase instrument air supply pressure.');
-  else if(psi<60) pushP('warn','Supply Pressure — Low',`${psi} PSI is below standard IA range (60–100 PSI). Verify actuator torque at this pressure.`);
-  else pushP('pass','Supply Pressure — OK',`${psi} PSI within standard instrument air range.`);
-
-  // 1c. Volume Booster
+  // VB check (Tier 2+)
   if(C('chk-vb')){
-    const vm=BIFOLD_VB[getSelIdx('cv-vb')], vbcv=vm?vm.cv:0, req=oR.cv*1.25;
+    const vm=BIFOLD_VB[getSelIdx('cv-vb')], vbcv=vm?vm.cv:0, req=oSupply.cv*1.25;
     const isEst=vm&&vm.est;
-    if(vbcv>=req){
-      pushP(isEst?'warn':'pass',
-        `Volume Booster — ${isEst?'⚠ PASS (Cv unconfirmed)':'✔ PASS'}  (Cv ${vbcv})`,
-        `VB Cv ${vbcv} ≥ required power-air Cv ${oR.cv.toFixed(3)} (×1.25 margin).`+(isEst?'\n⚠ Cv is estimated — confirm with manufacturer.':''),
-        isEst?'Request confirmed Cv from manufacturer.':null,
-        vm?vm.model:null);
-    } else if(vbcv>=oR.cv){
+    if(vbcv>=req)
+      pushP(isEst?'warn':'pass',`VB — ${isEst?'⚠ PASS (Cv unconfirmed)':'✔ PASS'} (Cv ${vbcv})`,
+        `VB Cv ${vbcv} ≥ required supply Cv ${oSupply.cv.toFixed(3)} (×1.25 margin).${isEst?'\n⚠ Cv estimated — confirm with manufacturer.':''}`,
+        isEst?'Request confirmed Cv from manufacturer.':null,vm?vm.model:null);
+    else if(vbcv>=oSupply.cv){
       const nx=findNext(BIFOLD_VB,req);
-      pushP('warn',`Volume Booster — MARGINAL  (Cv ${vbcv})`,
-        `VB Cv ${vbcv} meets required Cv ${oR.cv.toFixed(3)} but <25% margin.`,
-        `Upgrade to VB Cv ≥ ${req.toFixed(3)}.`, nx?`${nx.model} — Cv ${nx.cv}`:null);
+      pushP('warn',`VB — MARGINAL (Cv ${vbcv})`,`VB Cv meets requirement but <25% margin.`,`Upgrade VB to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
     } else {
       const nx=findNext(BIFOLD_VB,req);
-      pushP('fail',`Volume Booster — ✘ BOTTLENECK  (Cv ${vbcv}, need ${oR.cv.toFixed(3)})`,
-        `VB Cv ${vbcv} < required power-air Cv ${oR.cv.toFixed(3)} (1.5×SF, ×1.25 margin). VB is the power-path bottleneck.`,
-        `Upgrade VB. Min Cv (×1.25 margin): ${req.toFixed(3)}.`, nx?`${nx.model} — Cv ${nx.cv}`:null);
+      pushP('fail',`VB — ✘ BOTTLENECK (Cv ${vbcv}, need ${oSupply.cv.toFixed(3)})`,
+        `VB Cv ${vbcv} < required supply Cv ${oSupply.cv.toFixed(3)} (1.5×SF).`,
+        `Upgrade VB. Min Cv (×1.25): ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
     }
   } else if(arch.tier>=2){
-    pushP('warn',`Volume Booster — Missing (Tier ${arch.tier}: ${arch.name})`,
-      `Required Cv ${rawCvReq.toFixed(2)} indicates ${arch.name} architecture. A Volume Booster is needed on the power air path.`,
-      'Add a VB between the FR and the actuator port. SOV pilots the VB.');
+    pushP('warn',`VB Missing — Tier ${arch.tier} Required`,
+      `Required supply Cv ${rawCvReq.toFixed(2)} (no SF) → ${arch.name} architecture needs a Volume Booster.`,
+      'Add a VB on the power air path. SOV pilots the VB (Tier 2+).');
   }
 
-  // 1d. FCV — speed controls
+  // FCV — open speed control
   if(!C('chk-speed-open'))
-    pushP('warn','Open FCV — Not Included',
-      'No meter-out FCV on open stroke. Actuator will stroke at full speed — risk of shock loading and seat damage.',
-      'Add meter-out FCV on Port A.');
+    pushP('warn',`${aType==='single'?'Cylinder Port FCV — Not Included':'Open FCV — Not Included'}`,
+      'No FCV on cylinder port. Actuator will stroke at full speed — risk of shock loading.',
+      `Add a meter-out FCV on ${aType==='single'?'the cylinder port':'Port A'}.`);
   else {
-    const m=BIFOLD_FCV[getSelIdx('cv-fcv-open')], cv=m?m.cv:0, req=oR.cv*1.25;
-    if(cv>=req) pushP('pass',`Open FCV — ✔ PASS  (Cv ${cv})`,`FCV fully-open Cv ${cv} ≥ required Cv ${oR.cv.toFixed(3)} with margin. Throttle to target speed in commissioning.`,null,m?m.model:null);
-    else if(cv>=oR.cv){const nx=findNext(BIFOLD_FCV,req);pushP('warn',`Open FCV — MARGINAL  (Cv ${cv})`,`FCV Cv ${cv} meets Cv ${oR.cv.toFixed(3)} but <25% margin.`,`Upgrade to FCV Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model} — Cv ${nx.cv}`:null);}
-    else{const nx=findNext(BIFOLD_FCV,req);pushP('fail',`Open FCV — ✘ UNDERSIZED  (Cv ${cv}, need ${oR.cv.toFixed(3)})`,`FCV fully-open Cv ${cv} < required Cv ${oR.cv.toFixed(3)} (1.5×SF). Fully open FCV will still be the bottleneck.`,`Upgrade FCV. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model} — Cv ${nx.cv}`:null);}
+    const m=BIFOLD_FCV[getSelIdx('cv-fcv-open')], cv=m?m.cv:0, req=oSupply.cv*1.25;
+    if(cv>=req) pushP('pass',`${aType==='single'?'Cylinder Port FCV':'Open FCV'} — ✔ PASS (Cv ${cv})`,
+      `FCV fully-open Cv ${cv} ≥ required Cv ${oSupply.cv.toFixed(3)}. Throttle to target speed during commissioning.${aType==='single'?'\nNote: for single-acting, this FCV controls BOTH open (supply throttle) and close (exhaust throttle) speed.':''}`,null,m?m.model:null);
+    else if(cv>=oSupply.cv){const nx=findNext(BIFOLD_FCV,req);pushP('warn',`FCV — MARGINAL (Cv ${cv})`,`FCV Cv meets requirement but <25% margin.`,`Upgrade FCV to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
+    else{const nx=findNext(BIFOLD_FCV,req);pushP('fail',`FCV — ✘ UNDERSIZED (Cv ${cv}, need ${oSupply.cv.toFixed(3)})`,`FCV fully-open Cv ${cv} < required Cv ${oSupply.cv.toFixed(3)} (1.5×SF). Even fully open, the FCV will be the bottleneck.`,`Upgrade FCV. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
   }
+
   if(aType==='double'){
     if(!C('chk-speed-close'))
-      pushP('warn','Close FCV — Not Included','No meter-out FCV on close stroke (double-acting).','Add meter-out FCV on Port B.');
+      pushP('warn','Close FCV — Not Included','No meter-out FCV on close stroke (double-acting).','Add FCV on Port B.');
     else {
-      const m=BIFOLD_FCV[getSelIdx('cv-fcv-close')], cv=m?m.cv:0, req=cR.cv*1.25;
-      if(cv>=req) pushP('pass',`Close FCV — ✔ PASS  (Cv ${cv})`,`Close FCV fully-open Cv ${cv} ≥ required Cv ${cR.cv.toFixed(3)}.`,null,m?m.model:null);
-      else if(cv>=cR.cv){const nx=findNext(BIFOLD_FCV,req);pushP('warn',`Close FCV — MARGINAL  (Cv ${cv})`,`Close FCV Cv ${cv} meets Cv ${cR.cv.toFixed(3)} but <25% margin.`,`Upgrade to FCV Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model} — Cv ${nx.cv}`:null);}
-      else{const nx=findNext(BIFOLD_FCV,req);pushP('fail',`Close FCV — ✘ UNDERSIZED  (Cv ${cv}, need ${cR.cv.toFixed(3)})`,`Close FCV Cv ${cv} < required Cv ${cR.cv.toFixed(3)} (1.5×SF).`,`Upgrade close FCV. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model} — Cv ${nx.cv}`:null);}
+      const m=BIFOLD_FCV[getSelIdx('cv-fcv-close')], cv=m?m.cv:0, req=cSupply.cv*1.25;
+      if(cv>=req) pushP('pass',`Close FCV — ✔ PASS (Cv ${cv})`,`Close FCV fully-open Cv ${cv} ≥ required Cv ${cSupply.cv.toFixed(3)}.`,null,m?m.model:null);
+      else if(cv>=cSupply.cv){const nx=findNext(BIFOLD_FCV,req);pushP('warn',`Close FCV — MARGINAL (Cv ${cv})`,`<25% margin.`,`Upgrade to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
+      else{const nx=findNext(BIFOLD_FCV,req);pushP('fail',`Close FCV — ✘ UNDERSIZED (Cv ${cv}, need ${cSupply.cv.toFixed(3)})`,`Close FCV undersized.`,`Upgrade FCV. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
     }
   }
 
-  // 1e. Exhaust path (HiPex / QEV)
+  // Exhaust path — with inferred P2
   {
-    const hasHPX=C('chk-hipex'), hasQEV=C('chk-qev');
+    const hasHPX=C('chk-hipex'), hasQEV=C('chk-qev'), hasMuff=C('chk-muffler');
+    pushP('info',`Exhaust Back-Pressure — ${bpInfo.label}`,
+      `P₂ inferred from panel configuration. Exhaust Cv sized for P1=${oExhaust.p1.toFixed(1)} PSIA (trapped supply) → P2=${oExhaust.p2.toFixed(1)} PSIA.\nFlow regime: ${oExhaust.regime}. Required exhaust Cv: ${exhaustCvReq.toFixed(4)} (1.5×SF).`);
+
+    if(hasMuff){
+      const mm=BIFOLD_MUFFLER[getSelIdx('cv-muffler')], mcv=mm?mm.cv:0, req=exhaustCvReq*1.25;
+      if(mcv>=req) pushP('pass',`Muffler — ✔ PASS (Cv ${mcv})`,`Muffler Cv ${mcv} ≥ exhaust Cv ${exhaustCvReq.toFixed(3)} (×1.25 margin).`,null,mm?mm.model:null);
+      else{const nx=findNext(BIFOLD_MUFFLER,req);pushP('warn',`Muffler — ⚠ RESTRICTIVE (Cv ${mcv}, need ${exhaustCvReq.toFixed(3)})`,`Muffler Cv ${mcv} < exhaust Cv requirement. Muffler will restrict exhaust and slow the stroke.`,`Upgrade muffler or remove it from this design.`,nx?`${nx.model}`:null);}
+    }
     if(hasHPX){
-      const hm=BIFOLD_HIPEX[getSelIdx('cv-hipex')], hcv=hm?hm.cv:0;
-      const isEst=hm&&hm.note.includes('ESTIMATED'), req=reqExh*1.25;
+      const hm=BIFOLD_HIPEX[getSelIdx('cv-hipex')], hcv=hm?hm.cv:0, req=exhaustCvReq*1.25;
+      const isEst=hm&&hm.est;
       if(hcv>=req)
-        pushP(isEst?'warn':'pass',
-          `Exhaust (HiPex) — ${isEst?'⚠ PASS (Cv unconfirmed)':'✔ PASS'}  (Cv ${hcv})`,
-          `HiPex Cv ${hcv} ≥ required exhaust Cv ${reqExh.toFixed(3)} (×1.25 margin).`+(isEst?'\n⚠ HIPEX-08 Cv unconfirmed — verify with manufacturer.':''),
-          isEst?'Confirm HIPEX-08 Cv with manufacturer.':null, hm?hm.model:null);
-      else {
-        const nx=findNext(BIFOLD_HIPEX,req);
-        pushP('fail',`Exhaust (HiPex) — ✘ UNDERSIZED  (Cv ${hcv}, need ${reqExh.toFixed(3)})`,
-          `HiPex Cv ${hcv} < required exhaust Cv ${reqExh.toFixed(3)} (1.5×SF). Exhaust is the stroke bottleneck.`,
-          `Upgrade HiPex to Cv ≥ ${req.toFixed(3)}.`, nx?`${nx.model} — Cv ${nx.cv}`:null);
-      }
+        pushP(isEst?'warn':'pass',`HiPex — ${isEst?'⚠ PASS (Cv unconfirmed)':'✔ PASS'} (Cv ${hcv})`,
+          `HiPex Cv ${hcv} ≥ exhaust Cv ${exhaustCvReq.toFixed(3)} (×1.25 margin). Exhaust back-pressure: ${bpInfo.label}.${isEst?'\n⚠ HIPEX-08 Cv unconfirmed — verify with manufacturer.':''}`,
+          isEst?'Confirm HIPEX-08 Cv with Bifold.':null,hm?hm.model:null);
+      else{const nx=findNext(BIFOLD_HIPEX,req);pushP('fail',`HiPex — ✘ UNDERSIZED (Cv ${hcv}, need ${exhaustCvReq.toFixed(3)})`,`HiPex Cv ${hcv} < exhaust Cv ${exhaustCvReq.toFixed(3)} (1.5×SF, ${bpInfo.label}).`,`Upgrade HiPex. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
     } else if(hasQEV){
-      const qm=BIFOLD_QEV[getSelIdx('cv-qev')], qcv=qm?qm.cv:0, req=reqExh*1.25;
-      if(qcv>=req) pushP('pass',`Exhaust (QEV) — ✔ PASS  (Cv ${qcv})`,`QEV Cv ${qcv} ≥ required exhaust Cv ${reqExh.toFixed(3)}.`,null,qm?qm.model:null);
-      else {
-        const nx=findNext(BIFOLD_HIPEX,req);
-        pushP('warn',`Exhaust (QEV) — ⚠ UNDERSIZED  (Cv ${qcv}, need ${reqExh.toFixed(3)})`,
-          `QEV Cv ${qcv} < required exhaust Cv ${reqExh.toFixed(3)} (1.5×SF). Consider upgrading to a high-exhaust valve.`,
-          `Upgrade QEV or add a HiPex. Required exhaust Cv: ${req.toFixed(3)}.`,
-          nx?`${nx.model} — Cv ${nx.cv}`:null);
-      }
+      const qm=BIFOLD_QEV[getSelIdx('cv-qev')], qcv=qm?qm.cv:0, req=exhaustCvReq*1.25;
+      if(qcv>=req) pushP('pass',`QEV — ✔ PASS (Cv ${qcv})`,`QEV Cv ${qcv} ≥ exhaust Cv ${exhaustCvReq.toFixed(3)}.`,null,qm?qm.model:null);
+      else{const nx=findNext(BIFOLD_HIPEX,req);pushP('warn',`QEV — ⚠ UNDERSIZED (Cv ${qcv}, need ${exhaustCvReq.toFixed(3)})`,`QEV Cv insufficient for exhaust requirement (${bpInfo.label}).`,`Upgrade QEV or switch to HiPex. Req Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
     } else if(arch.tier>=3){
       pushP('warn','Exhaust — No Dedicated Exhaust Valve',
-        `Required exhaust Cv ${reqExh.toFixed(3)} (1.5×SF) indicates a dedicated exhaust valve is needed (Tier ${arch.tier}: ${arch.name}).`,
-        `Add a HiPex on the cylinder port. Required exhaust Cv: ${(reqExh*1.25).toFixed(3)}.`,
-        findNext(BIFOLD_HIPEX,reqExh*1.25) ? `${findNext(BIFOLD_HIPEX,reqExh*1.25).model} — Cv ${findNext(BIFOLD_HIPEX,reqExh*1.25).cv}` : null);
+        `Exhaust Cv ${exhaustCvReq.toFixed(3)} (1.5×SF, ${bpInfo.label}) requires a dedicated exhaust valve at Tier ${arch.tier}.`,
+        `Add a HiPex. Min exhaust Cv: ${(exhaustCvReq*1.25).toFixed(3)}.`,
+        findNext(BIFOLD_HIPEX,exhaustCvReq*1.25)?`${findNext(BIFOLD_HIPEX,exhaustCvReq*1.25).model}`:null);
     } else {
       pushP('info','Exhaust — Via SOV R-port',
-        `Required exhaust Cv ${reqExh.toFixed(3)} is within Tier 1 range. SOV R-port exhaust is acceptable.
-For faster performance, add a QEV or HiPex on the cylinder port.`);
+        `Exhaust Cv ${exhaustCvReq.toFixed(3)} (Tier 1). SOV R-port exhaust is acceptable.\nBack-pressure assumption: ${bpInfo.label}.\nFor faster response, add a QEV on the cylinder port.`);
     }
   }
 
-  // 1f. Stroke speed results
+  // Stroke speed summary
   if(cvArr.length>0){
-    const mg=sysCv/oR.cv, pct=((mg-1)*100).toFixed(0);
-    if(mg>=1.0) pushP('pass',`Open Speed — ✔ ACHIEVABLE  (${openT}s)`,
-      `Power-path system Cv ${sysCv.toFixed(3)} ≥ required Cv ${oR.cv.toFixed(3)} (Bepto, 1.5×SF) with ${pct}% margin.\n${oR.scfm.toFixed(3)} SCFM @ ${psi} PSI, ${gal} gal.`);
-    else if(mg>=0.85) pushP('warn',`Open Speed — ⚠ MARGINAL  (${openT}s)`,
-      `Power-path system Cv ${sysCv.toFixed(3)} within 15% of required Cv ${oR.cv.toFixed(3)}. May not achieve ${openT}s under field conditions.`,
-      `Upgrade lowest-Cv power-path component. Min system Cv: ${oR.cv.toFixed(3)}.`);
-    else pushP('fail',`Open Speed — ✘ NOT ACHIEVABLE  (${openT}s)`,
-      `Power-path system Cv ${sysCv.toFixed(3)} < required Cv ${oR.cv.toFixed(3)} (${Math.abs(pct)}% deficient). Cannot achieve ${openT}s open stroke.`,
-      'Upgrade lowest-Cv power-path component or increase open time allowance.');
+    const mg=sysCv/oSupply.cv, pct=((mg-1)*100).toFixed(0);
+    if(mg>=1.0) pushP('pass',`Open Speed — ✔ ACHIEVABLE (${openT}s)`,
+      `Power-path system Cv ${sysCv.toFixed(3)} ≥ required Cv ${oSupply.cv.toFixed(3)} (1.5×SF, ${oSupply.regime}) with ${pct}% margin.\n${oSupply.scfm.toFixed(3)} SCFM @ ${psi} PSI, ${gal} gal.`);
+    else if(mg>=0.85) pushP('warn',`Open Speed — ⚠ MARGINAL (${openT}s)`,
+      `System Cv ${sysCv.toFixed(3)} within 15% of required Cv ${oSupply.cv.toFixed(3)}.`,
+      'Upgrade lowest-Cv power-path component.');
+    else pushP('fail',`Open Speed — ✘ NOT ACHIEVABLE (${openT}s)`,
+      `System Cv ${sysCv.toFixed(3)} < required Cv ${oSupply.cv.toFixed(3)} (${Math.abs(pct)}% deficient).`,
+      'Upgrade power-path components or increase open time allowance.');
+
     if(aType==='double'){
-      const mg2=sysCv/cR.cv, pct2=((mg2-1)*100).toFixed(0);
-      if(mg2>=1.0) pushP('pass',`Close Speed — ✔ ACHIEVABLE  (${closeT}s)`,`Power-path system Cv ${sysCv.toFixed(3)} meets required Cv ${cR.cv.toFixed(3)} (1.5×SF) with ${pct2}% margin.`);
-      else if(mg2>=0.85) pushP('warn',`Close Speed — ⚠ MARGINAL  (${closeT}s)`,`System Cv ${sysCv.toFixed(3)} near required Cv ${cR.cv.toFixed(3)}. May not achieve ${closeT}s.`,`Min system Cv: ${cR.cv.toFixed(3)}.`);
-      else pushP('fail',`Close Speed — ✘ NOT ACHIEVABLE  (${closeT}s)`,`System Cv ${sysCv.toFixed(3)} < required Cv ${cR.cv.toFixed(3)} (${Math.abs(pct2)}% deficient).`,'Upgrade lowest-Cv power-path component or increase close time.');
+      const mg2=sysCv/cSupply.cv, pct2=((mg2-1)*100).toFixed(0);
+      if(mg2>=1.0) pushP('pass',`Close Speed — ✔ ACHIEVABLE (${closeT}s)`,`System Cv ${sysCv.toFixed(3)} meets Cv ${cSupply.cv.toFixed(3)} (1.5×SF) with ${pct2}% margin.`);
+      else if(mg2>=0.85) pushP('warn',`Close Speed — ⚠ MARGINAL (${closeT}s)`,`System Cv near required Cv ${cSupply.cv.toFixed(3)}.`,'Upgrade power-path component.');
+      else pushP('fail',`Close Speed — ✘ NOT ACHIEVABLE (${closeT}s)`,`System Cv ${sysCv.toFixed(3)} < ${cSupply.cv.toFixed(3)} (${Math.abs(pct2)}% deficient).`,'Upgrade components or increase close time.');
     } else {
-      pushP('info',`Close Speed — Spring Return`,`Spring-driven return in ${closeT}s target. Governed by spring rate and valve load — not pneumatically controlled.\nTo limit close speed, add a meter-out FCV on the exhaust port.`);
+      pushP('info','Close Speed — Spring Return',
+        `Spring-return close in ${closeT}s target. Governed by spring rate and valve torque — not pneumatically powered.\nExhaust path must allow air to vent as spring closes: exhaust Cv req ${oExhaust.cv.toFixed(3)} (1.5×SF).\nThe cylinder port FCV controls BOTH open speed (supply throttle) and close speed (exhaust throttle) on single-acting.`);
     }
   } else {
     pushP('fail','No Power-Path Components','No components on the power air path. Cannot calculate stroke speed.',
-      arch.tier===1 ? 'Add an FR (power path). Pilot via SOV.' : `Add an FR and Volume Booster (power path). SOV pilots the VB.`);
+      arch.tier===1?'Add an SOV (Tier 1 power path).':'Add FR + VB on the power air path. SOV pilots the VB.');
   }
 
-  // ══════════════════════════════════════════════════════════════════
-  // SECTION 2 — PILOT / CONTROL PATH (Cv-irrelevant)
-  // SOV is ALWAYS here. Cv is irrelevant — signal adequacy only.
-  // ══════════════════════════════════════════════════════════════════
-
+  // ══ SECTION 2 — PILOT / CONTROL PATH ══════════════════════════
   if(!C('chk-solenoid')&&!C('chk-positioner')){
     pushPi('fail','No Pilot Signal Configured',
-      'No SOV or I/P positioner. There is no way to direct a control signal to the actuator or Volume Booster.',
-      `Add a ${aType==='double'?'5/2':'3/2'} spring-return SOV on the pilot path.`);
+      'No SOV or I/P positioner configured.',
+      `Add a ${aType==='double'?'5/2':'3/2'} spring-return SOV.`);
   } else {
     if(C('chk-solenoid')){
       const sd=getSovData(), sm=sd[getSelIdx('cv-sov')];
-      pushPi('pass','SOV — Pilot Path ✔',
-        `${sm?sm.model:'SOV'} configured on pilot path. SOV Cv is IRRELEVANT to stroke time — the SOV carries only the pilot signal.\n${C('chk-vb')?'SOV pilots the Volume Booster which provides all actuator flow.':'For Tier 1 systems: SOV pilots directly but actuator flow is not Cv-limited by the SOV.'}`,
-        null, sm?sm.model:null);
+      if(tier1){
+        pushPi('info','SOV — Tier 1 Power Path (Cv-Critical)',
+          `${sm?sm.model:'SOV'} is on the POWER PATH in Tier 1. Cv IS critical — checked in Section 01 above.\nTo make SOV pilot-only, add a Volume Booster (moves to Tier 2).`,null,sm?sm.model:null);
+      } else {
+        pushPi('pass','SOV — Pilot Path ✔ (Cv Irrelevant)',
+          `${sm?sm.model:'SOV'} configured on pilot path. Cv is irrelevant — SOV carries only the pilot signal to the VB.\nThe VB provides all actuator supply flow.`,null,sm?sm.model:null);
+      }
     }
     if(C('chk-positioner')){
       const pm=BIFOLD_POS[getSelIdx('cv-pos')];
-      pushPi('pass','I/P Positioner — Pilot Path ✔',
-        `${pm?pm.model:'I/P Positioner'} configured on pilot path. 4–20 mA → pneumatic signal to SOV or VB.`,
-        null, pm?pm.model:null);
+      pushPi('pass','I/P Positioner — Pilot Path ✔',`${pm?pm.model:'I/P Positioner'} on pilot path. 4–20 mA → pneumatic signal.`,null,pm?pm.model:null);
     }
-    // Fail position
     if(aType==='single')
-      pushPi('info','Fail Position — Spring Return',
-        'On signal or air loss, actuator returns to spring fail position. Confirm spring torque ≥ 1.3× max valve break-out torque.');
+      pushPi('info','Fail Position — Spring Return','On signal or air loss, spring drives actuator to fail position. Confirm spring torque ≥ 1.3× max break-out torque.');
     else if(C('chk-solenoid'))
-      pushPi('pass','Fail Position — Defined via SOV',
-        'Spring-return SOV on pilot path provides defined fail position. On de-energise, actuator drives to fail position.');
+      pushPi('pass','Fail Position — Defined via SOV','Spring-return SOV provides defined fail position on de-energise.');
     else
-      pushPi('warn','Fail Position — Undefined',
-        'Double-acting actuator with no spring-return SOV. No defined fail position on signal or air loss.',
-        'Use a spring-return 5/2 SOV on the pilot path.');
+      pushPi('warn','Fail Position — Undefined','Double-acting with no spring-return SOV — no fail position defined.','Use a spring-return 5/2 SOV.');
   }
-  // Position feedback
   if(!C('chk-limit'))
-    pushPi('warn','No Position Feedback',
-      'No limit switches. Control system cannot confirm valve position.',
-      'Add ZSO/ZSC limit switches wired to DCS/PLC.');
+    pushPi('warn','No Position Feedback','No limit switches. Control system cannot confirm valve position.','Add ZSO/ZSC limit switches.');
   else
-    pushPi('pass','Position Feedback — ZSO/ZSC ✔','Open and close limit switches included for DCS/PLC position confirmation.');
+    pushPi('pass','Position Feedback — ZSO/ZSC ✔','Open and close limit switches included.');
 
-  // ══════════════════════════════════════════════════════════════════
-  // SECTION 3 — ARCHITECTURE RECOMMENDATION
-  // ══════════════════════════════════════════════════════════════════
+  // ══ SECTION 3 — ARCHITECTURE ════════════════════════════════════
   {
     const hasVB=C('chk-vb'), hasHPX=C('chk-hipex'), hasQEV=C('chk-qev');
-    const tierMatch = (
-      (arch.tier===1 && !hasVB && !hasHPX) ||
-      (arch.tier===2 && hasVB && !hasHPX) ||
-      (arch.tier===3 && hasVB && hasHPX) ||
-      (arch.tier===4 && hasVB && hasHPX)
+    const tierMatch=(
+      (arch.tier===1&&!hasVB)||
+      (arch.tier===2&&hasVB&&!hasHPX)||
+      (arch.tier===3&&hasVB&&hasHPX)||
+      (arch.tier===4&&hasVB&&hasHPX)
     );
     if(tierMatch){
       pushA('pass',`Architecture Tier ${arch.tier} — ✔ ${arch.name}`,
-        `Required power-air Cv ${rawCvReq.toFixed(2)} (no SF) → ${arch.name} architecture.\nConfigured components match the recommended tier.\nTier description: ${arch.desc}`);
+        `Required supply Cv ${rawCvReq.toFixed(2)} (no SF) → ${arch.name}.\nConfigured components match recommended tier.\n${arch.desc}`);
     } else {
-      // Build specific recommendation
       let rec='';
       if(arch.tier>=2&&!hasVB) rec='Add a Volume Booster on the power air path. ';
-      if(arch.tier>=3&&!hasHPX&&!hasQEV) rec+='Add a HiPex exhaust valve on the cylinder port. ';
-      if(arch.tier===1&&hasVB) rec='VB not required at this Cv — simplify by removing the Volume Booster. ';
-      pushA('warn',`Architecture Tier ${arch.tier} — ${arch.name} (components need adjustment)`,
-        `Required power-air Cv ${rawCvReq.toFixed(2)} (no SF) → ${arch.name} architecture.\nTier description: ${arch.desc}\nConfigured components do not fully match this tier.`,
-        rec.trim()||null);
+      if(arch.tier>=3&&!hasHPX&&!hasQEV) rec+='Add a HiPex exhaust valve. ';
+      if(arch.tier===1&&hasVB) rec='VB not required at this Cv level — consider removing for simplicity. ';
+      pushA('warn',`Architecture — Tier ${arch.tier} (${arch.name}) — components need adjustment`,
+        `Required Cv ${rawCvReq.toFixed(2)} → ${arch.name}. ${arch.desc}`,rec.trim()||null);
     }
-    // Cv summary
-    pushA('info','Power-Air Path Cv Summary',
-      `Required supply Cv: ${oR.cv.toFixed(3)} (open, 1.5×SF) / ${aType==='double'?cR.cv.toFixed(3)+' (close, 1.5×SF)':'N/A (spring close)'}\nRequired exhaust Cv: ${reqExh.toFixed(3)} (1.5×SF)\nConfigured power-path system Cv: ${cvArr.length?sysCv.toFixed(3):'— (no power-path components)'}\nPilot path SOV Cv: IRRELEVANT (not in Cv math)`);
+    pushA('info','Cv Summary',
+      `Supply Cv req (open, 1.5×SF, ${oSupply.regime}): ${oSupply.cv.toFixed(4)}\n`+
+      (aType==='double'?`Supply Cv req (close, 1.5×SF, ${cSupply.regime}): ${cSupply.cv.toFixed(4)}\n`:'')+
+      `Exhaust Cv req (1.5×SF, ${oExhaust.regime}, ${bpInfo.label}): ${exhaustCvReq.toFixed(4)}\n`+
+      `Power-path system Cv: ${cvArr.length?sysCv.toFixed(4):'— (no power-path components)'}\n`+
+      `Exhaust back-pressure: ${bpInfo.label} (inferred from panel config)`);
   }
 
   const verdict=fail?'rejected':(warn?'warning':'approved');
-  return {checks:powerChecks, pilotChecks, archChecks, verdict, sysCv, openR:oR, closeR:cR, arch};
+  return {checks:powerChecks,pilotChecks,archChecks,verdict,sysCv,openR:oSupply,closeR:cSupply,openExhR:oExhaust,closeExhR:cExhaust,arch,exhaustCvReq,bpInfo};
 }
 
-// ─── SVG SCHEMATIC — ISO 1219 / ISA S5.1 ─────────────────────────
+// ─── SVG SCHEMATIC ────────────────────────────────────────────────
 const NS='http://www.w3.org/2000/svg';
 const el=(tag,a)=>{const e=document.createElementNS(NS,tag);if(a)for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;};
-
 let _ai=0;
 function mkArrow(p,col,sz=6){
   const id=`arr${_ai++}`;
-  let defs=p.querySelector('defs'); if(!defs){defs=el('defs');p.insertBefore(defs,p.firstChild);}
+  let defs=p.querySelector('defs');if(!defs){defs=el('defs');p.insertBefore(defs,p.firstChild);}
   const mk=el('marker',{id,markerWidth:sz,markerHeight:sz,refX:sz-1,refY:sz/2,orient:'auto'});
   mk.appendChild(el('path',{d:`M0,1 L${sz-1},${sz/2} L0,${sz-1} Z`,fill:col}));
-  defs.appendChild(mk); return id;
+  defs.appendChild(mk);return id;
 }
-
-// Primitives
 const tx=(p,x,y,s,o={})=>{const t=el('text',{x,y,fill:o.f||'#8aa8c8','font-family':o.m?"'Share Tech Mono',monospace":"'Rajdhani',sans-serif",'font-size':o.sz||10,'text-anchor':o.a||'middle','font-weight':o.b?'700':'400'});t.textContent=s;p.appendChild(t);return t;};
 const ln=(p,x1,y1,x2,y2,c,w,d)=>p.appendChild(el('line',{x1,y1,x2,y2,stroke:c||'#1e2d42','stroke-width':w||1.5,'stroke-dasharray':d||'none'}));
 const rc=(p,x,y,w,h,f,s,sw,rx)=>p.appendChild(el('rect',{x,y,width:w,height:h,fill:f||'#0d1720',stroke:s||'#1e2d42','stroke-width':sw||1.5,rx:rx||2}));
 const ci=(p,cx,cy,r,f,s,sw)=>p.appendChild(el('circle',{cx,cy,r,fill:f||'none',stroke:s||'#546e8a','stroke-width':sw||1.5}));
 const py=(p,pts,s,sw,d)=>p.appendChild(el('polyline',{points:pts.map(([x,y])=>`${x},${y}`).join(' '),fill:'none',stroke:s||'#546e8a','stroke-width':sw||1.5,'stroke-dasharray':d||'none'}));
 const jd=(p,x,y,c)=>ci(p,x,y,3.5,c||'#e3000f',c||'#e3000f',0);
-const ec=(p,x,y,c)=>ci(p,x,y,2.5,c,c,0);
 const al=(p,x1,y1,x2,y2,c,w)=>{const id=mkArrow(p,c);p.appendChild(el('line',{x1,y1,x2,y2,stroke:c,'stroke-width':w||1.5,'marker-end':`url(#${id})`}));};
 
-// ─── ISO Symbols ──────────────────────────────────────────────────
 function symFR(p,cx,cy,tag){
   const C='#8a8080';
   rc(p,cx-26,cy-22,52,44,C+'11',C,1.2,2);
   p.appendChild(el('polygon',{points:`${cx-11},${cy-13} ${cx+11},${cy-13} ${cx},${cy+2}`,fill:'none',stroke:C,'stroke-width':1.5}));
   ln(p,cx-13,cy-13,cx+13,cy-13,C,1.5);
   ci(p,cx,cy+10,9,'#0d1720',C,1.5);
-  const aid=mkArrow(p,C,5);
-  p.appendChild(el('line',{x1:cx-5,y1:cy+14,x2:cx+3,y2:cy+6,stroke:C,'stroke-width':1.5,'marker-end':`url(#${aid})`}));
   tx(p,cx,cy-30,tag,{m:true,sz:8,f:C,b:true});
 }
-
 function symGauge(p,cx,cy,tag,col='#ff6b2b'){
   ci(p,cx,cy,10,'#141111',col,1.2);
   p.appendChild(el('line',{x1:cx,y1:cy,x2:cx+7,y2:cy-7,stroke:col,'stroke-width':1.2}));
   tx(p,cx,cy+20,tag,{m:true,sz:8,f:col});
 }
-
 function symSOV(p,cx,cy,aType,tag){
-  const C='#e3000f', W=aType==='double'?110:84, H=36, bW=aType==='double'?52:42, by=cy-H/2, b1x=cx-W/2;
+  const C='#e3000f',W=aType==='double'?110:84,H=36,bW=aType==='double'?52:42,by=cy-H/2,b1x=cx-W/2;
   rc(p,b1x,by,bW,H,'#fff5f5',C,1.5,1);
   if(aType==='double'){
-    al(p,b1x+8,cy+10,b1x+8,cy-10,C,1.5); ln(p,b1x+8,cy-10,b1x+20,cy-10,C,1.5); ln(p,b1x+20,cy-10,b1x+20,cy+10,C,1.5);
-    al(p,b1x+32,cy+10,b1x+32,cy-10,C,1.5); ln(p,b1x+32,cy-10,b1x+44,cy-10,C,1.5);
+    al(p,b1x+8,cy+10,b1x+8,cy-10,C,1.5);ln(p,b1x+8,cy-10,b1x+20,cy-10,C,1.5);ln(p,b1x+20,cy-10,b1x+20,cy+10,C,1.5);
+    al(p,b1x+32,cy+10,b1x+32,cy-10,C,1.5);ln(p,b1x+32,cy-10,b1x+44,cy-10,C,1.5);
   } else {
-    al(p,b1x+12,cy+10,b1x+12,cy-10,C,1.5); ln(p,b1x+12,cy-10,b1x+28,cy-10,C,1.5);
-    ln(p,b1x+28,cy-10,b1x+28,cy+4,'#546e8a',1.5); ln(p,b1x+22,cy+4,b1x+34,cy+4,'#546e8a',1.5);
+    al(p,b1x+12,cy+10,b1x+12,cy-10,C,1.5);ln(p,b1x+12,cy-10,b1x+28,cy-10,C,1.5);
+    ln(p,b1x+28,cy-10,b1x+28,cy+4,'#546e8a',1.5);ln(p,b1x+22,cy+4,b1x+34,cy+4,'#546e8a',1.5);
   }
-  const b2x=b1x+bW; rc(p,b2x,by,bW,H,'#141111','#546e8a',1.2,1);
+  const b2x=b1x+bW;rc(p,b2x,by,bW,H,'#141111','#546e8a',1.2,1);
   if(aType==='double'){
-    ln(p,b2x+8,cy-10,b2x+8,cy+10,'#546e8a',1.5); ln(p,b2x+8,cy-10,b2x+18,cy-10,'#546e8a',1.5);
-    al(p,b2x+30,cy-10,b2x+30,cy+10,'#546e8a',1.5); ln(p,b2x+30,cy-10,b2x+44,cy-10,'#546e8a',1.5);
+    ln(p,b2x+8,cy-10,b2x+8,cy+10,'#546e8a',1.5);ln(p,b2x+8,cy-10,b2x+18,cy-10,'#546e8a',1.5);
+    al(p,b2x+30,cy-10,b2x+30,cy+10,'#546e8a',1.5);ln(p,b2x+30,cy-10,b2x+44,cy-10,'#546e8a',1.5);
     al(p,b2x+44,cy-10,b2x+44,cy+10,'#546e8a',1.5);
   } else {
-    ln(p,b2x+8,cy-10,b2x+8,cy+4,'#546e8a',1.5); ln(p,b2x+8,cy-10,b2x+20,cy-10,'#546e8a',1.5);
-    ln(p,b2x+16,cy-8,b2x+24,cy+8,'#546e8a',1.5); ln(p,b2x+24,cy-8,b2x+32,cy+8,'#546e8a',1.5);
+    ln(p,b2x+8,cy-10,b2x+8,cy+4,'#546e8a',1.5);ln(p,b2x+8,cy-10,b2x+20,cy-10,'#546e8a',1.5);
+    ln(p,b2x+16,cy-8,b2x+24,cy+8,'#546e8a',1.5);ln(p,b2x+24,cy-8,b2x+32,cy+8,'#546e8a',1.5);
   }
-  const sx=b1x-22; rc(p,sx,cy-8,20,16,'#fff5f5',C,1.2,1);
+  const sx=b1x-22;rc(p,sx,cy-8,20,16,'#fff5f5',C,1.2,1);
   for(let i=0;i<4;i++) ln(p,sx+2+i*4,cy-8,sx+2+i*4,cy+8,C,0.8);
-  ln(p,sx,cy-8,sx,cy+8,C,1); ln(p,sx+20,cy,b1x,cy,C,1.5);
-  const srx=b2x+bW; py(p,Array.from({length:8},(_,i)=>[srx+2+i*3,cy+(i%2===0?-5:5)]),'#546e8a',1.2);
+  ln(p,sx,cy-8,sx,cy+8,C,1);ln(p,sx+20,cy,b1x,cy,C,1.5);
+  const srx=b2x+bW;py(p,Array.from({length:8},(_,i)=>[srx+2+i*3,cy+(i%2===0?-5:5)]),'#546e8a',1.2);
   ln(p,srx+26,cy,srx+30,cy,'#546e8a',1.5);
   const ports=aType==='double'?[{l:'1(P)',x:cx-W/2+14},{l:'4(A)',x:cx-W/2+34},{l:'2(B)',x:cx-W/2+66},{l:'3(R)',x:cx-W/2+88}]:[{l:'1(P)',x:cx-W/2+14},{l:'2(A)',x:cx-W/2+36},{l:'3(R)',x:cx-W/2+62}];
   ports.forEach(({l,x:px})=>{ln(p,px,cy+H/2,px,cy+H/2+12,'#546e8a',1.5);tx(p,px,cy+H/2+21,l,{m:true,sz:8,f:'#546e8a'});});
   tx(p,cx,cy-H/2-10,tag,{m:true,sz:8,f:C,b:true});
 }
-
-function symIYP(p,cx,cy,tag){
-  const C='#a78bfa';
-  p.appendChild(el('polygon',{points:`${cx},${cy-18} ${cx+14},${cy} ${cx},${cy+18} ${cx-14},${cy}`,fill:'#ffffff',stroke:C,'stroke-width':1.5}));
-  tx(p,cx,cy-5,'I/P',{m:true,sz:10,f:C,b:true}); tx(p,cx,cy+7,'4-20mA',{m:true,sz:7,f:'#7c5fc0'});
-  tx(p,cx,cy+30,tag,{m:true,sz:8,f:C,b:true});
-}
-
 function symFCV(p,cx,cy,tag,col='#ff8c42'){
   p.appendChild(el('polygon',{points:`${cx-14},${cy-12} ${cx+14},${cy-12} ${cx},${cy}`,fill:'#1a1010',stroke:col,'stroke-width':1.5}));
   p.appendChild(el('polygon',{points:`${cx-14},${cy+12} ${cx+14},${cy+12} ${cx},${cy}`,fill:'#1a1010',stroke:col,'stroke-width':1.5}));
   p.appendChild(el('line',{x1:cx-16,y1:cy+16,x2:cx+16,y2:cy-16,stroke:col,'stroke-width':1.2}));
-  const aid=mkArrow(p,col,5);
-  p.appendChild(el('line',{x1:cx+8,y1:cy-8,x2:cx+16,y2:cy-16,stroke:col,'stroke-width':1.2,'marker-end':`url(#${aid})`}));
   tx(p,cx,cy-28,tag,{m:true,sz:8,f:col,b:true});
 }
-
+function symMuff(p,cx,cy,tag='ATM'){
+  rc(p,cx-10,cy-10,20,20,'#f0f0f0','#999999',1.2,2);
+  for(let i=-5;i<=5;i+=3) ln(p,cx+i,cy-10,cx+i,cy+10,'#aaaaaa',0.7);
+  tx(p,cx,cy+24,tag,{m:true,sz:7,f:'#888888'});
+}
 function symQEV(p,cx,cy,tag){
   const C='#ffc107';
   p.appendChild(el('polygon',{points:`${cx-16},${cy-14} ${cx+16},${cy-14} ${cx},${cy+14}`,fill:'#1a1010',stroke:C,'stroke-width':1.5}));
-  ln(p,cx-8,cy-14,cx+8,cy-14,C,2); ln(p,cx,cy+14,cx+18,cy+26,C,1.5);
-  rc(p,cx+18,cy+22,12,10,'#141111','#3d2020',1,1);
-  for(let i=1;i<4;i++) ln(p,cx+18+i*2.5,cy+22,cx+18+i*2.5,cy+32,'#546e8a',0.8);
-  tx(p,cx+24,cy+38,'EXH',{m:true,sz:7,f:'#546e8a'});
+  ln(p,cx-8,cy-14,cx+8,cy-14,C,2);ln(p,cx,cy+14,cx+18,cy+26,C,1.5);
+  symMuff(p,cx+18,cy+30,'EXH');
   tx(p,cx,cy-28,tag,{m:true,sz:8,f:C,b:true});
 }
-
 function symHIPEX(p,cx,cy,tag){
-  const C='#ffc107', C2='#ff9800';
+  const C='#ffc107',C2='#ff9800';
   p.appendChild(el('polygon',{points:`${cx-20},${cy-16} ${cx+20},${cy-16} ${cx},${cy+16}`,fill:'#1a1010',stroke:C2,'stroke-width':2}));
   ln(p,cx-10,cy-16,cx+10,cy-16,C2,2.5);
-  ln(p,cx-2,cy+16,cx+16,cy+28,C2,1.5); ln(p,cx+3,cy+16,cx+21,cy+28,C,1);
-  rc(p,cx+14,cy+24,14,10,'#141111','#3d1010',1,1);
-  for(let i=1;i<5;i++) ln(p,cx+14+i*2.5,cy+24,cx+14+i*2.5,cy+34,'#546e8a',0.8);
-  tx(p,cx+21,cy+40,'EXH',{m:true,sz:7,f:'#546e8a'});
+  ln(p,cx,cy+16,cx,cy+32,C2,2);
+  symMuff(p,cx,cy+40,'EXH');
   tx(p,cx,cy-30,tag,{m:true,sz:8,f:C2,b:true});
   tx(p,cx,cy-19,'HiPex',{m:true,sz:7,f:C});
 }
-
 function symACT(p,cx,cy,aType,tag){
-  const C='#e3000f', W=100, H=60;
+  const C='#e3000f',W=100,H=60;
   rc(p,cx-W/2,cy-H/2,W,H,'#fff0f0',C,2,2);
   p.appendChild(el('path',{d:`M ${cx-18} ${cy+10} A 22 22 0 0 1 ${cx+10} ${cy-18}`,fill:'none',stroke:C,'stroke-width':1.8}));
-  const aid=mkArrow(p,C,6);
-  p.appendChild(el('line',{x1:cx+8,y1:cy-20,x2:cx+10,y2:cy-18,stroke:C,'stroke-width':2,'marker-end':`url(#${aid})`}));
-  ln(p,cx+W/2,cy,cx+W/2+14,cy,C,2.5); ci(p,cx+W/2+14,cy,5,'#fff0f0',C,2);
+  ln(p,cx+W/2,cy,cx+W/2+14,cy,C,2.5);ci(p,cx+W/2+14,cy,5,'#fff0f0',C,2);
   tx(p,cx-W/2+10,cy-H/2+12,'A',{m:true,sz:10,f:C,b:true});
   if(aType==='double') tx(p,cx+W/2-10,cy-H/2+12,'B',{m:true,sz:10,f:'#ff6b2b',b:true});
   tx(p,cx,cy+10,aType==='single'?'SA/SR':'D/A',{m:true,sz:9,f:'#546e8a'});
   tx(p,cx,cy-H/2-10,tag,{m:true,sz:8,f:C,b:true});
 }
-
-function symLS(p,cx,cy,tag,col='#00e676'){
-  ln(p,cx-14,cy-8,cx+14,cy-8,col,1.5); ln(p,cx-8,cy,cx+8,cy,col,2);
-  ln(p,cx-8,cy+8,cx+8,cy+8,col,1.5); ln(p,cx-8,cy-8,cx-8,cy,col,1.2); ln(p,cx+8,cy-8,cx+8,cy,col,1.2);
-  ci(p,cx,cy-8,4,'#141111',col,1.2); tx(p,cx,cy+22,tag,{m:true,sz:8,f:col,b:true});
-}
-
-function symMuff(p,cx,cy){
-  rc(p,cx-7,cy-8,14,16,'#080e14','#2d4060',1,1);
-  for(let i=-4;i<=4;i+=2.5) ln(p,cx+i,cy-8,cx+i,cy+8,'#2d4060',0.6);
-  tx(p,cx,cy+20,'ATM',{m:true,sz:7,f:'#888888'});
-}
-
-// ISO symbol — Volume Booster (amplifier circle with pilot arrow)
-// ISO 1219: shown as a circle/amplifier with main IN/OUT ports and separate pilot port
 function symVB(p,cx,cy,tag){
-  const C='#e3000f', CP2='#c084fc';
-  // Main body — amplifier (triangle pointing right inside circle)
+  const C='#e3000f',CP2='#c084fc';
   rc(p,cx-28,cy-22,56,44,'#fff5f5',C,1.8,3);
-  // Amplifier triangle
   p.appendChild(el('polygon',{points:`${cx-14},${cy-12} ${cx-14},${cy+12} ${cx+14},${cy}`,fill:'rgba(227,0,15,.12)',stroke:C,'stroke-width':1.5}));
-  // Ratio "1:1" label
   tx(p,cx+8,cy+3,'×',{m:true,sz:9,f:C,b:true});
-  // Pilot port stub (top) — separate small port labelled "PILOT"
-  ln(p,cx,cy-22,cx,cy-34,CP2,1,'4,3');
+  ln(p,cx,cy-22,cx,cy-34,'#c084fc',1,'4,3');
   tx(p,cx,cy-38,'PILOT',{m:true,sz:7,f:CP2});
-  // Port labels
   tx(p,cx-28,cy-26,'IN',{m:true,sz:7,f:C,a:'start'});
   tx(p,cx+28,cy-26,'OUT',{m:true,sz:7,f:C,a:'end'});
-  // Tag
   tx(p,cx,cy-46,tag,{m:true,sz:8,f:C,b:true});
 }
+function symLS(p,cx,cy,tag,col='#00e676'){
+  ln(p,cx-14,cy-8,cx+14,cy-8,col,1.5);ln(p,cx-8,cy,cx+8,cy,col,2);
+  ln(p,cx-8,cy+8,cx+8,cy+8,col,1.5);ln(p,cx-8,cy-8,cx-8,cy,col,1.2);ln(p,cx+8,cy-8,cx+8,cy,col,1.2);
+  ci(p,cx,cy-8,4,'#141111',col,1.2);tx(p,cx,cy+22,tag,{m:true,sz:8,f:col,b:true});
+}
 
-// ─── MAIN SCHEMATIC BUILDER ───────────────────────────────────────
 function buildSVG(params){
-  const{psi,gal,openT,closeT,aType,validation,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasLimit,hasGauge}=params;
-  const W=1060, H=840;
-  const svg=el('svg'); svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('xmlns',NS); svg.setAttribute('style','width:100%;height:auto;');
+  const{psi,gal,openT,closeT,aType,validation,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasMuffler,hasLimit,hasGauge}=params;
+  const tier1=isTier1();
+  const W=1060,H=860;
+  const svg=el('svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('xmlns',NS);svg.setAttribute('style','width:100%;height:auto;');
   svg.appendChild(el('rect',{x:0,y:0,width:W,height:H,fill:'#ffffff'}));
-  const grid=el('g',{opacity:'0.025'}); for(let x=0;x<W;x+=48)ln(grid,x,0,x,H,'#e3000f',0.5); for(let y=0;y<H;y+=48)ln(grid,0,y,W,y,'#e3000f',0.5); svg.appendChild(grid);
-  const defs=el('defs'); svg.insertBefore(defs,svg.firstChild);
+  const defs=el('defs');svg.insertBefore(defs,svg.firstChild);
 
-  // Title bar
   rc(svg,0,0,W,36,'#f0f0f0','none',0);
   ln(svg,0,36,W,36,'#cccccc',1);
   tx(svg,20,23,'PNEUMATIC ACTUATOR CONTROL PANEL — INSTRUMENT SCHEMATIC (ISO 1219 / ISA S5.1)',{m:true,sz:10,f:'#e3000f',a:'start',b:true});
-  tx(svg,W-16,23,`${psi} PSI IA  ·  ${gal} gal  ·  ${aType.toUpperCase()} ACTING  ·  OPEN ${openT}s  CLOSE ${closeT}s`,{m:true,sz:8,f:'#546e8a',a:'end'});
+  tx(svg,W-16,23,`${psi} PSI IA · ${gal} gal · ${aType.toUpperCase()} ACTING · OPEN ${openT}s CLOSE ${closeT}s · ${tier1?'TIER 1 (SOV=POWER)':'TIER 2+ (SOV=PILOT)'}`,{m:true,sz:8,f:'#546e8a',a:'end'});
 
-  // Layout
-  const YR=90,YC=195,YS=330,YA=450,YB=510,YF=700,YL=775;
+  const YR=90,YC=195,YS=330,YA=450,YB=510,YF=700,YL=790;
   const XSU=80,XFR=210,XIP=360;
   const XSOV=hasSov?(hasPos?520:430):430;
-  const XACT=650, XFVO=XACT-80, XFVC=XACT+60, XQEV=XACT-130, XHPX=XACT-190;
-  const XVB = hasVB ? (hasFR ? XFR+110 : 290) : 0; // VB sits between FR outlet and SOV on power path
+  const XACT=650,XFVO=XACT-80,XFVC=XACT+60,XQEV=XACT-130,XHPX=XACT-190;
+  const XVB=hasVB?(hasFR?XFR+110:290):0;
 
-  // Colours
   const CS='#e3000f',CB='#ff6b00',CE='#888888',CG='#00c853',CP='#c084fc',CY='#ffb300';
 
-  // Zone labels
   const zl=(y,lbl,col)=>{ln(svg,16,y-2,24,y-2,col||CE,0.5);tx(svg,14,y+4,lbl,{m:true,sz:7,f:col||CE,a:'end'});};
-  zl(YR,'SUPPLY RAIL',CS); zl(YC,'CONDITIONING / VB','#aaaaaa'); zl(YS,'CONTROL VALVE (PILOT)',CP);
-  zl(YA,'PORT A (OPEN)',CS); if(aType==='double') zl(YB,'PORT B (CLOSE)',CB);
-  zl(YF,'ACTUATOR',CS); if(hasLimit) zl(YL,'POSITION FB',CG);
+  zl(YR,'SUPPLY RAIL',CS);zl(YC,'CONDITIONING / VB','#aaaaaa');zl(YS,'CONTROL VALVE',CP);
+  zl(YA,'PORT A (OPEN)',CS);if(aType==='double') zl(YB,'PORT B (CLOSE)',CB);
+  zl(YF,'ACTUATOR',CS);if(hasLimit) zl(YL,'POSITION FB',CG);
 
   [YC-30,YS-30,YF-30].forEach(yz=>ln(svg,30,yz,W-30,yz,'#3a3b3e',0.4,'8,6'));
 
   // Supply rail
   rc(svg,XSU-34,YR-16,68,30,'#fff5f5',CS,1.5,3);
-  tx(svg,XSU,YR-3,'IA SUPPLY',{m:true,sz:8,f:CS,b:true}); tx(svg,XSU,YR+9,`${psi} PSI`,{m:true,sz:9,f:CS});
+  tx(svg,XSU,YR-3,'IA SUPPLY',{m:true,sz:8,f:CS,b:true});tx(svg,XSU,YR+9,`${psi} PSI`,{m:true,sz:9,f:CS});
   const XRE=hasSov?XSOV+2:XIP+2;
   ln(svg,XSU+34,YR,XRE,YR,CS,2.5);
   tx(svg,(XSU+34+XRE)/2,YR-8,'INSTRUMENT AIR — SUPPLY',{m:true,sz:7,f:CS});
 
   // FR
   if(hasFR){
-    ln(svg,XFR,YR,XFR,YC-22,CS,2); jd(svg,XFR,YR,CS);
+    ln(svg,XFR,YR,XFR,YC-22,CS,2);jd(svg,XFR,YR,CS);
     symFR(svg,XFR,YC,'FR-01');
-    // Power air from FR → VB (if present) → SOV/actuator. Gauge tees off FR outlet.
-    const frOutEnd = hasVB ? XVB-28 : (hasSov?XSOV-52:XRE);
+    const frOutEnd=hasVB?XVB-28:(hasSov?XSOV-52:XRE);
     ln(svg,XFR+26,YC,frOutEnd,YC,CS,hasVB?2:1.5);
     ln(svg,XFR,YC+22,XFR,YS-10,CS,1.5);
     jd(svg,XFR+26,YC,CS);
-    ln(svg,XFR+26,YC,XFR+46-10,YC,CS,1);
     symGauge(svg,XFR+46,YC,'PI-01','#ff6b2b');
   }
 
-  // ── VOLUME BOOSTER (power air path, between FR and actuator) ────
+  // VB
   if(hasVB){
-    const VX=XVB, VY=YC;
-    // Power air connection from FR (or supply rail) into VB main IN port
-    const vbInX = hasFR ? XFR+26 : XSU+34;
-    ln(svg,vbInX,VY,VX-28,VY,CS,2); // power air IN
-    jd(svg,vbInX,VY,CS);
+    const VX=XVB,VY=YC;
+    const vbInX=hasFR?XFR+26:XSU+34;
+    ln(svg,vbInX,VY,VX-28,VY,CS,2);jd(svg,vbInX,VY,CS);
     symVB(svg,VX,VY,'VB-01');
-    // Power air OUT from VB heading toward SOV/actuator
     ln(svg,VX+28,VY,hasSov?XSOV-52:XACT-26,VY,CS,2);
-    // Pilot line from SOV pilot outlet → VB pilot port (dashed purple)
-    // This is drawn from SOV position down to VB — shown later after SOV is placed
-    // VB annotation
     const vbm=BIFOLD_VB[getSelIdx('cv-vb')];
-    const vbEst=vbm&&vbm.est;
-    tx(svg,VX,VY+30,(vbEst?'⚠ Cv ESTIMATED: ':'Cv ')+String(vbm?vbm.cv:'?'),{m:true,sz:7,f:vbEst?CY:CE});
-  }
-
-  // I/P
-  if(hasPos){
-    ln(svg,XIP,hasFR?YC:YR,XIP,YS-18,CS,1.5);
-    if(!hasFR) jd(svg,XIP,YR,CS);
-    symIYP(svg,XIP,YS,'IPY-01');
-    ln(svg,30,YS-60,XIP-14,YS-60,CP,1,'2,2');
-    al(svg,XIP-16,YS-60,XIP-14,YS-18,CP,1);
-    tx(svg,32,YS-68,'4–20 mA (FROM DCS)',{m:true,sz:7,f:CP,a:'start'});
-    ln(svg,XIP+14,YS,XSOV-52,YS,CS,1.5,'4,3');
-    tx(svg,(XIP+XSOV)/2,YS-10,'PILOT / SIGNAL',{m:true,sz:7,f:CE});
+    tx(svg,VX,VY+30,`Cv ${vbm?vbm.cv:'?'}`,{m:true,sz:7,f:CE});
   }
 
   // SOV
   if(hasSov){
     const pPx=aType==='double'?XSOV-38:XSOV-28;
-    // Power-air supply to SOV: comes from VB output if present, else from FR/rail
     if(hasVB){
-      // VB outlet → SOV P port (power air — bold cyan)
-      ln(svg,XVB+28,YC,XSOV-52,YC,CS,2);
-      ln(svg,XSOV-52,YC,pPx,YC,CS,2);
-      ln(svg,pPx,YC,pPx,YS,CS,2);
+      ln(svg,XVB+28,YC,XSOV-52,YC,CS,2);ln(svg,XSOV-52,YC,pPx,YC,CS,2);ln(svg,pPx,YC,pPx,YS,CS,2);
       jd(svg,XVB+28,YC,CS);
     } else {
-      ln(svg,hasFR?XFR:XSU+34,YS,pPx,YS,CS,1.5);
-      ln(svg,pPx,hasFR?YC+22:YR,pPx,YS,CS,1.5);
+      // Tier 1 — SOV is on power path
+      const powerColor = tier1 ? CS : CS;
+      ln(svg,hasFR?XFR:XSU+34,YS,pPx,YS,powerColor,tier1?2:1.5);
+      ln(svg,pPx,hasFR?YC+22:YR,pPx,YS,powerColor,tier1?2:1.5);
       if(!hasFR) jd(svg,pPx,YR,CS); else jd(svg,XFR,YS,CS);
     }
     symSOV(svg,XSOV,YS,aType,'SOV-01');
+    if(tier1){
+      // Label SOV as POWER PATH in Tier 1
+      rc(svg,XSOV-36,YS-H/2-52,72,14,'rgba(227,0,15,.1)','#e3000f',0.8,2);
+      tx(svg,XSOV,YS-H/2-46,'POWER PATH (T1)',{m:true,sz:7,f:'#e3000f',b:true});
+    }
     const SY=YS-62;
-    ln(svg,30,SY,XSOV-57,SY,CG,1,'6,3'); al(svg,XSOV-58,SY,XSOV-56,YS-18,CG,1);
+    ln(svg,30,SY,XSOV-57,SY,CG,1,'6,3');al(svg,XSOV-58,SY,XSOV-56,YS-18,CG,1);
     tx(svg,32,SY-8,'24 VDC CONTROL SIGNAL',{m:true,sz:7,f:CG,a:'start'});
     const eX=aType==='double'?XSOV+38:XSOV+28;
-    ln(svg,eX,YS+18,eX,YS+50,CE,1.5); symMuff(svg,eX,YS+62);
-
-    // Pilot line: SOV A-port → VB pilot stub (dashed purple = low-flow control signal)
+    if(hasMuffler){
+      ln(svg,eX,YS+18,eX,YS+50,CE,1.5);
+      symMuff(svg,eX,YS+58,'MUFF');
+    } else {
+      ln(svg,eX,YS+18,eX,YS+50,CE,1.5);symMuff(svg,eX,YS+62);
+    }
     if(hasVB){
       const pAxP=aType==='double'?XSOV-18:XSOV-8;
-      ln(svg,pAxP,YS+18,pAxP,YS+44,CP,1.2,'4,3');
-      ln(svg,pAxP,YS+44,XVB,YS+44,CP,1.2,'4,3');
+      ln(svg,pAxP,YS+18,pAxP,YS+44,CP,1.2,'4,3');ln(svg,pAxP,YS+44,XVB,YS+44,CP,1.2,'4,3');
       ln(svg,XVB,YS+44,XVB,YC-22,CP,1.2,'4,3');
       const pidArr=mkArrow(svg,CP,5);
       svg.appendChild(el('line',{x1:XVB,y1:YC-26,x2:XVB,y2:YC-22,stroke:CP,'stroke-width':1.2,'marker-end':`url(#${pidArr})`}));
       tx(svg,(pAxP+XVB)/2,YS+40,'PILOT SIGNAL',{m:true,sz:7,f:CP});
     }
-
     const pAx=aType==='double'?XSOV-18:XSOV-8;
-    ln(svg,pAx,YS+18,pAx,YA,CS,1.5); ln(svg,pAx,YA,XACT-26,YA,CS,1.5);
+    ln(svg,pAx,YS+18,pAx,YA,CS,1.5);ln(svg,pAx,YA,XACT-26,YA,CS,1.5);
     tx(svg,pAx-6,YA+14,'PORT A',{m:true,sz:7,f:CS,a:'end'});
     if(aType==='double'){
       const pBx=XSOV+18;
-      ln(svg,pBx,YS+18,pBx,YB,CB,1.5); ln(svg,pBx,YB,XACT+26,YB,CB,1.5);
+      ln(svg,pBx,YS+18,pBx,YB,CB,1.5);ln(svg,pBx,YB,XACT+26,YB,CB,1.5);
       tx(svg,pBx+6,YB+14,'PORT B',{m:true,sz:7,f:CB,a:'start'});
     }
   }
 
-  // FCV Open
   if(hasFCVopen&&hasSov){
-    const fc=COMP_DEFS.find(c=>c.id==='cv-fcv-open'), fcv=fc?getModelCv(fc).toFixed(2):'?';
-    ln(svg,XSOV-18,YA,XFVO-14,YA,CS,1.5); ln(svg,XFVO+14,YA,XACT-26,YA,CS,1.5);
-    symFCV(svg,XFVO,YA,'FCV-01',CS);
+    const fc=COMP_DEFS.find(c=>c.id==='cv-fcv-open'),fcv=fc?getModelCv(fc).toFixed(2):'?';
+    ln(svg,XSOV-18,YA,XFVO-14,YA,CS,1.5);ln(svg,XFVO+14,YA,XACT-26,YA,CS,1.5);
+    symFCV(svg,XFVO,YA,aType==='single'?'FCV-01\n(PORT)':'FCV-01',CS);
     tx(svg,XFVO+26,YA+4,`Cv ${fcv}`,{m:true,sz:7,f:'#6e4020',a:'start'});
-    const mid=mkArrow(svg,CS,5);
-    svg.appendChild(el('line',{x1:XFVO+2,y1:YA-20,x2:XFVO+2,y2:YA-15,stroke:CS,'stroke-width':1,'marker-end':`url(#${mid})`}));
-    tx(svg,XFVO+14,YA-22,'METER-OUT',{m:true,sz:6,f:CE,a:'start'});
+    if(aType==='single') tx(svg,XFVO,YA-36,'SUPPLY+EXH',{m:true,sz:6,f:CE});
   }
-
-  // FCV Close
   if(hasFCVclose&&aType==='double'&&hasSov){
-    const fc=COMP_DEFS.find(c=>c.id==='cv-fcv-close'), fcv=fc?getModelCv(fc).toFixed(2):'?';
-    ln(svg,XSOV+18,YB,XFVC-14,YB,CB,1.5); ln(svg,XFVC+14,YB,XACT+26,YB,CB,1.5);
+    const fc=COMP_DEFS.find(c=>c.id==='cv-fcv-close'),fcv=fc?getModelCv(fc).toFixed(2):'?';
+    ln(svg,XSOV+18,YB,XFVC-14,YB,CB,1.5);ln(svg,XFVC+14,YB,XACT+26,YB,CB,1.5);
     symFCV(svg,XFVC,YB,'FCV-02',CB);
     tx(svg,XFVC+26,YB+4,`Cv ${fcv}`,{m:true,sz:7,f:'#6e2010',a:'start'});
   }
-
-  // QEV
   if(hasQEV&&hasSov){
-    jd(svg,XQEV,YA,CS); ln(svg,XQEV,YA,XQEV,YA+32,CY,1.5);
+    jd(svg,XQEV,YA,CS);ln(svg,XQEV,YA,XQEV,YA+32,CY,1.5);
     symQEV(svg,XQEV,YA+46,'QEV-01');
   }
-
-  // HiPex
   if(hasHipex&&hasSov){
     const HX=hasQEV?XHPX:XQEV;
-    jd(svg,HX,YA,CY); ln(svg,HX,YA,HX,YA+32,CY,2);
+    jd(svg,HX,YA,CY);ln(svg,HX,YA,HX,YA+32,CY,2);
     symHIPEX(svg,HX,YA+48,'HIPEX-01');
-    ln(svg,HX,YA+64,HX,YA+80,CY,2);
     const hm=BIFOLD_HIPEX[getSelIdx('cv-hipex')];
-    const isEst=hm&&hm.note.includes('ESTIMATED');
-    tx(svg,HX,YA-42,isEst?'⚠ Cv ESTIMATED':`Cv ${hm?hm.cv:'?'}`,{m:true,sz:7,f:isEst?CY:'#a07020'});
+    const isEst=hm&&hm.est;
+    tx(svg,HX,YA-42,isEst?'⚠ Cv EST':`Cv ${hm?hm.cv:'?'}`,{m:true,sz:7,f:isEst?CY:'#a07020'});
   }
-
-  // Gauges
   if(hasGauge&&hasSov){
-    const GAX=XACT-26; jd(svg,GAX,YA,CS); ln(svg,GAX,YA,GAX,YA+22,CS,1); symGauge(svg,GAX,YA+36,'PI-A','#ff6b2b');
+    const GAX=XACT-26;jd(svg,GAX,YA,CS);ln(svg,GAX,YA,GAX,YA+22,CS,1);symGauge(svg,GAX,YA+36,'PI-A','#ff6b2b');
     if(aType==='double'){const GBX=XACT+26;jd(svg,GBX,YB,CB);ln(svg,GBX,YB,GBX,YB+22,CB,1);symGauge(svg,GBX,YB+36,'PI-B','#ff6b2b');}
   }
 
-  // Actuator
   symACT(svg,XACT,YF,aType,'ACT-01');
-  ln(svg,XACT-26,YA,XACT-26,YF-30,CS,1.5); ec(svg,XACT-26,YF-30,CS);
-  if(aType==='double'){ln(svg,XACT+26,YB,XACT+26,YF-30,CB,1.5);ec(svg,XACT+26,YF-30,CB);}
+  ln(svg,XACT-26,YA,XACT-26,YF-30,CS,1.5);
+  if(aType==='double'){ln(svg,XACT+26,YB,XACT+26,YF-30,CB,1.5);}
   if(aType==='single'){
     const spx=XACT+64,spy=YF;
     py(svg,Array.from({length:9},(_,i)=>[spx+i*5,spy+(i%2===0?-6:6)]),'#706060',1.2);
     tx(svg,XACT+84,YF+10,'SPRING RETURN',{m:true,sz:7,f:'#706060',a:'start'});
   }
 
-  // Limit switches
   if(hasLimit){
     const ZO=XACT-80,ZC=XACT+80;
-    ln(svg,XACT-30,YF+30,ZO,YF+30,CG,0.8,'3,2'); ln(svg,ZO,YF+30,ZO,YL-22,CG,0.8,'3,2');
-    ln(svg,XACT+30,YF+30,ZC,YF+30,CG,0.8,'3,2'); ln(svg,ZC,YF+30,ZC,YL-22,CG,0.8,'3,2');
-    symLS(svg,ZO,YL,'ZSO',CG); symLS(svg,ZC,YL,'ZSC',CG);
-    ln(svg,ZO,YL+22,ZO,YL+40,CG,1,'4,3'); al(svg,ZO,YL+36,ZO,YL+50,CG,1); tx(svg,ZO,YL+58,'→ DCS',{m:true,sz:7,f:CE});
-    ln(svg,ZC,YL+22,ZC,YL+40,CG,1,'4,3'); al(svg,ZC,YL+36,ZC,YL+50,CG,1); tx(svg,ZC,YL+58,'→ DCS',{m:true,sz:7,f:CE});
+    ln(svg,XACT-30,YF+30,ZO,YF+30,CG,0.8,'3,2');ln(svg,ZO,YF+30,ZO,YL-22,CG,0.8,'3,2');
+    ln(svg,XACT+30,YF+30,ZC,YF+30,CG,0.8,'3,2');ln(svg,ZC,YF+30,ZC,YL-22,CG,0.8,'3,2');
+    symLS(svg,ZO,YL,'ZSO',CG);symLS(svg,ZC,YL,'ZSC',CG);
+    al(svg,ZO,YL+22,ZO,YL+46,CG,1);tx(svg,ZO,YL+54,'→ DCS',{m:true,sz:7,f:CE});
+    al(svg,ZC,YL+22,ZC,YL+46,CG,1);tx(svg,ZC,YL+54,'→ DCS',{m:true,sz:7,f:CE});
   }
 
-  // Cv / HiPex badge
-  const sv=validation.sysCv,rv=validation.openR.cv;
-  const hreq=Math.max(validation.openR.cvExh,aType==='single'?0:validation.closeR.cvExh);
-  const cvcol=sv>=rv?'#00e676':sv>=rv*0.85?'#ffc107':'#ff3d3d';
+  // Cv badge
+  const{sysCv,openR,exhaustCvReq,bpInfo}=validation;
+  const rv=openR.cv;
+  const cvcol=sysCv>=rv?'#00e676':sysCv>=rv*0.85?'#ffc107':'#ff3d3d';
   const BX=W-148,BY=64;
-  rc(svg,BX-90,BY-32,180,82,'#f0f0f0',cvcol,1.5,4);
+  rc(svg,BX-90,BY-32,180,100,'#f0f0f0',cvcol,1.5,4);
   tx(svg,BX,BY-18,'SYSTEM Cv (SUPPLY)',{m:true,sz:7,f:cvcol});
-  tx(svg,BX,BY+4,sv.toFixed(4),{m:true,sz:17,f:cvcol,b:true});
+  tx(svg,BX,BY+4,sysCv.toFixed(4),{m:true,sz:17,f:cvcol,b:true});
   tx(svg,BX,BY+17,`REQ (1.5×SF): ${rv.toFixed(4)}`,{m:true,sz:7,f:CE});
   ln(svg,BX-80,BY+22,BX+80,BY+22,'#1e2d42',0.5);
-  tx(svg,BX,BY+29,'⚡ HIPEX EXH Cv REQ:',{m:true,sz:7,f:CY});
-  tx(svg,BX,BY+42,hreq.toFixed(4),{m:true,sz:10,f:CY,b:true});
+  tx(svg,BX,BY+30,'EXHAUST Cv REQ:',{m:true,sz:7,f:CY});
+  tx(svg,BX,BY+43,exhaustCvReq.toFixed(4),{m:true,sz:10,f:CY,b:true});
+  tx(svg,BX,BY+55,bpInfo.label,{m:true,sz:6.5,f:'#999999'});
 
   // Legend
-  const LX=W-192,LY=H-198;
-  rc(svg,LX-8,LY-18,190,188,'#f5f5f5','#cccccc',1,3);
+  const LX=W-192,LY=H-220;
+  rc(svg,LX-8,LY-18,190,210,'#f5f5f5','#cccccc',1,3);
   tx(svg,LX+87,LY-4,'LINE TYPE LEGEND',{m:true,sz:8,f:'#aaaaaa',b:true});
-  [[CS,2,'none','Power Air — Supply / Port A (high flow)'],[CB,2,'none','Power Air — Port B / D/A (high flow)'],[CE,1.5,'none','Exhaust / Vent to Atmosphere'],[CP,1,'4,3','Pilot / Control Signal (low flow)'],[CP,1,'2,2','4–20 mA Instrument Signal'],[CG,1,'6,3','Electrical / 24 VDC Control'],[CY,1.5,'none','QEV / HiPex Exhaust Path']].forEach(([c,w,d,lbl],i)=>{
-    const ly2=LY+14+i*23; ln(svg,LX,ly2,LX+28,ly2,c,w,d); tx(svg,LX+34,ly2+4,lbl,{m:true,sz:8,f:'#555555',a:'start'});
+  [[CS,2,'none','Power Air — Supply (Tier 1+2+)'],[CB,2,'none','Power Air — Port B / D/A'],[CE,1.5,'none','Exhaust / Vent to Atmosphere'],[CP,1,'4,3','Pilot Signal (low flow, T2+)'],[CG,1,'6,3','Electrical / 24 VDC Control'],[CY,1.5,'none','Exhaust Path (QEV / HiPex)'],['#e3000f',2.5,'none','Tier 1: SOV carries all supply air']].forEach(([c,w,d,lbl],i)=>{
+    const ly2=LY+14+i*26;ln(svg,LX,ly2,LX+28,ly2,c,w,d);tx(svg,LX+34,ly2+4,lbl,{m:true,sz:8,f:'#555555',a:'start'});
   });
 
-  // Border + footer
   svg.appendChild(el('rect',{x:2,y:2,width:W-4,height:H-4,fill:'none',stroke:'#2c2d30','stroke-width':1.5,rx:3}));
-  rc(svg,0,H-24,W,24,'#f0f0f0','none',0); ln(svg,0,H-24,W,H-24,'#cccccc',1);
-  tx(svg,W/2,H-9,`PNEUMAPANEL v2.0  ·  ISO 1219 / ISA S5.1  ·  PNEUMATIC PANEL CONFIGURATOR  ·  BEPTO Cv METHOD  ·  ${new Date().toLocaleDateString()}`,{m:true,sz:7,f:'#888888'});
-
+  rc(svg,0,H-24,W,24,'#f0f0f0','none',0);ln(svg,0,H-24,W,H-24,'#cccccc',1);
+  tx(svg,W/2,H-9,`PNEUMAPANEL v3.0 · ISO 1219 / ISA S5.1 · BEPTO/ISA CHOKED FLOW · ${new Date().toLocaleDateString()}`,{m:true,sz:7,f:'#888888'});
   return svg;
 }
 
 // ─── BOM ──────────────────────────────────────────────────────────
 function buildBOM(params){
-  const{psi,gal,aType,validation,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasLimit,hasGauge}=params;
-  const{openR,closeR}=validation;
+  const{psi,gal,aType,validation,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasMuffler,hasLimit,hasGauge}=params;
+  const{openR,closeR,openExhR,exhaustCvReq,bpInfo}=validation;
   const items=[];
   const gm=id=>{const c=COMP_DEFS.find(x=>x.id===id);if(!c)return null;const d=getCompData(c),i=getSelIdx(id);return d[i]||null;};
   if(hasFR){const m=gm('cv-fr');items.push({tag:'FR-01',desc:'Filter-Regulator + Pressure Gauge (PI-01)',spec:`20–30µm, 0–${Math.ceil(psi*1.3/10)*10} PSI, ${psi} PSI set`,cv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasVB){const m=gm('cv-vb'),isEst=m&&m.est,hreq=Math.max(openR.cv,aType==='double'?closeR.cv:0);
-    items.push({tag:'VB-01',desc:'Volume Booster — Power Air Path',
-      spec:`Power-air Cv req: ${hreq.toFixed(4)} (1.5×SF); pilot from SOV${isEst?' — ⚠ Cv estimated':''}`,
-      cv:m?m.cv.toFixed(2):'—',model:m?(m.model+(isEst?' ⚠ CONFIRM Cv':'')):' — ',type:'Pneumatic'});}
-  if(hasSov){const m=gm('cv-sov');items.push({tag:'SOV-01',desc:`${aType==='double'?'5/2':'3/2'} Solenoid Valve — Spring Return`,spec:m?(m.note||`${psi} PSI, 24VDC`):`${psi} PSI, 24VDC`,cv:'PILOT PATH',model:m?m.model:'—',type:'Electrical [PILOT]'});}
-  if(hasPos){const m=gm('cv-pos');items.push({tag:'IPY-01',desc:'I/P Electropneumatic Transducer',spec:'4–20 mA → 3–15 PSI',cv:'PILOT PATH',model:m?m.model:'—',type:'Electrical [PILOT]'});}
-  if(hasFCVopen){const m=gm('cv-fcv-open');items.push({tag:'FCV-01',desc:'Flow Control Valve — Open (Meter-Out)',spec:`Set to Cv ${openR.cv.toFixed(4)}`,cv:`≥ ${openR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasFCVclose&&aType==='double'){const m=gm('cv-fcv-close');items.push({tag:'FCV-02',desc:'Flow Control Valve — Close (Meter-Out)',spec:`Set to Cv ${closeR.cv.toFixed(4)}`,cv:`≥ ${closeR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
+  if(hasVB){const m=gm('cv-vb'),isEst=m&&m.est;items.push({tag:'VB-01',desc:'Volume Booster — Power Air Path',spec:`Supply Cv req: ${openR.cv.toFixed(4)} (1.5×SF${isEst?' — ⚠ Cv estimated':''}); pilot from SOV`,cv:m?m.cv.toFixed(2):'—',model:m?(m.model+(isEst?' ⚠ CONFIRM Cv':'')):' — ',type:'Pneumatic'});}
+  if(hasSov){const m=gm('cv-sov');const tier1=isTier1();items.push({tag:'SOV-01',desc:`${aType==='double'?'5/2':'3/2'} Solenoid Valve — Spring Return`,spec:tier1?`TIER 1 POWER PATH — Cv critical. ${psi} PSI, 24VDC`:`Pilot path only — Cv irrelevant. ${psi} PSI, 24VDC`,cv:tier1?(m?m.cv.toFixed(2):'—'):'PILOT',model:m?m.model:'—',type:tier1?'Pneumatic [POWER T1]':'Electrical [PILOT]'});}
+  if(hasPos){const m=gm('cv-pos');items.push({tag:'IPY-01',desc:'I/P Electropneumatic Transducer',spec:'4–20 mA → 3–15 PSI',cv:'PILOT',model:m?m.model:'—',type:'Electrical [PILOT]'});}
+  if(hasFCVopen){const m=gm('cv-fcv-open');items.push({tag:'FCV-01',desc:aType==='single'?'Flow Control Valve — Cylinder Port (Open + Close speed)':'Flow Control Valve — Open (Meter-Out Port A)',spec:`Set to Cv ${openR.cv.toFixed(4)} (supply); also controls exhaust throttle on SA`,cv:`≥ ${openR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
+  if(hasFCVclose&&aType==='double'){const m=gm('cv-fcv-close');items.push({tag:'FCV-02',desc:'Flow Control Valve — Close (Meter-Out Port B)',spec:`Set to Cv ${closeR.cv.toFixed(4)}`,cv:`≥ ${closeR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
+  if(hasMuffler){const m=gm('cv-muffler');items.push({tag:'MUFF-01',desc:'Muffler / Silencer — SOV Exhaust Port',spec:`~3 PSI back-pressure at design flow. ${psi} PSI rated`,cv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
   if(hasQEV){const m=gm('cv-qev');items.push({tag:'QEV-01',desc:'Quick Exhaust Valve',spec:`${psi} PSI rated`,cv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasHipex){const m=gm('cv-hipex'),isEst=m&&m.note.includes('ESTIMATED'),hreq=Math.max(openR.cvExh,aType==='double'?closeR.cvExh:0);
-    items.push({tag:'HIPEX-01',desc:'HiPex High-Pressure Exhaust Valve (manufacturer)',spec:`Exhaust Cv req: ${hreq.toFixed(4)} (1.5× SF)${isEst?' — ⚠ Cv estimated':''}`,cv:m?m.cv.toFixed(2):'—',model:m?(m.model+(isEst?' ⚠ CONFIRM WITH BIFOLD':'')):' — ',type:'Pneumatic'});}
+  if(hasHipex){const m=gm('cv-hipex'),isEst=m&&m.est;items.push({tag:'HIPEX-01',desc:'HiPex High-Pressure Exhaust Valve',spec:`Exhaust Cv req: ${exhaustCvReq.toFixed(4)} (1.5×SF, ${bpInfo.label})${isEst?' — ⚠ Cv estimated':''}`,cv:m?m.cv.toFixed(2):'—',model:m?(m.model+(isEst?' ⚠ CONFIRM WITH BIFOLD':'')):' — ',type:'Pneumatic'});}
   if(hasGauge){items.push({tag:`PI-A${aType==='double'?'/PI-B':''}`,desc:`Cylinder Port Pressure Gauge${aType==='double'?' (×2)':''}`,spec:`0–${Math.ceil(psi*1.3/10)*10} PSI glycerine`,cv:'N/A',model:'Any 2.5" panel gauge',type:'Pneumatic'});}
-  items.push({tag:'ACT-01',desc:`Quarter-Turn Pneumatic Actuator — ${aType==='single'?'Single Acting SR':'Double Acting'}`,spec:`${gal} gal displacement`,cv:'N/A',model:'Per actuator vendor datasheet',type:'Mechanical'});
+  items.push({tag:'ACT-01',desc:`Quarter-Turn Pneumatic Actuator — ${aType==='single'?'Single Acting SR':'Double Acting'}`,spec:`${gal} gal displacement, ${psi} PSI supply`,cv:'N/A',model:'Per actuator vendor datasheet',type:'Mechanical'});
   if(hasLimit){items.push({tag:'ZSO',desc:'Limit Switch — Open Position',spec:'SPDT, NEMA 4X, cam operated',cv:'N/A',model:'Soldo / proximity switch',type:'Electrical'});items.push({tag:'ZSC',desc:'Limit Switch — Close Position',spec:'SPDT, NEMA 4X, cam operated',cv:'N/A',model:'Soldo / proximity switch',type:'Electrical'});}
   return items;
 }
 
 // ─── APPLY ALL RECOMMENDATIONS ────────────────────────────────────
-// Reads required Cvs from current inputs, applies the correct architecture
-// tier, ticks required components, auto-selects models, then re-generates.
-window.applyAllRecommendations = function(){
-  const psi=V('supplyPSI'), gal=V('displacement'), ot=V('openTime'), ct=V('closeTime');
-  const oR=calcCv(gal,ot,psi), cR=calcCv(gal,ct,psi);
-  const rawCvReq = oR.cv / SF;
-  const reqExh   = Math.max(oR.cvExh, actuatorType==='single' ? 0 : cR.cvExh);
-  const arch     = getArchTier(rawCvReq);
+window.applyAllRecommendations=function(){
+  const psi=V('supplyPSI'),gal=V('displacement'),ot=V('openTime'),ct=V('closeTime');
+  const oR=calcSupply(gal,ot,psi);
+  const rawCvReq=oR.cvRaw;
+  const arch=getArchTier(rawCvReq);
+  const oExh=calcExhaust(gal,ot,psi);
 
-  // ── Step 1: tick required power-path components per tier ──────────
-  // FR — always recommended
-  if(!C('chk-fr')){ $('chk-fr').checked=true; }
-
-  // Volume Booster — required from tier 2 up
-  const needVB = arch.tier >= 2;
-  $('chk-vb').checked = needVB;
-
-  // HiPex — required from tier 3 up; prefer over QEV for high Cv
-  const needHipex = arch.tier >= 3;
-  if(needHipex){
-    $('chk-hipex').checked = true;
-    // QEV is redundant alongside HiPex — uncheck to avoid confusion
-    $('chk-qev').checked = false;
-  } else {
-    // For tier 1/2, check if a QEV or HiPex already meets exhaust req
-    // Only add one if exhaust Cv exceeds what SOV R-port can handle (~0.6)
-    if(reqExh > 0.6 && !C('chk-hipex') && !C('chk-qev')){
-      $('chk-qev').checked = true;
-    }
-  }
-
-  // SOV — always required on pilot path
-  if(!C('chk-solenoid')){ $('chk-solenoid').checked = true; }
-
-  // Speed controls — always recommended
-  if(!C('chk-speed-open')) { $('chk-speed-open').checked = true; }
-  if(actuatorType==='double' && !C('chk-speed-close')){ $('chk-speed-close').checked = true; }
-
-  // Limit switches — always recommended for process/safety
-  if(!C('chk-limit')){ $('chk-limit').checked = true; }
-
-  // ── Step 2: clear all pins — let auto-select pick correct models ──
+  if(!C('chk-fr')) $('chk-fr').checked=true;
+  const needVB=arch.tier>=2;
+  $('chk-vb').checked=needVB;
+  const needHipex=arch.tier>=3;
+  if(needHipex){ $('chk-hipex').checked=true; $('chk-qev').checked=false; }
+  else if(oExh.cv>0.6&&!C('chk-hipex')&&!C('chk-qev')) $('chk-qev').checked=true;
+  if(!C('chk-solenoid')) $('chk-solenoid').checked=true;
+  if(!C('chk-speed-open')) $('chk-speed-open').checked=true;
+  if(actuatorType==='double'&&!C('chk-speed-close')) $('chk-speed-close').checked=true;
+  if(!C('chk-limit')) $('chk-limit').checked=true;
   pinnedComps.clear();
-
-  // ── Step 3: rebuild visible component rows & run auto-select ──────
-  updateCompVisibility(); // rebuilds UI and calls updateCalcs → runAutoSelect
-
-  // ── Step 4: re-run generate so output reflects new config ─────────
-  // Small delay to let DOM settle after updateCompVisibility
-  setTimeout(()=>{ window.generateAll(); }, 60);
-
-  // ── Step 5: scroll output into view ──────────────────────────────
-  setTimeout(()=>{
-    const out = $('outContent');
-    if(out) out.scrollIntoView({behavior:'smooth', block:'start'});
-  }, 200);
+  updateCompVisibility();
+  setTimeout(()=>{ window.generateAll(); },60);
+  setTimeout(()=>{ const out=$('outContent');if(out) out.scrollIntoView({behavior:'smooth',block:'start'}); },200);
 };
 
 // ─── GENERATE & VALIDATE ──────────────────────────────────────────
 window.generateAll=function(){
   const psi=V('supplyPSI'),gal=V('displacement'),openT=V('openTime'),closeT=V('closeTime'),aType=actuatorType;
+  if(!gal||!psi||!openT||!closeT){alert('Please fill in all required fields.');return;}
   const hasSov=C('chk-solenoid'),hasPos=C('chk-positioner'),hasFR=C('chk-fr');
   const hasFCVopen=C('chk-speed-open'),hasFCVclose=C('chk-speed-close')&&aType==='double';
-  const hasQEV=C('chk-qev'),hasHipex=C('chk-hipex'),hasLimit=C('chk-limit'),hasGauge=C('chk-gauge'),hasVB=C('chk-vb');
+  const hasQEV=C('chk-qev'),hasHipex=C('chk-hipex'),hasLimit=C('chk-limit'),hasGauge=C('chk-gauge'),hasVB=C('chk-vb'),hasMuffler=C('chk-muffler');
   const cvArr=getCvArray();
   const validation=validate({psi,gal,openT,closeT,aType,cvArr});
-  const params={psi,gal,openT,closeT,aType,validation,cvArr,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasLimit,hasGauge};
+  const params={psi,gal,openT,closeT,aType,validation,cvArr,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasMuffler,hasLimit,hasGauge};
   const svgEl=buildSVG(params);
   const bom=buildBOM(params);
-  const{verdict,checks:powerChecks,pilotChecks,archChecks,sysCv,openR,closeR,arch}=validation;
+  const{verdict,checks:powerChecks,pilotChecks,archChecks,sysCv,openR,openExhR,exhaustCvReq,bpInfo,arch}=validation;
 
   const vText={approved:'✔ DESIGN APPROVED',warning:'⚠ APPROVED WITH WARNINGS',rejected:'✘ DESIGN NOT APPROVED'}[verdict];
   const vSub={
@@ -1430,36 +1442,33 @@ window.generateAll=function(){
       </div>
     </div>`).join('');
 
-  const hipexReq=Math.max(openR.cvExh,aType==='single'?0:closeR.cvExh);
   const cvCls=verdict==='approved'?'green':verdict==='warning'?'yellow':'red';
+  const tier1=isTier1();
   const badges=[
     {l:aType==='single'?'SINGLE ACTING — SPRING RETURN':'DOUBLE ACTING',c:'cyan'},
     {l:`${psi} PSI SUPPLY`,c:''},
     {l:`${gal} GAL DISPLACEMENT`,c:''},
-    {l:`OPEN: ${openT}s → Cv ${openR.cv.toFixed(3)}`,c:'cyan'},
-    aType==='double'?{l:`CLOSE: ${closeT}s → Cv ${closeR.cv.toFixed(3)}`,c:'orange'}:{l:`CLOSE: ${closeT}s (SPRING)`,c:''},
+    {l:`OPEN: ${openT}s → Supply Cv ${openR.cv.toFixed(3)}`,c:'cyan'},
+    aType==='double'?{l:`CLOSE: ${closeT}s → Supply Cv ${validation.closeR.cv.toFixed(3)}`,c:'orange'}:{l:`CLOSE: ${closeT}s (SPRING)`,c:''},
     {l:`POWER-PATH Cv: ${sysCv.toFixed(3)}`,c:cvCls},
-    {l:`ARCH: ${arch?arch.name:'—'}`,c:'yellow'},
-    {l:`EXH Cv REQ: ${hipexReq.toFixed(3)}`,c:'yellow'},
+    {l:`${tier1?'TIER 1 — SOV=POWER':'TIER 2+ — SOV=PILOT'} · ${arch?arch.name:'—'}`,c:'yellow'},
+    {l:`EXH Cv REQ: ${exhaustCvReq.toFixed(3)} · ${bpInfo.label}`,c:'purple'},
+    {l:`SUPPLY REGIME: ${openR.regime}`,c:''},
   ].map(b=>`<span class="badge ${b.c}">${b.l}</span>`).join('');
 
   const bomRows=bom.map(r=>`<tr><td class="tc">${r.tag}</td><td>${r.desc}</td><td class="tsp">${r.spec}</td><td class="tcv">${r.cv}</td><td class="tmo">${r.model}</td><td class="tsp">${r.type}</td></tr>`).join('');
 
-  // Section label helper
   const secHdr=(num,title,sub,pathType)=>`
     <div class="val-sec-hdr">
       <div class="val-sec-num">${num}</div>
-      <div>
-        <div class="val-sec-title">${title}</div>
-        <div class="val-sec-sub">${sub}</div>
-      </div>
-      <div class="val-path-pill ${pathType}">${pathType==='power'?'Cv-CRITICAL':'Cv-IRRELEVANT'}</div>
+      <div><div class="val-sec-title">${title}</div><div class="val-sec-sub">${sub}</div></div>
+      <div class="val-path-pill ${pathType}">${pathType==='power'?'Cv-CRITICAL':pathType==='pilot'?'Cv-IRRELEVANT':'ARCHITECTURE'}</div>
     </div>`;
 
   const content=$('outContent');
   content.innerHTML=`<div class="outcontent">
     <div class="outhdr">
-      <div><div class="outtitle">CONTROL <span>PANEL</span> DIAGRAM</div><div class="outsub">QUARTER-TURN PNEUMATIC ACTUATOR — IA SUPPLY — BEPTO Cv METHOD</div></div>
+      <div><div class="outtitle">CONTROL <span>PANEL</span> DIAGRAM</div><div class="outsub">QUARTER-TURN PNEUMATIC ACTUATOR — BEPTO/ISA CHOKED FLOW METHOD v3.0</div></div>
       <div style="display:flex;gap:8px;align-items:center">
         ${verdict!=='approved'?`<button class="applybtn" onclick="window.applyAllRecommendations()">⚡ Apply All Recommendations</button>`:''}
         <button class="printbtn" onclick="window.print()">⎙ PRINT / PDF</button>
@@ -1474,11 +1483,11 @@ window.generateAll=function(){
         </div>
         ${verdict!=='approved'?`<button class="applybtn applybtn-lg" onclick="window.applyAllRecommendations()">⚡ Apply All Recommendations</button>`:''}
       </div>
-      ${secHdr('01','POWER AIR PATH','FR · Volume Booster · FCV · HiPex/QEV — components that physically move the actuator','power')}
+      ${secHdr('01','POWER AIR PATH','FR · VB · FCV · SOV (Tier 1) · Exhaust path','power')}
       <div class="chklist">${chkHTML(powerChecks)}</div>
-      ${secHdr('02','PILOT / CONTROL PATH','SOV · I/P Positioner · Limit Switches — Cv is irrelevant; signal adequacy only','pilot')}
+      ${secHdr('02','PILOT / CONTROL PATH','SOV (Tier 2+) · I/P Positioner · Limit Switches','pilot')}
       <div class="chklist">${chkHTML(pilotChecks)}</div>
-      ${secHdr('03','ARCHITECTURE & RECOMMENDATION','Required Cv drives system tier selection','arch')}
+      ${secHdr('03','ARCHITECTURE & RECOMMENDATION','Required Cv → system tier selection','arch')}
       <div class="chklist">${chkHTML(archChecks)}</div>
     </div>
     <div class="svgwrap" id="svgWrap"></div>
@@ -1492,7 +1501,7 @@ window.generateAll=function(){
   $('emptyState').style.display='none';
   content.style.display='block';
 
-  const tag=$('hdrTag'), st=$('hdrStatus');
+  const tag=$('hdrTag'),st=$('hdrStatus');
   st.textContent=verdict.toUpperCase();
   tag.className='hdr-tag st-'+verdict;
 };
