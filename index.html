@@ -3,1543 +3,708 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PneumaPanel — Pneumatic Actuator Panel Configurator</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<title>PneumaPanel — Actuator Control Panel Sizing</title>
 <style>
-:root {
-  /* Base */
-  --bg:#f8f9fb;--surface:#ffffff;--panel:#f1f3f7;--card:#ffffff;
-  --border:#e2e6ed;--border2:#cdd2db;--border-focus:#c0392b;
-
-  /* Brand — deep crimson + clean accents */
-  --red:#c0392b;--red-dim:#96281b;--red-bright:#e74c3c;
-  --red-glow:rgba(192,57,43,.12);--red-subtle:rgba(192,57,43,.06);
-
-  /* Semantic */
-  --orange:#d35400;--green:#1e8449;--yellow:#b7770d;--blue:#1a6fa8;--purple:#6c3483;
-  --red-status:#c0392b;
-
-  /* Text */
-  --text:#1a1d23;--text-dim:#5a6072;--text-mid:#3a3f4b;--text-muted:#adb5bd;
-
-  /* Fonts */
-  --mono:'JetBrains Mono',monospace;
-  --head:'Syne',sans-serif;
-  --body:'Inter',sans-serif;
-
-  /* Radius & shadow */
-  --r-sm:4px;--r-md:8px;--r-lg:12px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
-  --shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.05);
+:root{
+  --white:#ffffff;
+  --bg:#faf9f8;
+  --fill:#f3f2f1;
+  --fill2:#edebe9;
+  --stroke:#e1dfdd;
+  --stroke2:#c8c6c4;
+  --t3:#a19f9d;
+  --t2:#605e5c;
+  --t1:#323130;
+  --accent:#a4262c;
+  --accent-dk:#751b1f;
+  --accent-bg:#fdf3f4;
+  --ok:#107c10;
+  --ok-bg:#f1faf1;
+  --warn:#f7630c;
+  --warn-bg:#fff9f5;
+  --err:#a4262c;
+  --err-bg:#fdf3f4;
+  --info:#0078d4;
+  --info-bg:#f3f9fd;
+  --d4:0 1.6px 3.6px rgba(0,0,0,.132),0 .3px .9px rgba(0,0,0,.108);
+  --d8:0 3.2px 7.2px rgba(0,0,0,.132),0 .6px 1.8px rgba(0,0,0,.108);
+  --font:"Segoe UI","Segoe UI Web (West European)",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  --mono:Consolas,"Courier New",monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;min-height:100vh;overflow-x:hidden}
+body{font-family:var(--font);font-size:14px;color:var(--t1);background:var(--bg);line-height:1.43}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--t1);outline-offset:1px}
 
-/* ── HEADER ─────────────────────────────────────────────────────── */
-header{display:flex;align-items:center;gap:16px;padding:0 28px;height:58px;
-  background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
-.logo-hex{width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.logo-hex svg{width:34px;height:34px}
-.logo-copy h1{font-family:var(--head);font-size:20px;font-weight:800;letter-spacing:2px;color:var(--red);line-height:1}
-.logo-copy p{font-family:var(--mono);font-size:7px;color:var(--text-muted);letter-spacing:2px;margin-top:2px;font-weight:500}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.hdr-tag{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-dim);
-  background:var(--panel);border:1px solid var(--border2);padding:4px 12px;border-radius:20px;letter-spacing:.5px;white-space:nowrap}
-.hdr-tag span{color:var(--green);font-weight:600}
-.hdr-tag.st-warn span{color:var(--yellow)}
-.hdr-tag.st-fail span{color:var(--red)}
+/* suite bar */
+.suite{height:48px;background:var(--accent);display:flex;align-items:center;gap:16px;padding:0 20px;color:#fff}
+.waffle{width:20px;height:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;opacity:.85}
+.waffle i{background:#fff;border-radius:1px}
+.suite .app{font-size:15px;font-weight:600;letter-spacing:.2px}
+.suite .sep{width:1px;height:20px;background:rgba(255,255,255,.35)}
+.suite .site{font-size:14px;opacity:.9}
+.suite .right{margin-left:auto;font-size:12px;opacity:.85;font-family:var(--mono)}
 
-/* ── LAYOUT ─────────────────────────────────────────────────────── */
-.app{display:grid;grid-template-columns:375px 1fr;min-height:calc(100vh - 58px)}
+/* page header */
+.pagehead{background:var(--white);border-bottom:1px solid var(--stroke);padding:18px 24px 0}
+.crumbs{font-size:12px;color:var(--t2);margin-bottom:6px}
+.crumbs span{color:var(--t3)}
+.pagehead h1{font-size:24px;font-weight:600;letter-spacing:-.2px;margin-bottom:2px}
+.pagehead p{font-size:13px;color:var(--t2);margin-bottom:12px;max-width:70ch}
+.pivot{display:flex;gap:20px}
+.pivot button{background:none;border:none;padding:8px 2px 10px;font-size:14px;font-weight:600;color:var(--t2);
+  cursor:pointer;border-bottom:2px solid transparent}
+.pivot button:hover{color:var(--t1)}
+.pivot button.on{color:var(--accent);border-bottom-color:var(--accent)}
 
-/* ── SIDEBAR ────────────────────────────────────────────────────── */
-.sidebar{background:var(--surface);border-right:1px solid var(--border);
-  padding:20px 16px 28px;display:flex;flex-direction:column;gap:20px;overflow-y:auto}
-.sec-hd{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--red);letter-spacing:2px;
-  text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.sec-hd::after{content:'';flex:1;height:1px;background:var(--border)}
+/* command bar */
+.cmdbar{background:var(--white);border-bottom:1px solid var(--stroke);height:44px;display:flex;align-items:center;
+  gap:4px;padding:0 20px;position:sticky;top:0;z-index:20}
+.cmd{background:none;border:none;height:36px;padding:0 12px;font-size:14px;color:var(--t1);cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;border-radius:2px}
+.cmd:hover{background:var(--fill)}
+.cmd.primary{background:var(--accent);color:#fff;font-weight:600}
+.cmd.primary:hover{background:var(--accent-dk)}
+.cmd .gl{font-size:15px;line-height:1}
+.cmdbar .status{margin-left:auto;font-size:12px;font-family:var(--mono);color:var(--t2);
+  border:1px solid var(--stroke2);border-radius:2px;padding:3px 10px}
+.cmdbar .status b{font-weight:600}
+.status.s-ok b{color:var(--ok)} .status.s-warn b{color:var(--warn)} .status.s-err b{color:var(--err)}
 
-/* ── Type cards ─────────────────────────────────────────────────── */
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.type-card{background:var(--panel);border:1.5px solid var(--border);border-radius:var(--r-md);
-  padding:14px 8px;cursor:pointer;text-align:center;position:relative;overflow:hidden;transition:all .2s}
-.type-card:hover{border-color:var(--red);background:#fff8f8}
-.type-card.active{border-color:var(--red);background:#fff8f8;box-shadow:0 0 0 3px var(--red-glow)}
-.type-card .dot{position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;
-  background:var(--red);box-shadow:0 0 6px rgba(192,57,43,.5);display:none}
-.type-card.active .dot{display:block}
-.tc-icon{font-size:22px;margin-bottom:4px;filter:grayscale(1) opacity(.3);transition:filter .2s}
-.type-card.active .tc-icon{filter:none}
-.tc-name{font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--text-dim);transition:color .2s}
-.type-card.active .tc-name{color:var(--red)}
-.tc-sub{font-family:var(--mono);font-size:8px;font-weight:500;color:var(--text-muted);margin-top:3px}
-.type-card.active .tc-sub{color:var(--text-dim)}
+/* layout */
+.wrap{display:grid;grid-template-columns:392px 1fr;gap:20px;padding:20px;align-items:start}
+.card{background:var(--white);border:1px solid var(--stroke);border-radius:2px;box-shadow:var(--d4)}
+.card>h2{font-size:15px;font-weight:600;padding:14px 16px 10px;border-bottom:1px solid var(--fill2)}
+.card>h2 small{display:block;font-weight:400;font-size:12px;color:var(--t2);margin-top:2px}
+.cardbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:14px}
 
-/* ── Inputs ─────────────────────────────────────────────────────── */
-.fgroup{display:flex;flex-direction:column;gap:10px}
-.field{display:flex;flex-direction:column;gap:4px}
-.field label{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.iwrap{position:relative;display:flex;align-items:center}
-.iwrap input{width:100%;background:var(--panel);border:1.5px solid var(--border);border-radius:var(--r-sm);
-  color:var(--text);font-family:var(--mono);font-size:13px;font-weight:500;
-  padding:8px 44px 8px 11px;outline:none;transition:all .18s;-moz-appearance:textfield}
-.iwrap input::-webkit-outer-spin-button,.iwrap input::-webkit-inner-spin-button{-webkit-appearance:none}
-.iwrap input:focus{border-color:var(--red);background:var(--surface);box-shadow:0 0 0 3px var(--red-glow)}
-.iunit{position:absolute;right:10px;font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text-muted);pointer-events:none}
-.iwrap input:focus~.iunit{color:var(--red-dim)}
+/* form */
+fieldset{border:none}
+legend,.grouplabel{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;
+  padding-bottom:8px;display:block}
+.f{display:flex;flex-direction:column;gap:4px}
+.f label{font-size:13px;font-weight:600}
+.f .hint{font-size:12px;color:var(--t2)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input[type=number],select{width:100%;height:32px;border:1px solid var(--stroke2);border-radius:2px;background:var(--white);
+  padding:0 8px;font-family:var(--font);font-size:14px;color:var(--t1)}
+input[type=number]:hover,select:hover{border-color:var(--t2)}
+input[type=number]:focus,select:focus{border-color:var(--accent);outline:1px solid var(--accent);outline-offset:-2px}
+.unitwrap{position:relative}
+.unitwrap input{padding-right:44px}
+.unitwrap .u{position:absolute;right:9px;top:0;height:32px;display:flex;align-items:center;font-size:12px;color:var(--t2);pointer-events:none}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--stroke2);border-radius:2px;overflow:hidden}
+.choice button{background:var(--white);border:none;padding:8px 6px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer}
+.choice button+button{border-left:1px solid var(--stroke2)}
+.choice button.on{background:var(--accent-bg);color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
+.chk{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13px;cursor:pointer}
+.chk input{margin-top:2px;accent-color:var(--accent);width:15px;height:15px}
+.tag{font-family:var(--mono);font-size:10px;font-weight:600;padding:1px 5px;border-radius:2px;
+  border:1px solid var(--stroke2);color:var(--t2);margin-left:4px;white-space:nowrap}
+.tag.pw{color:var(--accent);border-color:var(--accent);background:var(--accent-bg)}
+.tag.ex{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+.tag.pi{color:var(--info);border-color:var(--info);background:var(--info-bg)}
 
-/* ── Calc readouts ───────────────────────────────────────────────── */
-.cr{background:var(--red-subtle);border:1px solid rgba(192,57,43,.15);border-radius:var(--r-sm);
-  padding:6px 11px;display:flex;justify-content:space-between;align-items:center}
-.cr .cl{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-dim)}
-.cr .cv{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--red)}
-.cr.hipex{background:rgba(183,119,13,.06);border-color:rgba(183,119,13,.2)}
-.cr.hipex .cl{color:var(--yellow)}
-.cr.hipex .cv{color:var(--yellow)}
-.cr.exh-inferred{background:rgba(108,52,131,.06);border-color:rgba(108,52,131,.2)}
-.cr.exh-inferred .cl{color:var(--purple)}
-.cr.exh-inferred .cv{color:var(--purple);font-size:9px}
-.fnote{font-family:var(--mono);font-size:8px;color:var(--text-muted);line-height:1.8;padding:2px 0}
+/* readout */
+.readout{border:1px solid var(--fill2);border-radius:2px;overflow:hidden}
+.readout div{display:flex;justify-content:space-between;gap:10px;padding:6px 10px;font-size:12px;border-top:1px solid var(--fill2)}
+.readout div:first-child{border-top:none}
+.readout div:nth-child(even){background:var(--bg)}
+.readout .k{color:var(--t2)}
+.readout .v{font-family:var(--mono);font-weight:600}
 
-/* ── Checkboxes ─────────────────────────────────────────────────── */
-.chk-list{display:flex;flex-direction:column;gap:4px}
-.chk-list label{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 8px;border-radius:var(--r-sm);
-  font-family:var(--body);font-size:12px;font-weight:500;color:var(--text-mid);transition:background .15s}
-.chk-list label:hover{background:var(--panel)}
-.chk-list input[type=checkbox]{accent-color:var(--red);width:13px;height:13px;flex-shrink:0}
-.pill{font-family:var(--mono);font-size:8px;font-weight:600;color:var(--yellow);
-  background:rgba(183,119,13,.09);border:1px solid rgba(183,119,13,.25);
-  padding:1px 6px;border-radius:20px;margin-left:4px}
+/* message bar */
+.msg{display:flex;gap:10px;padding:10px 12px;border-radius:2px;font-size:13px;align-items:flex-start;margin-bottom:12px}
+.msg .ic{font-weight:700;line-height:1.3}
+.msg.ok{background:var(--ok-bg);border-left:3px solid var(--ok)} .msg.ok .ic{color:var(--ok)}
+.msg.warn{background:var(--warn-bg);border-left:3px solid var(--warn)} .msg.warn .ic{color:var(--warn)}
+.msg.err{background:var(--err-bg);border-left:3px solid var(--err)} .msg.err .ic{color:var(--err)}
+.msg.info{background:var(--info-bg);border-left:3px solid var(--info)} .msg.info .ic{color:var(--info)}
+.msg b{display:block;font-weight:600;margin-bottom:1px}
+.msg p{color:var(--t2);font-size:12.5px}
+.msg .fix{margin-top:5px;font-size:12px;color:var(--t1);background:rgba(0,0,0,.035);padding:4px 8px;border-radius:2px;display:inline-block}
 
-/* ── Component rows ─────────────────────────────────────────────── */
-.comp-group{display:flex;flex-direction:column;gap:6px}
-.comp-row{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px}
-.comp-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.comp-top label{font-family:var(--body);font-size:11px;font-weight:600;color:var(--text-mid);flex:1}
-.cvbadge{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--red);
-  background:var(--red-subtle);border:1px solid rgba(192,57,43,.25);padding:2px 8px;border-radius:20px;min-width:52px;text-align:right}
-.cvbadge.pinned{color:var(--orange);background:rgba(211,84,0,.07);border-color:rgba(211,84,0,.25)}
-.cvbadge.warn{color:var(--yellow);background:rgba(183,119,13,.07);border-color:rgba(183,119,13,.25)}
-
-/* ── Validation section headers ─────────────────────────────────── */
-.val-sec-hdr{display:flex;align-items:center;gap:12px;padding:10px 16px;margin:16px 0 4px;
-  background:linear-gradient(90deg,var(--red-subtle) 0%,transparent 100%);
-  border-left:3px solid var(--red);border-radius:0 var(--r-sm) var(--r-sm) 0}
-.val-sec-num{font-family:var(--head);font-size:24px;font-weight:800;color:var(--red);line-height:1;min-width:30px}
-.val-sec-title{font-family:var(--body);font-size:13px;font-weight:700;color:var(--text)}
-.val-sec-sub{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px}
-.val-path-pill{margin-left:auto;font-family:var(--mono);font-size:8px;font-weight:700;
-  letter-spacing:1px;padding:3px 10px;border-radius:20px;white-space:nowrap}
-.val-path-pill.power{color:var(--red-dim);background:var(--red-subtle);border:1px solid rgba(192,57,43,.25)}
-.val-path-pill.pilot{color:var(--green);background:rgba(30,132,73,.07);border:1px solid rgba(30,132,73,.22)}
-.val-path-pill.arch{color:var(--purple);background:rgba(108,52,131,.07);border:1px solid rgba(108,52,131,.2)}
-
-/* ── Buttons ────────────────────────────────────────────────────── */
-.applybtn{font-family:var(--body);font-size:11px;font-weight:600;color:#fff;background:var(--red);
-  border:none;border-radius:var(--r-sm);padding:7px 15px;cursor:pointer;white-space:nowrap;
-  transition:all .15s;box-shadow:var(--shadow-sm)}
-.applybtn:hover{background:var(--red-dim);transform:translateY(-1px);box-shadow:var(--shadow-md)}
-.applybtn:active{transform:translateY(0)}
-.applybtn-lg{font-size:12px;padding:9px 18px;border-radius:var(--r-md);box-shadow:0 2px 10px rgba(192,57,43,.3)}
-.unpinbtn{font-family:var(--mono);font-size:8px;font-weight:500;color:var(--red-dim);
-  background:var(--red-subtle);border:1px solid rgba(192,57,43,.2);border-radius:20px;
-  padding:2px 8px;cursor:pointer;margin-left:4px;vertical-align:middle;transition:all .15s}
-.unpinbtn:hover{background:rgba(192,57,43,.14)}
-.msel{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-sm);
-  color:var(--text-mid);font-family:var(--mono);font-size:9px;font-weight:500;padding:5px 7px;outline:none;cursor:pointer}
-.msel:focus{border-color:var(--red)}
-.msel option{background:var(--bg)}
-
-/* ── Generate button ────────────────────────────────────────────── */
-.genbtn{width:100%;background:var(--red);color:#fff;border:none;border-radius:var(--r-md);
-  font-family:var(--head);font-size:17px;font-weight:800;letter-spacing:2px;padding:13px;
-  cursor:pointer;transition:all .2s;margin-top:4px;box-shadow:var(--shadow-md)}
-.genbtn:hover{background:var(--red-dim);box-shadow:0 6px 20px rgba(192,57,43,.4);transform:translateY(-2px)}
-.genbtn:active{transform:translateY(0)}
-
-/* ── OUTPUT ─────────────────────────────────────────────────────── */
-.output{background:var(--bg);padding:28px 32px;overflow-y:auto;position:relative}
-.empty-st{display:flex;flex-direction:column;align-items:center;justify-content:center;height:70vh;gap:16px}
-.empty-icon{font-size:56px;opacity:.08}
-.empty-st p{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:2px;
-  color:var(--text-muted);text-align:center;line-height:2.4}
-
-/* ── Output header ───────────────────────────────────────────────── */
-.outhdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
-.outtitle{font-family:var(--head);font-size:26px;font-weight:800;letter-spacing:1px;color:var(--text)}
-.outtitle span{color:var(--red)}
-.outsub{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-muted);margin-top:4px;letter-spacing:.5px}
-.printbtn{font-family:var(--body);font-size:11px;font-weight:500;color:var(--text-dim);
-  background:var(--surface);border:1px solid var(--border);padding:7px 14px;border-radius:var(--r-sm);
-  cursor:pointer;transition:all .15s;box-shadow:var(--shadow-sm)}
-.printbtn:hover{border-color:var(--red);color:var(--red)}
-
-/* ── Badge strip ─────────────────────────────────────────────────── */
-.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
-.badge{font-family:var(--mono);font-size:9px;font-weight:500;border:1px solid var(--border);
-  padding:4px 10px;border-radius:20px;color:var(--text-dim);background:var(--surface)}
-.badge.cyan{border-color:var(--red);color:var(--red);background:var(--red-subtle)}
-.badge.orange{border-color:var(--orange);color:var(--orange);background:rgba(211,84,0,.05)}
-.badge.green{border-color:var(--green);color:var(--green);background:rgba(30,132,73,.05)}
-.badge.yellow{border-color:var(--yellow);color:var(--yellow);background:rgba(183,119,13,.05)}
-.badge.red{border-color:var(--red);color:var(--red);background:rgba(192,57,43,.05)}
-.badge.purple{border-color:var(--purple);color:var(--purple);background:rgba(108,52,131,.05)}
-
-/* ── Approval block ──────────────────────────────────────────────── */
-.appr{border-radius:var(--r-lg);padding:18px 22px;margin-bottom:22px;box-shadow:var(--shadow-sm)}
-.appr.approved{background:rgba(30,132,73,.04);border:1.5px solid rgba(30,132,73,.25)}
-.appr.warning{background:rgba(183,119,13,.04);border:1.5px solid rgba(183,119,13,.25)}
-.appr.rejected{background:rgba(192,57,43,.04);border:1.5px solid rgba(192,57,43,.25)}
-.appr-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
-.vbadge{font-family:var(--head);font-size:17px;font-weight:800;letter-spacing:1px;
-  padding:6px 14px;border-radius:var(--r-sm);white-space:nowrap;flex-shrink:0}
-.vbadge.approved{background:rgba(30,132,73,.12);color:var(--green)}
-.vbadge.warning{background:rgba(183,119,13,.12);color:var(--yellow)}
-.vbadge.rejected{background:rgba(192,57,43,.12);color:var(--red)}
-.vsub{font-family:var(--body);font-size:12px;color:var(--text-dim);line-height:1.7;padding-top:4px}
-
-/* ── Check items ─────────────────────────────────────────────────── */
-.chklist{display:flex;flex-direction:column;gap:4px}
-.chkitem{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;
-  border-radius:var(--r-sm);background:var(--surface);border:1px solid var(--border)}
-.chkicon{font-size:12px;flex-shrink:0;margin-top:2px}
-.chkbody{flex:1;min-width:0}
-.chktitle{font-family:var(--body);font-size:13px;font-weight:600}
-.chkdetail{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:3px;line-height:1.7}
-.chkitem.pass .chktitle{color:var(--green)}
-.chkitem.fail .chktitle{color:var(--red)}
-.chkitem.warn .chktitle{color:var(--yellow)}
-.chkitem.info .chktitle{color:var(--blue)}
-.chkrec{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--orange);margin-top:5px;
-  padding:3px 10px;background:rgba(211,84,0,.06);border-left:2.5px solid var(--orange);
-  border-radius:0 var(--r-sm) var(--r-sm) 0;display:inline-block}
-.chkmod{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--green);margin-top:4px;
-  padding:3px 10px;background:rgba(30,132,73,.05);border-left:2.5px solid var(--green);
-  border-radius:0 var(--r-sm) var(--r-sm) 0;display:inline-block}
-
-/* ── SVG wrap ────────────────────────────────────────────────────── */
-.svgwrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
-  padding:16px;margin-bottom:24px;overflow:hidden;box-shadow:var(--shadow-sm)}
-
-/* ── BOM ─────────────────────────────────────────────────────────── */
-.bomtitle{font-family:var(--head);font-size:16px;font-weight:800;letter-spacing:1px;color:var(--text);margin-bottom:12px}
-.bomtable{width:100%;border-collapse:collapse;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-sm)}
-.bomtable th{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;
-  color:var(--text-dim);text-align:left;background:var(--panel);
-  border-bottom:1px solid var(--border);padding:8px 11px;text-transform:uppercase}
-.bomtable td{font-family:var(--body);font-size:13px;color:var(--text);
-  padding:8px 11px;border-bottom:1px solid var(--border);background:var(--surface)}
-.bomtable tr:last-child td{border-bottom:none}
-.bomtable tr:hover td{background:var(--panel)}
-.tc{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--red)}
-.tsp{font-family:var(--mono);font-size:9px;color:var(--text-dim)}
-.tcv{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--orange)}
-.tmo{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--green)}
-
-/* ── Physics banner ──────────────────────────────────────────────── */
-.physics-banner{background:rgba(108,52,131,.05);border:1px solid rgba(108,52,131,.18);
-  border-radius:var(--r-sm);padding:9px 12px;margin-top:8px}
-.physics-banner p{font-family:var(--mono);font-size:8px;color:var(--purple);line-height:1.9}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.outcontent{animation:fadeUp .3s ease}
-
-@media(max-width:900px){
-  .app{grid-template-columns:1fr}
-  .sidebar{border-right:none;border-bottom:1px solid var(--border)}
-  header{padding:0 16px}
-  .output{padding:16px 18px}
-}
+/* results */
+.result-head{display:flex;align-items:baseline;gap:12px;padding:16px 16px 12px;border-bottom:1px solid var(--fill2);flex-wrap:wrap}
+.verdict{font-size:20px;font-weight:600}
+.verdict.ok{color:var(--ok)} .verdict.warn{color:var(--warn)} .verdict.err{color:var(--err)}
+.result-head .sub{font-size:13px;color:var(--t2)}
+.pick{padding:16px;border-bottom:1px solid var(--fill2)}
+.pick .big{font-size:30px;font-weight:600;letter-spacing:-.5px;line-height:1.15}
+.pick .lbl{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.pick .meta{font-size:13px;color:var(--t2);margin-top:6px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));border-top:1px solid var(--fill2)}
+.kpi{padding:12px 16px;border-right:1px solid var(--fill2)}
+.kpi:last-child{border-right:none}
+.kpi .k{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}
+.kpi .v{font-family:var(--mono);font-size:19px;font-weight:600;margin-top:3px}
+.kpi .n{font-size:11px;color:var(--t3);margin-top:1px}
+.sect{padding:14px 16px}
+.sect h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.sect .sh{font-size:12px;color:var(--t2);margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;font-weight:600;color:var(--t2);border-bottom:1px solid var(--stroke2);
+  padding:7px 10px;white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--fill2);vertical-align:top}
+tbody tr:hover td{background:var(--bg)}
+td.m,th.m{font-family:var(--mono)}
+.empty{padding:64px 24px;text-align:center;color:var(--t2)}
+.empty .g{font-size:40px;color:var(--stroke2);margin-bottom:10px}
+.empty b{display:block;font-size:15px;color:var(--t1);margin-bottom:4px}
+.foot{padding:12px 16px;border-top:1px solid var(--fill2);font-size:11.5px;color:var(--t2);font-family:var(--mono)}
+.note{font-size:12px;color:var(--t2);border-left:2px solid var(--stroke2);padding-left:10px;margin-top:6px}
+@media(max-width:980px){.wrap{grid-template-columns:1fr}}
+@media print{.suite,.cmdbar,.pivot,.sidebar{display:none}.wrap{grid-template-columns:1fr}.card{box-shadow:none}}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo-hex">
-    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="18,2 32,10 32,26 18,34 4,26 4,10" fill="#e3000f" opacity=".2" stroke="#e3000f" stroke-width="1.5"/>
-      <text x="18" y="23" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="14" fill="#e3000f">P</text>
-    </svg>
-  </div>
-  <div class="logo-copy">
-    <h1>PNEUMAPANEL</h1>
-    <p>QUARTER-TURN PNEUMATIC ACTUATOR CONTROL PANEL CONFIGURATOR</p>
-  </div>
-  <div class="hdr-right">
-    <div class="hdr-tag" id="hdrTag">DESIGN <span id="hdrStatus">PENDING</span></div>
-    <div class="hdr-tag">BEPTO / ISA METHOD <span>v3.0</span></div>
-  </div>
-</header>
+<div class="suite">
+  <div class="waffle"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="app">PneumaPanel</div>
+  <div class="sep"></div>
+  <div class="site">Engineered-to-Order · Control Panel Sizing</div>
+  <div class="right" id="engineTag">ISA choked flow · v4.0</div>
+</div>
 
-<div class="app">
-<aside class="sidebar">
-
-  <div>
-    <div class="sec-hd">01 — Actuator Type</div>
-    <div class="type-grid">
-      <div class="type-card active" id="btn-single" onclick="selectType('single')">
-        <div class="dot"></div>
-        <div class="tc-icon">🌀</div>
-        <div class="tc-name">SINGLE<br>ACTING</div>
-        <div class="tc-sub">SPRING RETURN</div>
-      </div>
-      <div class="type-card" id="btn-double" onclick="selectType('double')">
-        <div class="dot"></div>
-        <div class="tc-icon">⇄</div>
-        <div class="tc-name">DOUBLE<br>ACTING</div>
-        <div class="tc-sub">PNEUMATIC BOTH</div>
-      </div>
-    </div>
+<div class="pagehead">
+  <div class="crumbs">Customer Service <span>&rsaquo;</span> Tools <span>&rsaquo;</span> Control panel sizing</div>
+  <h1>Control panel sizing</h1>
+  <p>Enter the actuator displacement and speed requirement. The tool checks the stroke time against the
+     actuator's minimum, sizes the required flow coefficient, and returns a standardized panel.</p>
+  <div class="pivot">
+    <button class="on" id="pv-std" onclick="setMode('std')">Standardized panel</button>
+    <button id="pv-cus" onclick="setMode('cus')">Custom build</button>
   </div>
+</div>
 
-  <div>
-    <div class="sec-hd">02 — Supply Pressure</div>
-    <div class="field">
-      <label>Instrument Air Supply</label>
-      <div class="iwrap">
-        <input type="number" id="supplyPSI" value="80" min="20" max="150" step="5" oninput="updateCalcs()">
-        <span class="iunit">PSI</span>
-      </div>
-    </div>
-  </div>
+<div class="cmdbar">
+  <button class="cmd primary" onclick="run()"><span class="gl">&#9655;</span> Calculate</button>
+  <button class="cmd" onclick="resetAll()"><span class="gl">&#8635;</span> Reset</button>
+  <button class="cmd" onclick="window.print()"><span class="gl">&#9113;</span> Print</button>
+  <div class="status" id="status">Status <b>Not run</b></div>
+</div>
 
-  <div>
-    <div class="sec-hd">03 — Actuator Displacement</div>
-    <div class="fgroup">
-      <div class="field">
-        <label>Total displacement (from datasheet)</label>
-        <div class="iwrap">
-          <input type="number" id="displacement" value="0.195" min="0.001" max="50" step="0.001" oninput="updateCalcs()">
-          <span class="iunit">gal</span>
+<div class="wrap">
+
+<!-- ═══ INPUTS ═══ -->
+<div class="card sidebar">
+  <h2>Requirement<small>All fields are required unless marked optional.</small></h2>
+  <div class="cardbody">
+
+    <fieldset>
+      <legend>Actuator</legend>
+      <div class="f" style="margin-bottom:10px">
+        <label>Acting type</label>
+        <div class="choice">
+          <button class="on" id="at-sr" onclick="setActing('sr')">Spring return</button>
+          <button id="at-da" onclick="setActing('da')">Double acting</button>
         </div>
       </div>
-      <div class="cr"><span class="cl">SCFM req. (open / supply stroke)</span><span class="cv" id="reqFlowOpen">—</span></div>
-      <div class="cr"><span class="cl">SCFM req. (close / exhaust stroke)</span><span class="cv" id="reqFlowClose">—</span></div>
-    </div>
-  </div>
-
-  <div>
-    <div class="sec-hd">04 — Speed Requirements</div>
-    <div class="fgroup">
-      <div class="frow">
-        <div class="field">
-          <label>Open Time</label>
-          <div class="iwrap">
-            <input type="number" id="openTime" value="3" min="0.5" max="300" step="0.5" oninput="updateCalcs()">
-            <span class="iunit">sec</span>
-          </div>
+      <div class="row2" style="margin-bottom:10px">
+        <div class="f">
+          <label for="family">Family</label>
+          <select id="family" onchange="onFamily()"></select>
         </div>
-        <div class="field">
-          <label>Close Time</label>
-          <div class="iwrap">
-            <input type="number" id="closeTime" value="5" min="0.5" max="300" step="0.5" oninput="updateCalcs()">
-            <span class="iunit">sec</span>
-          </div>
+        <div class="f">
+          <label for="bodySize">Body size</label>
+          <select id="bodySize" onchange="onBody()"></select>
         </div>
       </div>
-      <div class="frow">
-        <div class="cr"><span class="cl">Req. Cv (supply)</span><span class="cv" id="openCvDisp">—</span></div>
-        <div class="cr"><span class="cl">Req. Cv (exhaust)</span><span class="cv" id="closeCvDisp">—</span></div>
+      <div class="row2" style="margin-bottom:10px">
+        <div class="f">
+          <label for="cylSize">Cylinder size</label>
+          <select id="cylSize" onchange="onCyl()"></select>
+        </div>
+        <div class="f">
+          <label for="portOpt">Port option</label>
+          <select id="portOpt" onchange="live()"></select>
+        </div>
       </div>
-      <div class="cr exh-inferred">
-        <span class="cl">⬡ Inferred exhaust back-pressure</span>
-        <span class="cv" id="inferredBackP">—</span>
+      <div class="f">
+        <label class="chk" for="override"><input type="checkbox" id="override" onchange="live()">
+          <span>Manual override fitted<span class="hint" style="display:block">Raises the actuator's minimum stroke time substantially.</span></span></label>
       </div>
-      <div class="cr hipex">
-        <span class="cl">⚡ Exhaust Cv req. (at inferred P₂)</span>
-        <span class="cv" id="hipexCvDisp">—</span>
+    </fieldset>
+
+    <fieldset>
+      <legend>Duty</legend>
+      <div class="f" style="margin-bottom:10px">
+        <label for="disp">Displacement</label>
+        <div class="unitwrap"><input type="number" id="disp" value="2.5" min="0.001" max="500" step="0.001" oninput="live()"><span class="u">gal</span></div>
+        <span class="hint">Swept volume per stroke, from the sizing tool.</span>
       </div>
-      <div class="fnote" id="flowRegimeNote">Flow regime: —</div>
-      <div class="physics-banner">
-        <p>SUPPLY: Bepto/ISA choked or subcritical · ΔP=1 PSI min across each component · η=0.90 · SF=1.5×<br>
-        EXHAUST: P₁ = supply pressure (trapped in actuator) · P₂ inferred from panel config<br>
-        Exhaust back-pressure: inferred automatically from muffler / manifold selection</p>
+      <div class="f" style="margin-bottom:10px">
+        <label for="psi">Air supply</label>
+        <div class="unitwrap"><input type="number" id="psi" value="80" min="30" max="150" step="5" oninput="live()"><span class="u">psig</span></div>
       </div>
+      <div class="row2">
+        <div class="f">
+          <label for="tOpen">Open time</label>
+          <div class="unitwrap"><input type="number" id="tOpen" value="10" min="0.1" max="600" step="0.5" oninput="live()"><span class="u">s</span></div>
+        </div>
+        <div class="f">
+          <label for="tClose">Close time</label>
+          <div class="unitwrap"><input type="number" id="tClose" value="10" min="0.1" max="600" step="0.5" oninput="live()"><span class="u">s</span></div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Exhaust discharge</legend>
+      <div class="f">
+        <label for="exhaust">Discharge arrangement</label>
+        <select id="exhaust" onchange="live()">
+          <option value="open">Open exhaust — no restriction</option>
+          <option value="muffler" selected>Muffler / silencer — approx. 3 psi</option>
+          <option value="manifold">Shared manifold — approx. 8 psi</option>
+          <option value="both">Muffler and shared manifold — approx. 10 psi</option>
+        </select>
+        <span class="hint">Sets the back-pressure used for the exhaust-side flow coefficient.</span>
+      </div>
+    </fieldset>
+
+    <fieldset id="fs-custom" style="display:none">
+      <legend>Custom build — components</legend>
+      <div id="compChecks"></div>
+      <div id="compPicks" style="margin-top:10px;display:flex;flex-direction:column;gap:8px"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Live calculation</legend>
+      <div class="readout" id="readout"></div>
+    </fieldset>
+
+  </div>
+</div>
+
+<!-- ═══ RESULTS ═══ -->
+<div class="card">
+  <div id="out">
+    <div class="empty">
+      <div class="g">&#9636;</div>
+      <b>No result yet</b>
+      Enter the requirement and choose Calculate.
     </div>
   </div>
+</div>
 
-  <div>
-    <div class="sec-hd">05 — Panel Components</div>
-    <div class="chk-list">
-      <label><input type="checkbox" id="chk-fr"          checked onchange="updateCompVisibility()"> Filter-Regulator + Gauge (FR)</label>
-      <label><input type="checkbox" id="chk-solenoid"    checked onchange="updateCompVisibility()"> Solenoid Valve (SOV) <span class="pill" style="color:#a78bfa;border-color:#a78bfa;background:rgba(167,139,250,.1)">PILOT / TIER-1 POWER</span></label>
-      <label><input type="checkbox" id="chk-vb"                 onchange="updateCompVisibility()"> Volume Booster (VB) <span class="pill">⚡ POWER PATH</span></label>
-      <label><input type="checkbox" id="chk-positioner"         onchange="updateCompVisibility()"> I/P Positioner (4–20 mA) <span class="pill" style="color:#a78bfa;border-color:#a78bfa;background:rgba(167,139,250,.1)">PILOT</span></label>
-      <label><input type="checkbox" id="chk-speed-open"  checked onchange="updateCompVisibility()"> Cylinder Port FCV (open speed)</label>
-      <label><input type="checkbox" id="chk-speed-close" checked onchange="updateCompVisibility()"> Cylinder Port FCV (close speed — DA only)</label>
-      <label><input type="checkbox" id="chk-muffler"            onchange="updateCompVisibility()"> Muffler / Silencer (exhaust port) <span class="pill" style="color:#7c3aed;border-color:#7c3aed;background:rgba(124,58,237,.08)">BACK-P</span></label>
-      <label><input type="checkbox" id="chk-manifold"           onchange="updateCompVisibility()"> Shared Exhaust Manifold <span class="pill" style="color:#7c3aed;border-color:#7c3aed;background:rgba(124,58,237,.08)">BACK-P</span></label>
-      <label><input type="checkbox" id="chk-qev"                onchange="updateCompVisibility()"> Quick Exhaust Valve (QEV)</label>
-      <label><input type="checkbox" id="chk-hipex"              onchange="updateCompVisibility()"> HiPex Exhaust Valve <span class="pill">⚡ HIGH SPEED</span></label>
-      <label><input type="checkbox" id="chk-limit"       checked onchange="updateCompVisibility()"> Limit Switches (ZSO / ZSC)</label>
-      <label><input type="checkbox" id="chk-gauge"               onchange="updateCompVisibility()"> Cylinder Port Gauges (PI)</label>
-    </div>
-  </div>
-
-  <div id="cvInputSection">
-    <div class="sec-hd" style="justify-content:space-between;align-items:center">
-      <span style="display:flex;align-items:center;gap:8px;flex-shrink:0">06 — Component Selection
-        <span id="autoLabel" style="font-family:var(--mono);font-size:7px;color:var(--green);letter-spacing:1px">● AUTO-SIZED</span>
-      </span>
-      <button class="unpinbtn" style="font-size:7.5px;padding:2px 8px;flex-shrink:0" onclick="resetAllPins()">↺ Reset All to Auto</button>
-    </div>
-    <div class="comp-group" id="cvInputGroup"></div>
-    <div class="fnote" style="margin-top:8px">
-      Cv from manufacturer published datasheets.<br>
-      <strong style="color:#e3000f">TIER 1 (no VB):</strong> SOV IS the power path — SOV Cv included in series calc<br>
-      <strong style="color:#e3000f">TIER 2+:</strong> SOV pilots VB only — SOV Cv excluded from power path<br>
-      <strong style="color:#ffc107">EXHAUST:</strong> HiPex / QEV — separate exhaust Cv check with inferred P₂
-    </div>
-  </div>
-
-  <button class="genbtn" onclick="generateAll()">GENERATE &amp; VALIDATE</button>
-
-</aside>
-
-<main class="output">
-  <div class="empty-st" id="emptyState">
-    <div class="empty-icon">⚙</div>
-    <p>CONFIGURE ACTUATOR PARAMETERS<br>AND CLICK GENERATE &amp; VALIDATE</p>
-  </div>
-  <div id="outContent" style="display:none"></div>
-</main>
 </div>
 
 <script>
 'use strict';
+const PORT_MAP={"065":{"180":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"],"C":["-","-"]},"235":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"],"C":["[3] - 1/2\" NPT","[3] - 1/2\" NPT"]},"280":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[2] - 1\" NPT","[2] - 1\" NPT"]},"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["-","-"]}},"085":{"180":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"],"C":["-","-"]},"235":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"],"C":["[3] - 1/2\" NPT","[3] - 1/2\" NPT"]},"280":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[2] - 1\" NPT","[2] - 1\" NPT"]},"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["-","-"]},"435":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["-","-"]},"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["-","-"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 2\" NPT"]}},"100":{"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"435":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["-","-"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","-"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]}},"130":{"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"435":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["-","-"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"635":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"685":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"]}},"271":{"942":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"945":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"960":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"962":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"965":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"970":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]}},"161":{"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"635":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"685":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]}},"200":{"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"],"C":["-","-"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"635":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"685":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"935":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"937":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]}},"201":{"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"935":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"937":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"940":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"]}},"270":{"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"]}},"350":{"995":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"]},"997":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"]}}};
+const MIN_TIME={"CP":{"035":[1.0,0.3],"045":[1.5,0.3],"055":[2.0,0.3],"065":[2.5,0.3]},"GP":{"065":[2.5,0.5],"085":[3.0,0.5],"100":[3.5,0.6],"130":[4.0,0.7],"160":[5.0,0.8],"161":[5.0,0.8],"200":[6.0,1.0],"201":[6.0,1.0],"270":[7.0,1.3],"271":[7.0,1.3],"350":[8.0,6.0]}};
 
-// ─── CONSTANTS ────────────────────────────────────────────────────
-const GAL_IN3  = 231;
-const $ = id => document.getElementById(id);
-const V = id => parseFloat($(id).value) || 0;
-const C = id => { const e=$(id); return e ? e.checked : false; };
 
-let actuatorType = 'single';
+/* ───────────────────────────────────────────────────────────────
+   STANDARDIZED PANEL LADDERS
+   Source: standardized engineering workbook, Sheet6 columns AI:AN.
+   cvIn / cvOut are catalogue values for the assembled package.
+   hipexCv is the flow coefficient of one add-on quick-exhaust unit.
+   ─────────────────────────────────────────────────────────────── */
+const CFPD=[[40,3,29],[60,5.1,32],[70,5.8,34.8],[80,6.4,37.4],[90,7.1,39.9],[100,7.8,42.1],[110,8.5,44.3],[120,9.2,46.4],[130,9.8,48.4],[140,10.5,50.3],[150,11.2,52.1],[160,11.8662,55.257999999999996],[180,13.2222,59.837999999999994],[200,14.5782,64.418],[220,15.9342,68.998],[240,17.2902,73.578],[260,18.6462,78.158],[280,20.0022,82.738],[300,21.3582,87.318],[320,22.714199999999998,91.898],[340,24.0702,96.478],[360,25.4262,101.05799999999999],[380,26.7822,105.638],[400,28.1382,110.218],[420,29.4942,114.798],[440,30.8502,119.378],[460,32.206199999999995,123.958],[480,33.5622,128.538],[500,34.9182,133.118],[520,36.2742,137.698],[540,37.6302,142.27800000000002],[560,38.9862,146.858],[580,40.3422,151.438],[600,41.6982,156.018],[700,48.4782,178.918],[800,55.2582,201.818],[900,62.038199999999996,224.718],[1000,68.81819999999999,247.618],[1100,75.59819999999999,270.51800000000003]];
+const LADDER_SR=[
+  {name:'1/4 (SOV)',        cvIn:0.5791, cvOut:0.6927, port:'1/4',   hipexCv:2.0},
+  {name:'1/2 (FB+SOV)',     cvIn:3.1474, cvOut:2.6759, port:'1/2',   hipexCv:5.2},
+  {name:'3/4 (FB+SOV)',     cvIn:6.7709, cvOut:5.1633, port:'3/4',   hipexCv:11.0},
+  {name:'1 (FB+SOV)',       cvIn:7.9196, cvOut:7.2448, port:'1',     hipexCv:14.3},
+  {name:'1-1/2 (FB+SOV)',   cvIn:19.9210,cvOut:24.0435,port:'1-1/2', hipexCv:40.3},
+  {name:'2 (FB+SOV)',       cvIn:34.9964,cvOut:41.0685,port:'2',     hipexCv:65.0}
+];
+const LADDER_DA=[
+  {name:'1/4 (DA 5/2-5/3-4/3 + SOV)',  cvIn:0.5791, cvOut:0.6927, port:'1/4',   hipexCv:2.0},
+  {name:'1/2 (DA 5/2-5/3-4/3 + SOV)',  cvIn:2.7930, cvOut:4.3971, port:'1/2',   hipexCv:5.2},
+  {name:'3/4 (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:5.4729, cvOut:7.9490, port:'3/4', hipexCv:11.0},
+  {name:'1 (DA 5/3 SOV + 5/3 PV + 2x SOV)',   cvIn:6.4469, cvOut:7.9196, port:'1',   hipexCv:14.3},
+  {name:'1-1/2 (DA 5/3 SOV + 5/3 PV + 2x SOV)',cvIn:17.3205,cvOut:9.7157,port:'1-1/2',hipexCv:40.3},
+  /* The workbook's 2" DA entry had no flow coefficient, so any double-acting
+     duty above 17.3 Cv returned an error instead of a panel. Filled from the
+     2" spring-return package, which uses the same body. Confirm before use. */
+  {name:'2 (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:34.9964, cvOut:41.0685, port:'2', hipexCv:65.0, provisional:true}
+];
+const BOOSTER_CAP=3;   // more than this many add-on exhaust units is a fabrication problem
 
-// ─── PHYSICS ENGINE v3 — BEPTO / ISA CHOKED FLOW ─────────────────
-//
-// Reference: Bepto Pneumatic "How To Calculate Flow Coefficient (Cv)"
-//            ISA-75.01 gas flow equations
-//
-// CRITICAL FLOW REGIME CHECK (air, k=1.4):
-//   Choked when P2/P1 ≤ 0.528 (critical pressure ratio for air)
-//   At 80 PSI supply (94.7 PSIA), choked if P2 < 50 PSIA → almost always choked
-//
-// CHOKED FLOW (P2/P1 ≤ 0.528):
-//   Cv = Q × √(T × SG) / (720 × P1)
-//   where Q=SCFM, T=°R, SG=1.0 air, P1=PSIA
-//
-// SUBCRITICAL FLOW (P2/P1 > 0.528):
-//   Cv = Q × √(T × SG) / [1360 × P1 × √(1 – (2/3)×((P1-P2)/P1)²)]
-//
-// SCFM (standard free air):
-//   scfm = (V_in³/1728) / t_sec × 60 × (P1_psia/14.7) / η
-//   The (P1/14.7) term converts actual compressed volume to standard conditions.
-//
-// EXHAUST STROKE:
-//   P1_exh = supply pressure (air trapped in actuator at supply pressure)
-//   P2_exh = inferred from panel config (muffler, manifold, open exhaust)
-//   Single-acting: exhaust Cv matters — spring pushes air out through exhaust path
-//   Double-acting: both strokes need supply Cv and exhaust Cv independently
-//
-// SUPPLY-SIDE ΔP ASSUMPTION:
-//   ΔP = 1.0 PSI assumed across each series component (conservative minimum drop)
-//   P2_supply = P1_supply - ΔP = supply - 1.0 PSI
-//   At 80 PSI gauge → P1=94.7 PSIA, P2=93.7 PSIA, ratio=0.989 → always choked
-//   So choked formula always applies on supply side at typical pneumatic pressures.
+/* Families. CP bodies are not in the port-option tables, so port callout is
+   unavailable for them — the min-time check still applies. */
+const FAMILIES={
+  GP:{label:'GP — scotch yoke', bodies:['065','085','100','130','160','161','200','201','270','271','350']},
+  CP:{label:'CP — rack and pinion', bodies:['035','045','055','065']}
+};
 
-const T_R  = 530;   // °R (68°F standard)
-const SG   = 1.0;   // air specific gravity relative to air
-const ETA  = 0.90;  // volumetric efficiency (actuator leakage allowance)
-const SF   = 1.5;   // safety factor on required Cv
-const DP_COMP = 1.0; // assumed ΔP across each series component (PSI) — conservative
+/* ───────────────────────────────────────────────────────────────
+   FLOW ENGINE
+   Critical (choked) flow, air:   Cv = Q·sqrt(SG·T) / (720·P1)
+   Subcritical:                   Cv = Q·sqrt(SG·T) / (1360·P1·sqrt(1-(2/3)x^2))
 
-// Back-pressure constants (inferred from panel config)
-const BP_OPEN_EXHAUST  = 0.0;   // PSI — no restriction on exhaust port
-const BP_MUFFLER       = 3.0;   // PSI — typical silencer/muffler back-pressure
-const BP_MANIFOLD      = 8.0;   // PSI — shared exhaust manifold back-pressure
-const BP_MUFFLER_MANIFOLD = 10.0; // PSI — muffler + shared manifold combined
+   Q IS IN SCFH. The previous version passed SCFM into the same constants,
+   which understated every required Cv by a factor of 60 and made the
+   architecture tiers unreachable. Q is now converted before it is used.
+   ─────────────────────────────────────────────────────────────── */
+const GAL_IN3=231, T_R=530, SG=1.0, ETA=0.90, ATM=14.696, K_SHEET=29;
 
-// Infer exhaust back-pressure from current panel configuration
-function inferExhaustBackPressure() {
-  const hasMuffler  = C('chk-muffler');
-  const hasManifold = C('chk-manifold');
-  if (hasMuffler && hasManifold) return { bp: BP_MUFFLER_MANIFOLD, label: 'Muffler + Manifold (~10 PSI)' };
-  if (hasManifold) return { bp: BP_MANIFOLD,  label: 'Shared manifold (~8 PSI)' };
-  if (hasMuffler)  return { bp: BP_MUFFLER,   label: 'Muffler/silencer (~3 PSI)' };
-  return             { bp: BP_OPEN_EXHAUST, label: 'Open exhaust (0 PSI)' };
+/* Safety factors carried over from the standardized workbook, because the
+   panel ladder breakpoints were established under them.
+     spring, air stroke    2.5
+     spring, spring stroke 0.8
+     double acting         1.0   (sized on the faster of the two strokes) */
+const SF={srActuate:2.5, srDeactuate:0.8, da:1.0, custom:1.5};
+
+const BACKP={open:[0,'Open exhaust'],muffler:[3,'Muffler'],manifold:[8,'Shared manifold'],both:[10,'Muffler and manifold']};
+
+/* Supply side keeps the workbook's basis so results stay continuous with
+   quotes already issued: Cv = V(in3) x CF x SF / (t x PD x 29).
+   CF and PD are read from the workbook's own pressure table. */
+function cfpdAt(psi){
+  let row=CFPD[0];
+  for(const r of CFPD){ if(psi>=r[0]) row=r; else break; }
+  return {cf:row[1], pd:row[2]};
+}
+function supplyStroke(gal,secs,psi,sf){
+  const {cf,pd}=cfpdAt(psi);
+  const raw=(gal*GAL_IN3*cf)/(secs*pd*K_SHEET);
+  return {scfm:(gal*GAL_IN3/1728)/secs*60*((psi+ATM)/14.7)/ETA, cvRaw:raw, cv:raw*sf, basis:'workbook'};
 }
 
-// Core Cv calculation using correct choked/subcritical check
-// Returns required Cv (with SF baked in) for a given SCFM and pressure condition
-function cvFromScfm(scfm, p1_psia, p2_psia) {
-  const ratio = p2_psia / p1_psia;
-  let cvRaw;
-  if (ratio <= 0.528) {
-    // CHOKED FLOW — sonic velocity at vena contracta
-    // Cv = Q√(T·SG) / (720 · P1)
-    cvRaw = (scfm * Math.sqrt(T_R * SG)) / (720 * p1_psia);
-  } else {
-    // SUBCRITICAL FLOW — compressible but not sonic
-    // Cv = Q√(T·SG) / [1360 · P1 · √(1 – (2/3)·((P1-P2)/P1)²)]
-    const xRatio = (p1_psia - p2_psia) / p1_psia;
-    const correction = Math.sqrt(1 - (2/3) * xRatio * xRatio);
-    cvRaw = (scfm * Math.sqrt(T_R * SG)) / (1360 * p1_psia * correction);
-  }
-  return Math.max(0.0001, cvRaw);
+/* Exhaust side is new. Venting to atmosphere is genuinely choked
+   (P2/P1 well under 0.528 at any normal supply pressure), so the critical
+   flow equation applies directly:  Cv = Q x sqrt(SG x T) / (720 x P1),
+   with Q IN SCFH. The previous build passed SCFM into these constants,
+   which understated every required Cv by a factor of 60. */
+function exhaustStroke(gal,secs,psi,sf){
+  const p1=psi+ATM, p2=ATM+BACKP[val('exhaust')][0];
+  const q=(gal*GAL_IN3/1728)/secs*3600*(p1/14.7)/ETA;
+  const choked=(p2/p1)<=0.528;
+  const raw=q*Math.sqrt(SG*T_R)/(720*p1);
+  return {scfm:q/60, cvRaw:raw, cv:raw*sf, p1, p2, choked, basis:'ISA critical flow'};
+}
+function seriesCv(a){const v=a.filter(x=>x>0);return v.length?1/Math.sqrt(v.reduce((s,x)=>s+1/(x*x),0)):0;}
+
+/* ─── helpers ─── */
+const $=id=>document.getElementById(id);
+const val=id=>$(id).value;
+const num=id=>parseFloat($(id).value)||0;
+const chk=id=>{const e=$(id);return e?e.checked:false;};
+let mode='std', acting='sr';
+
+/* ─── population ─── */
+function fillFamilies(){
+  $('family').innerHTML=Object.entries(FAMILIES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  onFamily();
+}
+function onFamily(){
+  const f=val('family');
+  $('bodySize').innerHTML=FAMILIES[f].bodies.map(b=>`<option value="${b}">${f}-${b}</option>`).join('');
+  onBody();
+}
+function onBody(){
+  const b=val('bodySize'), cyls=PORT_MAP[b]?Object.keys(PORT_MAP[b]):[];
+  const sel=$('cylSize');
+  if(!cyls.length){ sel.innerHTML='<option value="">Not listed</option>'; sel.disabled=true; }
+  else { sel.disabled=false; sel.innerHTML=cyls.map(c=>`<option value="${c}">${c}</option>`).join(''); }
+  onCyl();
+}
+function onCyl(){
+  const b=val('bodySize'), c=val('cylSize'), sel=$('portOpt');
+  const opts=(PORT_MAP[b]&&PORT_MAP[b][c])?Object.keys(PORT_MAP[b][c]):[];
+  if(!opts.length){ sel.innerHTML='<option value="">Not listed</option>'; sel.disabled=true; }
+  else { sel.disabled=false; sel.innerHTML=opts.map(o=>`<option value="${o}">Option ${o}</option>`).join(''); }
+  live();
+}
+function portCallout(){
+  const b=val('bodySize'), c=val('cylSize'), o=val('portOpt');
+  const r=PORT_MAP[b]&&PORT_MAP[b][c]&&PORT_MAP[b][c][o];
+  return r?{end:r[0],head:r[1]}:null;
+}
+function minTime(){
+  const f=val('family'), b=val('bodySize');
+  const r=MIN_TIME[f]&&MIN_TIME[f][b];
+  if(!r) return null;
+  return chk('override')?r[0]:r[1];
 }
 
-// Calculate SCFM for a given volume (gallons) and time (seconds) at supply pressure
-function calcScfm(gallons, secs, supplyPSI) {
-  const in3   = gallons * GAL_IN3;
-  const p1    = supplyPSI + 14.696; // PSIA
-  // Standard free air = swept volume × compression ratio / time
-  return (in3 / 1728) / secs * 60 * (p1 / 14.7) / ETA;
+/* ─── custom-build components ─── */
+const CATALOG={
+  fr:[['SH06-FR 1/4" NPT',1.7],['SH12-FR 1/2" NPT',1.9],['SH25-FR 1" NPT',14.2]],
+  sov3:[['FP06P 3/2 1/4"',0.6],['FP10P 3/2 1/4"',0.75],['BXS 3/2 1/4" NAMUR',0.73],['FP12P 3/2 1/2"',2.5],['SPR-08 3/2 3/8"',3.0],['SPR-16 3/2 1"',11.1]],
+  sov5:[['FP06P 5/2 1/4"',0.6],['FP10P 5/2 1/4"',0.75],['BXS 5/2 1/4" NAMUR',0.73],['FP12P 5/2 1/2"',2.5],['SPR-08 5/2 3/8"',3.0],['SPR-16 5/2 1"',11.1]],
+  vb:[['VBP-04 1/4"',1.8],['VBP-06 3/8"',3.6],['VBP-08 1/2"',3.9],['VBP-12 3/4"',8.5],['VBP-16 1"',11.0],['VBP-32 2"',35.0]],
+  fcv:[['FCV3006 1/4"',0.5],['FCV3009 3/8"',0.9],['FCV3012 1/2"',1.1],['FCV3019 3/4"',2.0],['FCV3025 1"',2.2]],
+  qev:[['S06-QEV 1/4"',1.1],['S09-QEV 3/8"',3.0],['S12-QEV 1/2"',3.5],['S19-QEV 3/4"',8.3],['S25-QEV 1"',10.0]],
+  hipex:[['HIPEX-08 1/2"',20],['HIPEX-16 1"',50],['HIPEX-24 1-1/2"',103],['HIPEX-32 2"',150]],
+  muffler:[['1/4" sintered bronze',2.0],['1/2" sintered bronze',6.0],['3/4" sintered bronze',10.0],['1" sintered bronze',18.0]]
+};
+const COMPS=[
+  {id:'fr',      name:'Filter-regulator',        cat:'fr',     path:'power',   on:true},
+  {id:'sov',     name:'Solenoid valve',          cat:null,     path:'power',   on:true},
+  {id:'vb',      name:'Volume booster',          cat:'vb',     path:'power',   on:false},
+  {id:'fcvo',    name:'Flow control — open',     cat:'fcv',    path:'power',   on:true},
+  {id:'fcvc',    name:'Flow control — close',    cat:'fcv',    path:'power',   on:false, daOnly:true},
+  {id:'qev',     name:'Quick exhaust valve',     cat:'qev',    path:'exhaust', on:false},
+  {id:'hipex',   name:'HIPEX exhaust valve',     cat:'hipex',  path:'exhaust', on:false},
+  {id:'muffler', name:'Muffler / silencer',      cat:'muffler',path:'exhaust', on:false}
+];
+const catOf=c=>c.id==='sov'?(acting==='da'?CATALOG.sov5:CATALOG.sov3):CATALOG[c.cat];
+function buildCustomUI(){
+  $('compChecks').innerHTML=COMPS.filter(c=>!(c.daOnly&&acting==='sr')).map(c=>{
+    const t=c.path==='power'?'<span class="tag pw">POWER</span>':'<span class="tag ex">EXHAUST</span>';
+    return `<label class="chk"><input type="checkbox" id="on-${c.id}" ${c.on?'checked':''} onchange="buildPicks();live()"><span>${c.name}${t}</span></label>`;
+  }).join('');
+  buildPicks();
+}
+function buildPicks(){
+  $('compPicks').innerHTML=COMPS.filter(c=>!(c.daOnly&&acting==='sr')&&chk('on-'+c.id)).map(c=>{
+    const opts=catOf(c).map(([n,cv],i)=>`<option value="${i}">${n} — Cv ${cv}</option>`).join('');
+    return `<div class="f"><label for="pick-${c.id}">${c.name}</label><select id="pick-${c.id}" onchange="live()">${opts}</select></div>`;
+  }).join('');
+}
+const pickCv=c=>{const s=$('pick-'+c.id);return s?catOf(c)[parseInt(s.value)||0][1]:0;};
+
+/* ─── mode / acting ─── */
+function setMode(m){
+  mode=m;
+  $('pv-std').classList.toggle('on',m==='std');
+  $('pv-cus').classList.toggle('on',m==='cus');
+  $('fs-custom').style.display=m==='cus'?'':'none';
+  if(m==='cus') buildCustomUI();
+  live();
+}
+function setActing(a){
+  acting=a;
+  $('at-sr').classList.toggle('on',a==='sr');
+  $('at-da').classList.toggle('on',a==='da');
+  if(mode==='cus') buildCustomUI();
+  live();
 }
 
-// Full calculation result for a single stroke
-// supplyPSI: instrument air supply (gauge)
-// gallons: actuator displacement
-// secs: stroke time
-// isExhaust: if true, P1=supply pressure trapped in actuator, P2=inferred from config
-function calcStroke(gallons, secs, supplyPSI, isExhaust) {
-  const scfm  = calcScfm(gallons, secs, supplyPSI);
-  const p1    = supplyPSI + 14.696; // PSIA
-
-  let p1_cv, p2_cv, regime;
-
-  if (!isExhaust) {
-    // SUPPLY STROKE: air flows from supply through panel components into actuator
-    // P1 = supply, P2 = supply - ΔP_component (minimal drop assumption)
-    p1_cv  = p1;
-    p2_cv  = p1 - DP_COMP;  // tiny drop → always choked at pneumatic pressures
-    regime = p2_cv / p1_cv <= 0.528 ? 'CHOKED' : 'SUBCRITICAL';
-  } else {
-    // EXHAUST STROKE: trapped air at supply pressure vents through exhaust path
-    // P1 = supply pressure (air was pressurized to this level)
-    // P2 = atmospheric + back-pressure from muffler/manifold
-    const { bp } = inferExhaustBackPressure();
-    p1_cv  = p1;  // actuator was at supply pressure
-    p2_cv  = 14.696 + bp;  // downstream of exhaust components
-    regime = p2_cv / p1_cv <= 0.528 ? 'CHOKED' : 'SUBCRITICAL';
-  }
-
-  const cvRaw = cvFromScfm(scfm, p1_cv, p2_cv);
+/* ─── requirement ─── */
+function requirement(){
+  const gal=num('disp'), psi=num('psi'), to=num('tOpen'), tc=num('tClose');
+  const sfSupply = mode==='cus' ? SF.custom : (acting==='da'?SF.da:SF.srActuate);
+  const sfExh    = mode==='cus' ? SF.custom : (acting==='da'?SF.da:SF.srDeactuate);
+  const tSupply  = acting==='da' ? Math.min(to,tc) : to;   // spring: air stroke opens
+  const tExhaust = acting==='da' ? Math.min(to,tc) : tc;   // spring: spring stroke closes
   return {
-    scfm,
-    cv:    cvRaw * SF,  // with safety factor
-    cvRaw,              // without safety factor (for tier classification)
-    p1:    p1_cv,
-    p2:    p2_cv,
-    regime
+    gal,psi,to,tc,
+    supply : supplyStroke(gal,tSupply,psi,sfSupply),
+    exhaust: exhaustStroke(gal,tExhaust,psi,sfExh),
+    sfSupply, sfExh
   };
 }
 
-// Convenience wrappers
-function calcSupply(gallons, secs, supplyPSI) {
-  return calcStroke(gallons, secs, supplyPSI, false);
-}
-function calcExhaust(gallons, secs, supplyPSI) {
-  return calcStroke(gallons, secs, supplyPSI, true);
-}
-
-// Series system Cv (harmonic sum — correct method)
-function systemCv(arr) {
-  const v = arr.filter(x => x > 0);
-  if (!v.length) return 0;
-  return 1 / Math.sqrt(v.reduce((a, x) => a + 1/(x*x), 0));
-}
-
-// ─── COMPONENT DATA ───────────────────────────────────────────────
-
-const BIFOLD_FR = [
-  {model:'SH06-FR-SR-MD-10-X3 (1/4" NPT, manual drain)',  cv:1.7,  note:'316L SS, self-relieving, 20–30µm, 10 bar'},
-  {model:'SH06-FR-SR-AD-10-X3 (1/4" NPT, auto drain)',    cv:1.7,  note:'316L SS, self-relieving, 20–30µm, auto drain'},
-  {model:'SH12-FR-SR-MD-10-X3 (1/2" NPT, manual drain)',  cv:1.9,  note:'316L SS, self-relieving, 20–30µm, 10 bar'},
-  {model:'SH12-FR-SR-AD-10-X3 (1/2" NPT, auto drain)',    cv:1.9,  note:'316L SS, self-relieving, 20–30µm, auto drain'},
-  {model:'SH25-FR-SR-MD-10-X3 (1" NPT, manual drain)',    cv:14.2, note:'316L SS, self-relieving, high flow, 10 bar'},
-];
-
-const BIFOLD_SOV_32 = [
-  {model:'FP03P 3/2 (1/8" NPT)',        cv:0.1,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP06P 3/2 (1/4" NPT)',        cv:0.6,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP10P 3/2 (1/4" NPT)',        cv:0.75, note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP12P 3/2 (1/2" NPT)',        cv:2.5,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'BXS 3/2 (1/4" NPT NAMUR)',    cv:0.73, note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
-  {model:'SPR-08 3/2 (3/8" NPT)',       cv:3.0,  note:'Pilot operated high flow, 10 bar, SIL 3'},
-  {model:'SPR-16 3/2 (1" NPT)',         cv:11.1, note:'Pilot operated high flow, 10 bar, SIL 3'},
-];
-
-const BIFOLD_SOV_52 = [
-  {model:'FP06P 5/2 (1/4" NPT)',        cv:0.6,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP10P 5/2 (1/4" NPT)',        cv:0.75, note:'Direct acting, 10 bar, SIL 3'},
-  {model:'FP12P 5/2 (1/2" NPT)',        cv:2.5,  note:'Direct acting, 10 bar, SIL 3'},
-  {model:'BXS 5/2 (1/4" NPT NAMUR)',    cv:0.73, note:'Pilot operated, 12 bar, NAMUR, SIL 3'},
-  {model:'SPR-08 5/2 (3/8" NPT)',       cv:3.0,  note:'Pilot operated high flow, 10 bar, SIL 3'},
-  {model:'SPR-16 5/2 (1" NPT)',         cv:11.1, note:'Pilot operated high flow, 10 bar, SIL 3'},
-];
-
-const BIFOLD_FCV = [
-  {model:'FCV3006 FCV (1/4" NPT)', cv:0.5, note:'Fully open Cv; throttle to target. 0–12 bar'},
-  {model:'S06-NV NV (1/4" NPT)',   cv:0.6, note:'Needle valve fully open Cv. 0–12 bar'},
-  {model:'FCV3009 FCV (3/8" NPT)', cv:0.9, note:'Fully open Cv; 0–12 bar'},
-  {model:'S09-NV NV (3/8" NPT)',   cv:0.9, note:'Needle valve fully open Cv. 0–12 bar'},
-  {model:'FCV3012 FCV (1/2" NPT)', cv:1.1, note:'Fully open Cv; 0–12 bar'},
-  {model:'S12-NV NV (1/2" NPT)',   cv:1.2, note:'Needle valve fully open Cv. 0–12 bar'},
-  {model:'FCV3019 FCV (3/4" NPT)', cv:2.0, note:'Fully open Cv; 0–12 bar'},
-  {model:'FCV3025 FCV (1" NPT)',   cv:2.2, note:'Fully open Cv; 0–12 bar'},
-];
-
-const BIFOLD_MUFFLER = [
-  {model:'1/4" NPT Sintered bronze silencer',  cv:2.0,  note:'Estimated Cv; typical sintered bronze, 10 bar. ~3 PSI back-pressure at design flow.'},
-  {model:'3/8" NPT Sintered bronze silencer',  cv:3.5,  note:'Estimated Cv; typical sintered bronze, 10 bar.'},
-  {model:'1/2" NPT Sintered bronze silencer',  cv:6.0,  note:'Estimated Cv; typical sintered bronze, 10 bar.'},
-  {model:'3/4" NPT Sintered bronze silencer',  cv:10.0, note:'Estimated Cv; typical sintered bronze, 10 bar.'},
-  {model:'1" NPT Sintered bronze silencer',    cv:18.0, note:'Estimated Cv; typical sintered bronze, 10 bar.'},
-];
-
-const BIFOLD_QEV = [
-  {model:'S06-QEV-01 (1/4" NPT)', cv:1.1,  note:'Cv cyl→exh 1.1 / in→cyl 0.9; 0–12 bar'},
-  {model:'S09-QEV (3/8" NPT)',    cv:3.0,  note:'Cv cyl→exh 3.0 / in→cyl 1.7; 0–12 bar'},
-  {model:'S12-QEV-01 (1/2" NPT)', cv:3.5,  note:'Cv cyl→exh 3.5 / in→cyl 1.9; 0–12 bar'},
-  {model:'S19-QEV (3/4" NPT)',    cv:8.3,  note:'Cv cyl→exh 8.3 / in→cyl 6.5; 0–12 bar'},
-  {model:'S25-QEV (1" NPT)',      cv:10.0, note:'Cv cyl→exh 10.0 / in→cyl 8.2; 0–12 bar'},
-  {model:'QEV15 (high flow)',     cv:20.0, note:'High flow QEV; 12 bar'},
-];
-
-const BIFOLD_HIPEX = [
-  {model:'HIPEX-08 (1/2" NPT)', cv:20,  note:'⚠ Cv ~20 ESTIMATED — confirm with Bifold before procurement. Max 20 bar.', est:true},
-  {model:'HIPEX-16 (1" NPT)',   cv:50,  note:'Cv 50 — confirmed manufacturer product page. Max 20 bar / 290 PSI.', est:false},
-  {model:'HIPEX-24 (1½" NPT)', cv:103, note:'Cv 103 — confirmed manufacturer catalogue. Max 20 bar / 290 PSI.', est:false},
-  {model:'HIPEX-32 (2" NPT)',   cv:150, note:'Cv 150 — confirmed manufacturer catalogue. Max 20 bar / 290 PSI.', est:false},
-];
-
-const BIFOLD_VB = [
-  {model:'VBP-04 (1/4" NPT, 1:1)',  cv:1.8,  note:'Cv 1.80 — confirmed datasheet. 316 SS, 20 bar, SIL 2.', est:false},
-  {model:'VBP-06 (3/8" NPT, 1:1)',  cv:3.6,  note:'Cv 3.60 — confirmed datasheet. 316 SS, 20 bar, SIL 2.', est:false},
-  {model:'VBP-08 (1/2" NPT, 1:1)',  cv:3.9,  note:'Cv 3.9 — confirmed distributor datasheet. 316 SS, 20 bar.', est:false},
-  {model:'VBP-12 (3/4" NPT, 1:1)',  cv:8.5,  note:'Cv 8.50 — confirmed datasheet. 316 SS, 20 bar.', est:false},
-  {model:'VBP-12 Filter Body (3/4")',cv:9.1,  note:'Cv 9.1 — confirmed distributor (with 40–50µm filter).', est:false},
-  {model:'VBP-16 (1" NPT, 1:1)',    cv:11.0, note:'Cv 11.00 — confirmed datasheet. 316 SS, 20 bar, SIL 2.', est:false},
-  {model:'VBP-32 (2" NPT, 1:1)',    cv:35.0, note:'⚠ Cv ~35 ESTIMATED — confirm with manufacturer. 15 bar MWP.', est:true},
-];
-
-const BIFOLD_POS = [
-  {model:'EXP200C I/P Transducer (1/4" NPT)', cv:0.8, note:'4–20 mA → 3–15 PSI; ATEX, 10 bar'},
-  {model:'Fairchild T9000 I/P (1/4" NPT)',    cv:0.7, note:'4–20 mA → 3–15 PSI; SIL 2'},
-  {model:'YTC YT-1000 Positioner (1/4" NPT)', cv:0.6, note:'Smart positioner, HART, ATEX'},
-];
-
-// ─── COMPONENT DEFINITIONS ────────────────────────────────────────
-// path: 'power'   = Cv-critical, always in series calc
-// path: 'power-t1'= Cv-critical ONLY in Tier 1 (no VB); pilot path in Tier 2+
-// path: 'exhaust' = separate exhaust Cv check
-// path: 'pilot'   = Cv irrelevant (signal path only)
-// path: 'backp'   = back-pressure inference only (no Cv calc role)
-
-const COMP_DEFS = [
-  {id:'cv-fr',        label:'Filter-Regulator (FR)',            chk:'chk-fr',          data:BIFOLD_FR,      path:'power'},
-  {id:'cv-vb',        label:'Volume Booster (VB)',               chk:'chk-vb',          data:BIFOLD_VB,      path:'power'},
-  {id:'cv-fcv-open',  label:'Cylinder Port FCV — Open speed',   chk:'chk-speed-open',  data:BIFOLD_FCV,     path:'power'},
-  {id:'cv-fcv-close', label:'Cylinder Port FCV — Close speed',  chk:'chk-speed-close', data:BIFOLD_FCV,     path:'power', daOnly:true},
-  {id:'cv-muffler',   label:'Muffler / Silencer',               chk:'chk-muffler',     data:BIFOLD_MUFFLER, path:'exhaust'},
-  {id:'cv-qev',       label:'Quick Exhaust Valve (QEV)',        chk:'chk-qev',         data:BIFOLD_QEV,     path:'exhaust'},
-  {id:'cv-hipex',     label:'HiPex Exhaust Valve',             chk:'chk-hipex',       data:BIFOLD_HIPEX,   path:'exhaust'},
-  // SOV: Tier 1 = power path (carries all actuator air); Tier 2+ = pilot only
-  {id:'cv-sov',       label:'Solenoid Valve (SOV)',             chk:'chk-solenoid',    data:null,           path:'power-t1'},
-  {id:'cv-pos',       label:'I/P Positioner',                  chk:'chk-positioner',  data:BIFOLD_POS,     path:'pilot'},
-];
-
-function getSovData(){ return actuatorType==='double' ? BIFOLD_SOV_52 : BIFOLD_SOV_32; }
-function getCompData(comp){ return comp.id==='cv-sov' ? getSovData() : (comp.data||[]); }
-function getSelIdx(id){ const s=$('sel-'+id); return s ? parseInt(s.value)||0 : 0; }
-function getModelCv(comp){ const d=getCompData(comp), i=getSelIdx(comp.id); return d[i]?d[i].cv:1.0; }
-function hasVolumeBooster(){ return C('chk-vb'); }
-
-// Is flow in Tier 1 (no VB — SOV is on the power path)?
-function isTier1(){ return C('chk-solenoid') && !C('chk-vb'); }
-
-// Architecture tier based on required supply Cv (raw, no SF)
-function getArchTier(rawCvReq){
-  if(rawCvReq<=10)  return {tier:1, name:'SIMPLE',    desc:'FR + SOV direct (SOV is power path, Cv-critical)'};
-  if(rawCvReq<=40)  return {tier:2, name:'MEDIUM',    desc:'FR + SOV (pilot) + Volume Booster'};
-  if(rawCvReq<=100) return {tier:3, name:'HIGH-FLOW', desc:'High-flow FR + SOV (pilot) + VB + HiPex exhaust'};
-  return                   {tier:4, name:'EXTREME',   desc:'High-flow FR + SOV (pilot) + Dual/Parallel VB + HiPex'};
-}
-
-// Build the power-path Cv array for the series calculation
-// KEY FIX: In Tier 1 (no VB), SOV IS in the power path
-function getCvArray(){
-  const tier1 = isTier1();
-  return COMP_DEFS.filter(c=>{
-    if(!C(c.chk)) return false;
-    if(c.daOnly && actuatorType==='single') return false;
-    if(c.path==='pilot')   return false;
-    if(c.path==='exhaust') return false;
-    if(c.path==='backp')   return false;
-    if(c.path==='power-t1') return tier1; // SOV in series only if Tier 1
-    return true; // path==='power'
-  }).map(c=>getModelCv(c));
-}
-
-// ─── AUTO-SELECT ──────────────────────────────────────────────────
-const pinnedComps = new Set();
-
-function autoSelectIdx(comp, reqSupplyCv, reqExhCv){
-  const data = getCompData(comp);
-  if(!data||!data.length) return 0;
-  const sorted = data.map((m,i)=>({m,i})).sort((a,b)=>a.m.cv-b.m.cv);
-  const MARGIN = 1.25;
-
-  if(comp.path==='exhaust'){
-    const req = reqExhCv * MARGIN;
-    const hit = sorted.find(x=>x.m.cv>=req);
-    return hit ? hit.i : sorted[sorted.length-1].i;
+/* ─── panel selection ─── */
+function selectPanel(req){
+  const ladder = acting==='da'?LADDER_DA:LADDER_SR;
+  const need=req.supply.cv;
+  let panel=ladder.find(p=>p.cvIn>need), boosters=0, overLadder=false;
+  if(!panel){
+    panel=ladder[ladder.length-1];
+    overLadder=true;
+    boosters=Math.ceil((need-panel.cvIn)/panel.hipexCv);
   }
-  if(comp.path==='pilot'){
-    return 0; // smallest — signal adequacy only
-  }
-  // power or power-t1
-  const req = reqSupplyCv * MARGIN;
-  const hit = sorted.find(x=>x.m.cv>=req);
-  return hit ? hit.i : sorted[sorted.length-1].i;
-}
-
-function runAutoSelect(reqSupplyCv, reqExhCv){
-  COMP_DEFS.forEach(comp=>{
-    if(!C(comp.chk)) return;
-    if(comp.daOnly && actuatorType==='single') return;
-    if(pinnedComps.has(comp.id)) return;
-    const sel=$('sel-'+comp.id); if(!sel) return;
-    sel.value = String(autoSelectIdx(comp, reqSupplyCv, reqExhCv));
-    refreshBadge(comp.id);
-  });
-}
-
-// ─── UI ──────────────────────────────────────────────────────────
-function refreshBadge(id){
-  const comp=COMP_DEFS.find(c=>c.id===id); if(!comp) return;
-  const data=getCompData(comp), idx=getSelIdx(id), m=data[idx];
-  const badge=$('cvb-'+id); if(!badge||!m) return;
-  const isEst=m.note&&(m.note.includes('ESTIMATED')||m.note.includes('Estimated'));
-  const isPinned=pinnedComps.has(id);
-  badge.textContent='Cv '+m.cv.toFixed(2);
-  badge.className='cvbadge'+(isEst?' warn':isPinned?' pinned':'');
-  const row=badge.closest('.comp-row'); if(!row) return;
-  let note=row.querySelector('.est-note');
-  if(isEst){
-    if(!note){note=document.createElement('div');note.className='fnote est-note';note.style.marginTop='4px';note.style.color='#b06000';row.appendChild(note);}
-    note.textContent='⚠ Cv estimated — confirm with manufacturer before procurement';
-  } else if(note) note.remove();
-  let pin=row.querySelector('.pin-note');
-  if(isPinned){
-    if(!pin){pin=document.createElement('div');pin.className='fnote pin-note';pin.style.marginTop='3px';pin.style.color='#888';row.appendChild(pin);}
-    pin.innerHTML='📌 Manually selected &nbsp;<button class="unpinbtn" onclick="unpinComp(\''+id+'\')">↺ Auto</button>';
-  } else if(pin) pin.remove();
-}
-
-window.unpinComp = function(id){
-  pinnedComps.delete(id);
-  updateCalcs();
-};
-
-function updateCompVisibility(){
-  const grp=$('cvInputGroup');
-  grp.innerHTML='';
-  COMP_DEFS.forEach(comp=>{
-    if(!C(comp.chk)) return;
-    if(comp.daOnly && actuatorType==='single') return;
-    const data=getCompData(comp);
-    const opts=data.map((m,i)=>`<option value="${i}">${m.model} — Cv ${m.cv}</option>`).join('');
-    const cv0=data[0]?data[0].cv.toFixed(2):'—';
-    // Path label
-    const tier1=isTier1();
-    let pathLabel='';
-    if(comp.path==='power-t1') pathLabel=tier1?'<span style="font-family:var(--mono);font-size:7px;color:#c00;margin-left:4px">POWER PATH (T1)</span>':'<span style="font-family:var(--mono);font-size:7px;color:#888;margin-left:4px">PILOT (T2+)</span>';
-    if(comp.path==='exhaust')  pathLabel='<span style="font-family:var(--mono);font-size:7px;color:#c57a00;margin-left:4px">EXHAUST PATH</span>';
-    if(comp.path==='backp')    pathLabel='<span style="font-family:var(--mono);font-size:7px;color:#7c3aed;margin-left:4px">BACK-P ONLY</span>';
-    const row=document.createElement('div');
-    row.className='comp-row';
-    row.innerHTML=`
-      <div class="comp-top">
-        <label>${comp.label}${pathLabel}</label>
-        <span class="cvbadge" id="cvb-${comp.id}">Cv ${cv0}</span>
-      </div>
-      <select class="msel" id="sel-${comp.id}" onchange="onModelChange('${comp.id}')">${opts}</select>
-    `;
-    grp.appendChild(row);
-  });
-  pinnedComps.forEach(id=>{
-    const comp=COMP_DEFS.find(c=>c.id===id);
-    if(!comp||!C(comp.chk)) pinnedComps.delete(id);
-  });
-  updateCalcs();
-}
-
-function onModelChange(id){
-  pinnedComps.add(id);
-  refreshBadge(id);
-  updateCalcs();
-}
-
-function updateCalcs(){
-  const psi=V('supplyPSI'), gal=V('displacement'), ot=V('openTime'), ct=V('closeTime');
-  if(!gal||!psi||!ot||!ct) return;
-
-  const oSupply  = calcSupply(gal, ot, psi);
-  const oExhaust = calcExhaust(gal, ot, psi);  // open stroke exhaust (SA: spring pushes this air out)
-  const cSupply  = calcSupply(gal, ct, psi);
-  const cExhaust = calcExhaust(gal, ct, psi);
-
-  // Display SCFM
-  $('reqFlowOpen').textContent  = oSupply.scfm.toFixed(3)+' SCFM';
-  $('reqFlowClose').textContent = actuatorType==='single'
-    ? 'spring return — exhaust only'
-    : cSupply.scfm.toFixed(3)+' SCFM';
-
-  // Supply Cv
-  $('openCvDisp').textContent  = oSupply.cv.toFixed(4);
-  $('closeCvDisp').textContent = actuatorType==='single'
-    ? oExhaust.cv.toFixed(4)+' (exh)'
-    : cSupply.cv.toFixed(4);
-
-  // Inferred back-pressure
-  const bpInfo = inferExhaustBackPressure();
-  const bpEl = $('inferredBackP');
-  if(bpEl) bpEl.textContent = bpInfo.label;
-
-  // Exhaust Cv — binding constraint across all exhaust events
-  const exhaustCvReq = actuatorType==='single'
-    ? oExhaust.cv   // SA: open stroke pushes air out on close (spring side)
-    : Math.max(oExhaust.cv, cExhaust.cv); // DA: both exhaust events matter
-  const hipEl=$('hipexCvDisp'); if(hipEl) hipEl.textContent=exhaustCvReq.toFixed(4);
-
-  // Flow regime note
-  const noteEl=$('flowRegimeNote');
-  if(noteEl) noteEl.textContent=`Supply: ${oSupply.regime} (P2/P1=${((oSupply.p2/oSupply.p1)).toFixed(3)}) · Exhaust: ${oExhaust.regime} (P2/P1=${((oExhaust.p2/oExhaust.p1)).toFixed(3)})`;
-
-  // Auto-select — use supply Cv as binding requirement for power path
-  runAutoSelect(oSupply.cv, exhaustCvReq);
-  COMP_DEFS.forEach(comp=>{ if($('cvb-'+comp.id)) refreshBadge(comp.id); });
-  updateAutoLabel();
-}
-
-window.resetAllPins=function(){ pinnedComps.clear(); updateCalcs(); };
-
-function updateAutoLabel(){
-  const lbl=$('autoLabel'); if(!lbl) return;
-  if(pinnedComps.size===0){ lbl.textContent='● AUTO-SIZED'; lbl.style.color='var(--green)'; }
-  else { lbl.textContent=`● ${pinnedComps.size} PINNED`; lbl.style.color='var(--orange)'; }
-}
-
-function selectType(t){
-  actuatorType=t;
-  $('btn-single').classList.toggle('active',t==='single');
-  $('btn-double').classList.toggle('active',t==='double');
-  pinnedComps.clear();
-  updateCompVisibility();
-}
-
-// ─── VALIDATION ───────────────────────────────────────────────────
-function findNext(data, minCv){
-  return data.slice().sort((a,b)=>a.cv-b.cv).find(m=>m.cv>=minCv)||data[data.length-1]||null;
-}
-
-function validate({psi,gal,openT,closeT,aType,cvArr}){
-  const oSupply  = calcSupply(gal,openT,psi);
-  const oExhaust = calcExhaust(gal,openT,psi);
-  const cSupply  = calcSupply(gal,closeT,psi);
-  const cExhaust = calcExhaust(gal,closeT,psi);
-  const sysCv    = systemCv(cvArr);
-  const rawCvReq = oSupply.cvRaw; // un-SF'd for tier classification
-  const arch     = getArchTier(rawCvReq);
-  const tier1    = isTier1();
-  const bpInfo   = inferExhaustBackPressure();
-
-  const exhaustCvReq = aType==='single'
-    ? oExhaust.cv
-    : Math.max(oExhaust.cv, cExhaust.cv);
-
-  const powerChecks=[], pilotChecks=[], archChecks=[];
-  let fail=false, warn=false;
-
-  const pushTo=(arr,status,title,detail,rec,model)=>{
-    arr.push({status,title,detail:detail||'',rec,model});
-    if(status==='fail') fail=true;
-    if(status==='warn') warn=true;
+  // add-on exhaust units to cover the opposite stroke
+  const shortfall=req.exhaust.cv-panel.cvIn;
+  const exhaustUnits = shortfall>0 ? Math.ceil(shortfall/panel.hipexCv) : 0;
+  const units=Math.max(boosters,exhaustUnits);
+  return {
+    panel, units, overLadder,
+    porting:(1+units)+'\u00d7 '+panel.port,
+    marginSupply:(panel.cvIn-need)/panel.cvIn,
+    deliveredIn:panel.cvIn+panel.hipexCv*units,
+    exhaustShort:req.exhaust.cv-panel.cvOut
   };
-  const pushP =(s,t,d,r,m)=>pushTo(powerChecks,s,t,d,r,m);
-  const pushPi=(s,t,d,r,m)=>pushTo(pilotChecks,s,t,d,r,m);
-  const pushA =(s,t,d,r,m)=>pushTo(archChecks,s,t,d,r,m);
+}
 
-  // ══ SECTION 1 — POWER AIR PATH ═══════════════════════════════════
+/* ─── live readout ─── */
+function live(){
+  const r=requirement();
+  const mt=minTime(), pc=portCallout();
+  const rows=[
+    ['Free air, supply stroke', r.supply.scfm.toFixed(1)+' scfm'],
+    ['Required Cv, supply', r.supply.cv.toFixed(3)],
+    ['Required Cv, exhaust', r.exhaust.cv.toFixed(3)],
+    ['Exhaust flow regime', r.exhaust.choked?'Choked':'Subcritical'],
+    ['Exhaust back-pressure', BACKP[val('exhaust')][1]],
+    ['Minimum stroke time', mt==null?'Not listed':mt.toFixed(1)+' s'],
+    ['End flange', pc?pc.end:'Not listed'],
+    ['Head flange', pc?pc.head:'Not listed']
+  ];
+  $('readout').innerHTML=rows.map(([k,v])=>`<div><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+}
 
-  // Supply pressure check
-  if(psi<40) pushP('fail','Supply Pressure — Too Low',`${psi} PSI is below minimum for pneumatic actuators (40 PSI min).`,'Increase instrument air supply pressure.');
-  else if(psi<60) pushP('warn','Supply Pressure — Low',`${psi} PSI is below standard IA range (60–100 PSI). Verify actuator torque output at this pressure.`);
-  else pushP('pass','Supply Pressure — OK',`${psi} PSI within standard instrument air range.`);
+/* ─── validation ─── */
+function validate(){
+  const r=requirement();
+  const out=[]; let worst='ok';
+  const add=(lvl,title,body,fix)=>{out.push({lvl,title,body,fix});
+    if(lvl==='err') worst='err'; else if(lvl==='warn'&&worst!=='err') worst='warn';};
 
-  // Flow regime advisory
-  pushP('info',`Flow Regime — ${oSupply.regime} (supply) / ${oExhaust.regime} (exhaust)`,
-    `Supply: P1=${oSupply.p1.toFixed(1)} PSIA, P2=${oSupply.p2.toFixed(1)} PSIA, ratio=${(oSupply.p2/oSupply.p1).toFixed(3)} — ${oSupply.regime==='CHOKED'?'choked flow formula applied (Bepto/ISA)':'subcritical formula applied'}\n`+
-    `Exhaust: P1=${oExhaust.p1.toFixed(1)} PSIA (supply trapped), P2=${oExhaust.p2.toFixed(1)} PSIA (${bpInfo.label}), ratio=${(oExhaust.p2/oExhaust.p1).toFixed(3)} — ${oExhaust.regime==='CHOKED'?'choked flow formula applied':'subcritical formula applied'}`);
-
-  // Tier 1 SOV check — critical fix
-  if(tier1){
-    if(!C('chk-solenoid')){
-      pushP('fail','Tier 1 — No SOV on Power Path',
-        'No Volume Booster and no SOV. There is no controlled path for supply air to reach the actuator.',
-        'Add an SOV (3/2 or 5/2) — in Tier 1 it is the power air path component.');
-    } else {
-      const sd=getSovData(), sm=sd[getSelIdx('cv-sov')], sovcv=sm?sm.cv:0;
-      const req=oSupply.cv*1.25;
-      if(sovcv>=req)
-        pushP('pass',`SOV (Tier 1 Power Path) — ✔ PASS (Cv ${sovcv})`,
-          `SOV Cv ${sovcv} ≥ required supply Cv ${oSupply.cv.toFixed(3)} (×1.25 margin).\nIn Tier 1 (no VB), the SOV carries all actuator supply air — its Cv is critical.`,null,sm?sm.model:null);
-      else if(sovcv>=oSupply.cv){
-        const nx=findNext(sd,req);
-        pushP('warn',`SOV (Tier 1 Power Path) — MARGINAL (Cv ${sovcv})`,
-          `SOV Cv ${sovcv} meets supply Cv ${oSupply.cv.toFixed(3)} but <25% margin.`,
-          `Upgrade SOV to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model} — Cv ${nx.cv}`:null);
-      } else {
-        const nx=findNext(sd,req);
-        pushP('fail',`SOV (Tier 1 Power Path) — ✘ UNDERSIZED (Cv ${sovcv}, need ${oSupply.cv.toFixed(3)})`,
-          `SOV Cv ${sovcv} < required supply Cv ${oSupply.cv.toFixed(3)} (1.5×SF). In Tier 1, the SOV is the power path — this SOV cannot achieve the required stroke speed.`,
-          `Upgrade SOV or add a Volume Booster (moves to Tier 2, SOV becomes pilot only).`,nx?`${nx.model} — Cv ${nx.cv}`:null);
-      }
-    }
-  }
-
-  // FR check
-  if(!C('chk-fr')){
-    pushP('warn','No Filter-Regulator',
-      'No FR on power air path. Unfiltered, unregulated supply will damage seals and reduce actuator life.',
-      'Add an FR upstream of all power-path components.');
+  // 1 — minimum stroke time. Hard gate: nothing downstream matters if this fails.
+  const mt=minTime();
+  if(mt==null){
+    add('info','Minimum stroke time not listed',
+      `No published minimum for ${val('family')}-${val('bodySize')}. The speed requirement has not been checked against the actuator.`);
   } else {
-    const m=BIFOLD_FR[getSelIdx('cv-fr')], cv=m?m.cv:0, req=oSupply.cv*1.25;
-    if(cv>=req)
-      pushP('pass',`FR — ✔ PASS (Cv ${cv})`,`FR Cv ${cv} ≥ required supply Cv ${oSupply.cv.toFixed(3)} (×1.25 margin).`,null,m?m.model:null);
-    else if(cv>=oSupply.cv){
-      const nx=findNext(BIFOLD_FR,req);
-      pushP('warn',`FR — MARGINAL (Cv ${cv})`,`FR Cv ${cv} meets Cv ${oSupply.cv.toFixed(3)} but <25% margin.`,`Upgrade to FR Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
+    const fastest=Math.min(r.to,r.tc);
+    if(fastest<mt) add('err','Stroke time is below the actuator minimum',
+        `The fastest requested stroke is ${fastest.toFixed(1)} s. ${val('family')}-${val('bodySize')} `+
+        `${chk('override')?'with':'without'} a manual override cannot stroke faster than ${mt.toFixed(1)} s. `+
+        `No panel, port option, or exhaust valve changes this.`,
+        chk('override')?`Increase the stroke time to ${mt.toFixed(1)} s or remove the manual override.`
+                       :`Increase the stroke time to at least ${mt.toFixed(1)} s.`);
+    else if(fastest<mt*1.25) add('warn','Stroke time is close to the actuator minimum',
+        `${fastest.toFixed(1)} s against a ${mt.toFixed(1)} s minimum leaves under 25% margin.`);
+    else add('ok','Stroke time is achievable',
+        `${fastest.toFixed(1)} s against a ${mt.toFixed(1)} s minimum for ${val('family')}-${val('bodySize')}.`);
+  }
+
+  // 2 — supply pressure
+  if(r.psi<40) add('err','Air supply is too low',`${r.psi} psig is below the 40 psig working minimum.`,'Raise the supply pressure.');
+  else if(r.psi<60) add('warn','Air supply is below the normal range',`${r.psi} psig is under the usual 60–100 psig. Confirm actuator torque output at this pressure.`);
+  else add('ok','Air supply is in range',`${r.psi} psig.`);
+
+  return {r,out,worst};
+}
+
+/* ─── render ─── */
+function run(){
+  const {r,out,worst}=validate();
+  const blocked=out.some(m=>m.lvl==='err');
+  let html='';
+
+  const vmap={ok:['ok','Approved'],warn:['warn','Approved with warnings'],err:['err','Not approved']};
+  let checks=out.slice(), verdict=worst;
+
+  let sel=null, sys=null;
+  if(!blocked && mode==='std'){
+    sel=selectPanel(r);
+    if(sel.overLadder && sel.units>BOOSTER_CAP){
+      checks.push({lvl:'err',title:'Duty is beyond the standardized range',
+        body:`Required Cv ${r.supply.cv.toFixed(2)} needs ${sel.units} add-on exhaust units on the largest panel. `+
+             `Above ${BOOSTER_CAP} this stops being a sizing answer and becomes a fabrication problem.`,
+        fix:'Refer to engineering for a purpose-built panel.'});
+      verdict='err';
+    } else if(sel.overLadder){
+      checks.push({lvl:'warn',title:'Duty is above the largest standardized panel',
+        body:`Required Cv ${r.supply.cv.toFixed(2)} exceeds the ${sel.panel.name} package at Cv ${sel.panel.cvIn.toFixed(2)}. `+
+             `${sel.units} add-on exhaust unit${sel.units>1?'s':''} bring the delivered Cv to ${sel.deliveredIn.toFixed(2)}.`});
+      if(verdict==='ok') verdict='warn';
     } else {
-      const nx=findNext(BIFOLD_FR,req);
-      pushP('fail',`FR — ✘ BOTTLENECK (Cv ${cv}, need ${oSupply.cv.toFixed(3)})`,
-        `FR Cv ${cv} < required supply Cv ${oSupply.cv.toFixed(3)} (1.5×SF). FR is restricting the power air path.`,
-        `Min FR Cv (×1.25): ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
+      checks.push({lvl:'ok',title:'Standardized panel covers the duty',
+        body:`${sel.panel.name} at Cv ${sel.panel.cvIn.toFixed(2)} against a required ${r.supply.cv.toFixed(3)}, `+
+             `a margin of ${(sel.marginSupply*100).toFixed(0)}%.`});
+    }
+    if(sel.exhaustShort>0){
+      checks.push({lvl:'warn',title:'Exhaust capacity is short on the return stroke',
+        body:`The package exhausts at Cv ${sel.panel.cvOut.toFixed(2)} against a required ${r.exhaust.cv.toFixed(3)} `+
+             `at ${BACKP[val('exhaust')][1].toLowerCase()} back-pressure. The workbook never checked this, so a panel that `+
+             `sizes correctly on supply can still stroke slow in the field.`,
+        fix:`Add exhaust capacity or open up the discharge arrangement.`});
+      if(verdict==='ok') verdict='warn';
+    }
+    if(sel.panel.provisional){
+      checks.push({lvl:'warn',title:'Selected package uses a provisional flow coefficient',
+        body:`The workbook had no Cv for the 2" double-acting package, so double-acting duty above Cv 17.3 returned an error. `+
+             `The value here is carried across from the 2" spring-return package.`,
+        fix:'Confirm the 2" double-acting package Cv before quoting.'});
+      if(verdict==='ok') verdict='warn';
     }
   }
 
-  // VB check (Tier 2+)
-  if(C('chk-vb')){
-    const vm=BIFOLD_VB[getSelIdx('cv-vb')], vbcv=vm?vm.cv:0, req=oSupply.cv*1.25;
-    const isEst=vm&&vm.est;
-    if(vbcv>=req)
-      pushP(isEst?'warn':'pass',`VB — ${isEst?'⚠ PASS (Cv unconfirmed)':'✔ PASS'} (Cv ${vbcv})`,
-        `VB Cv ${vbcv} ≥ required supply Cv ${oSupply.cv.toFixed(3)} (×1.25 margin).${isEst?'\n⚠ Cv estimated — confirm with manufacturer.':''}`,
-        isEst?'Request confirmed Cv from manufacturer.':null,vm?vm.model:null);
-    else if(vbcv>=oSupply.cv){
-      const nx=findNext(BIFOLD_VB,req);
-      pushP('warn',`VB — MARGINAL (Cv ${vbcv})`,`VB Cv meets requirement but <25% margin.`,`Upgrade VB to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
+  if(!blocked && mode==='cus'){
+    const power=COMPS.filter(c=>!(c.daOnly&&acting==='sr')&&chk('on-'+c.id)&&c.path==='power').map(pickCv);
+    const exh=COMPS.filter(c=>!(c.daOnly&&acting==='sr')&&chk('on-'+c.id)&&c.path==='exhaust').map(pickCv);
+    sys={power:seriesCv(power), exhaust:seriesCv(exh), n:power.length};
+    if(!power.length){
+      checks.push({lvl:'err',title:'No components on the supply path',body:'The system flow coefficient cannot be calculated.',fix:'Select at least a solenoid valve.'});
+      verdict='err';
+    } else if(sys.power>=r.supply.cv){
+      checks.push({lvl:'ok',title:'Supply path meets the requirement',
+        body:`System Cv ${sys.power.toFixed(3)} against a required ${r.supply.cv.toFixed(3)}, a margin of ${((sys.power/r.supply.cv-1)*100).toFixed(0)}%.`});
     } else {
-      const nx=findNext(BIFOLD_VB,req);
-      pushP('fail',`VB — ✘ BOTTLENECK (Cv ${vbcv}, need ${oSupply.cv.toFixed(3)})`,
-        `VB Cv ${vbcv} < required supply Cv ${oSupply.cv.toFixed(3)} (1.5×SF).`,
-        `Upgrade VB. Min Cv (×1.25): ${req.toFixed(3)}.`,nx?`${nx.model}`:null);
+      checks.push({lvl:'err',title:'Supply path is undersized',
+        body:`System Cv ${sys.power.toFixed(3)} falls short of the required ${r.supply.cv.toFixed(3)}. Components in series combine as 1/√Σ(1/Cv²), so the smallest one dominates.`,
+        fix:'Increase the smallest component on the supply path, or add a volume booster.'});
+      verdict='err';
     }
-  } else if(arch.tier>=2){
-    pushP('warn',`VB Missing — Tier ${arch.tier} Required`,
-      `Required supply Cv ${rawCvReq.toFixed(2)} (no SF) → ${arch.name} architecture needs a Volume Booster.`,
-      'Add a VB on the power air path. SOV pilots the VB (Tier 2+).');
-  }
-
-  // FCV — open speed control
-  if(!C('chk-speed-open'))
-    pushP('warn',`${aType==='single'?'Cylinder Port FCV — Not Included':'Open FCV — Not Included'}`,
-      'No FCV on cylinder port. Actuator will stroke at full speed — risk of shock loading.',
-      `Add a meter-out FCV on ${aType==='single'?'the cylinder port':'Port A'}.`);
-  else {
-    const m=BIFOLD_FCV[getSelIdx('cv-fcv-open')], cv=m?m.cv:0, req=oSupply.cv*1.25;
-    if(cv>=req) pushP('pass',`${aType==='single'?'Cylinder Port FCV':'Open FCV'} — ✔ PASS (Cv ${cv})`,
-      `FCV fully-open Cv ${cv} ≥ required Cv ${oSupply.cv.toFixed(3)}. Throttle to target speed during commissioning.${aType==='single'?'\nNote: for single-acting, this FCV controls BOTH open (supply throttle) and close (exhaust throttle) speed.':''}`,null,m?m.model:null);
-    else if(cv>=oSupply.cv){const nx=findNext(BIFOLD_FCV,req);pushP('warn',`FCV — MARGINAL (Cv ${cv})`,`FCV Cv meets requirement but <25% margin.`,`Upgrade FCV to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
-    else{const nx=findNext(BIFOLD_FCV,req);pushP('fail',`FCV — ✘ UNDERSIZED (Cv ${cv}, need ${oSupply.cv.toFixed(3)})`,`FCV fully-open Cv ${cv} < required Cv ${oSupply.cv.toFixed(3)} (1.5×SF). Even fully open, the FCV will be the bottleneck.`,`Upgrade FCV. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
-  }
-
-  if(aType==='double'){
-    if(!C('chk-speed-close'))
-      pushP('warn','Close FCV — Not Included','No meter-out FCV on close stroke (double-acting).','Add FCV on Port B.');
-    else {
-      const m=BIFOLD_FCV[getSelIdx('cv-fcv-close')], cv=m?m.cv:0, req=cSupply.cv*1.25;
-      if(cv>=req) pushP('pass',`Close FCV — ✔ PASS (Cv ${cv})`,`Close FCV fully-open Cv ${cv} ≥ required Cv ${cSupply.cv.toFixed(3)}.`,null,m?m.model:null);
-      else if(cv>=cSupply.cv){const nx=findNext(BIFOLD_FCV,req);pushP('warn',`Close FCV — MARGINAL (Cv ${cv})`,`<25% margin.`,`Upgrade to Cv ≥ ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
-      else{const nx=findNext(BIFOLD_FCV,req);pushP('fail',`Close FCV — ✘ UNDERSIZED (Cv ${cv}, need ${cSupply.cv.toFixed(3)})`,`Close FCV undersized.`,`Upgrade FCV. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
+    if(exh.length && sys.exhaust<r.exhaust.cv){
+      checks.push({lvl:'warn',title:'Exhaust path is undersized',
+        body:`Exhaust Cv ${sys.exhaust.toFixed(3)} against a required ${r.exhaust.cv.toFixed(3)} at ${BACKP[val('exhaust')][1].toLowerCase()} back-pressure.`,
+        fix:'Fit a larger quick-exhaust or HIPEX unit.'});
+      if(verdict==='ok') verdict='warn';
     }
   }
 
-  // Exhaust path — with inferred P2
-  {
-    const hasHPX=C('chk-hipex'), hasQEV=C('chk-qev'), hasMuff=C('chk-muffler');
-    pushP('info',`Exhaust Back-Pressure — ${bpInfo.label}`,
-      `P₂ inferred from panel configuration. Exhaust Cv sized for P1=${oExhaust.p1.toFixed(1)} PSIA (trapped supply) → P2=${oExhaust.p2.toFixed(1)} PSIA.\nFlow regime: ${oExhaust.regime}. Required exhaust Cv: ${exhaustCvReq.toFixed(4)} (1.5×SF).`);
+  const [vc,vt]=vmap[verdict];
+  html+=`<div class="result-head"><span class="verdict ${vc}">${vt}</span>
+    <span class="sub">${r.gal} gal &middot; ${r.psi} psig &middot; open ${r.to}s / close ${r.tc}s &middot;
+    ${acting==='sr'?'spring return':'double acting'} &middot; ${val('family')}-${val('bodySize')}</span></div>`;
 
-    if(hasMuff){
-      const mm=BIFOLD_MUFFLER[getSelIdx('cv-muffler')], mcv=mm?mm.cv:0, req=exhaustCvReq*1.25;
-      if(mcv>=req) pushP('pass',`Muffler — ✔ PASS (Cv ${mcv})`,`Muffler Cv ${mcv} ≥ exhaust Cv ${exhaustCvReq.toFixed(3)} (×1.25 margin).`,null,mm?mm.model:null);
-      else{const nx=findNext(BIFOLD_MUFFLER,req);pushP('warn',`Muffler — ⚠ RESTRICTIVE (Cv ${mcv}, need ${exhaustCvReq.toFixed(3)})`,`Muffler Cv ${mcv} < exhaust Cv requirement. Muffler will restrict exhaust and slow the stroke.`,`Upgrade muffler or remove it from this design.`,nx?`${nx.model}`:null);}
-    }
-    if(hasHPX){
-      const hm=BIFOLD_HIPEX[getSelIdx('cv-hipex')], hcv=hm?hm.cv:0, req=exhaustCvReq*1.25;
-      const isEst=hm&&hm.est;
-      if(hcv>=req)
-        pushP(isEst?'warn':'pass',`HiPex — ${isEst?'⚠ PASS (Cv unconfirmed)':'✔ PASS'} (Cv ${hcv})`,
-          `HiPex Cv ${hcv} ≥ exhaust Cv ${exhaustCvReq.toFixed(3)} (×1.25 margin). Exhaust back-pressure: ${bpInfo.label}.${isEst?'\n⚠ HIPEX-08 Cv unconfirmed — verify with manufacturer.':''}`,
-          isEst?'Confirm HIPEX-08 Cv with Bifold.':null,hm?hm.model:null);
-      else{const nx=findNext(BIFOLD_HIPEX,req);pushP('fail',`HiPex — ✘ UNDERSIZED (Cv ${hcv}, need ${exhaustCvReq.toFixed(3)})`,`HiPex Cv ${hcv} < exhaust Cv ${exhaustCvReq.toFixed(3)} (1.5×SF, ${bpInfo.label}).`,`Upgrade HiPex. Min Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
-    } else if(hasQEV){
-      const qm=BIFOLD_QEV[getSelIdx('cv-qev')], qcv=qm?qm.cv:0, req=exhaustCvReq*1.25;
-      if(qcv>=req) pushP('pass',`QEV — ✔ PASS (Cv ${qcv})`,`QEV Cv ${qcv} ≥ exhaust Cv ${exhaustCvReq.toFixed(3)}.`,null,qm?qm.model:null);
-      else{const nx=findNext(BIFOLD_HIPEX,req);pushP('warn',`QEV — ⚠ UNDERSIZED (Cv ${qcv}, need ${exhaustCvReq.toFixed(3)})`,`QEV Cv insufficient for exhaust requirement (${bpInfo.label}).`,`Upgrade QEV or switch to HiPex. Req Cv: ${req.toFixed(3)}.`,nx?`${nx.model}`:null);}
-    } else if(arch.tier>=3){
-      pushP('warn','Exhaust — No Dedicated Exhaust Valve',
-        `Exhaust Cv ${exhaustCvReq.toFixed(3)} (1.5×SF, ${bpInfo.label}) requires a dedicated exhaust valve at Tier ${arch.tier}.`,
-        `Add a HiPex. Min exhaust Cv: ${(exhaustCvReq*1.25).toFixed(3)}.`,
-        findNext(BIFOLD_HIPEX,exhaustCvReq*1.25)?`${findNext(BIFOLD_HIPEX,exhaustCvReq*1.25).model}`:null);
-    } else {
-      pushP('info','Exhaust — Via SOV R-port',
-        `Exhaust Cv ${exhaustCvReq.toFixed(3)} (Tier 1). SOV R-port exhaust is acceptable.\nBack-pressure assumption: ${bpInfo.label}.\nFor faster response, add a QEV on the cylinder port.`);
-    }
-  }
-
-  // Stroke speed summary
-  if(cvArr.length>0){
-    const mg=sysCv/oSupply.cv, pct=((mg-1)*100).toFixed(0);
-    if(mg>=1.0) pushP('pass',`Open Speed — ✔ ACHIEVABLE (${openT}s)`,
-      `Power-path system Cv ${sysCv.toFixed(3)} ≥ required Cv ${oSupply.cv.toFixed(3)} (1.5×SF, ${oSupply.regime}) with ${pct}% margin.\n${oSupply.scfm.toFixed(3)} SCFM @ ${psi} PSI, ${gal} gal.`);
-    else if(mg>=0.85) pushP('warn',`Open Speed — ⚠ MARGINAL (${openT}s)`,
-      `System Cv ${sysCv.toFixed(3)} within 15% of required Cv ${oSupply.cv.toFixed(3)}.`,
-      'Upgrade lowest-Cv power-path component.');
-    else pushP('fail',`Open Speed — ✘ NOT ACHIEVABLE (${openT}s)`,
-      `System Cv ${sysCv.toFixed(3)} < required Cv ${oSupply.cv.toFixed(3)} (${Math.abs(pct)}% deficient).`,
-      'Upgrade power-path components or increase open time allowance.');
-
-    if(aType==='double'){
-      const mg2=sysCv/cSupply.cv, pct2=((mg2-1)*100).toFixed(0);
-      if(mg2>=1.0) pushP('pass',`Close Speed — ✔ ACHIEVABLE (${closeT}s)`,`System Cv ${sysCv.toFixed(3)} meets Cv ${cSupply.cv.toFixed(3)} (1.5×SF) with ${pct2}% margin.`);
-      else if(mg2>=0.85) pushP('warn',`Close Speed — ⚠ MARGINAL (${closeT}s)`,`System Cv near required Cv ${cSupply.cv.toFixed(3)}.`,'Upgrade power-path component.');
-      else pushP('fail',`Close Speed — ✘ NOT ACHIEVABLE (${closeT}s)`,`System Cv ${sysCv.toFixed(3)} < ${cSupply.cv.toFixed(3)} (${Math.abs(pct2)}% deficient).`,'Upgrade components or increase close time.');
-    } else {
-      pushP('info','Close Speed — Spring Return',
-        `Spring-return close in ${closeT}s target. Governed by spring rate and valve torque — not pneumatically powered.\nExhaust path must allow air to vent as spring closes: exhaust Cv req ${oExhaust.cv.toFixed(3)} (1.5×SF).\nThe cylinder port FCV controls BOTH open speed (supply throttle) and close speed (exhaust throttle) on single-acting.`);
-    }
-  } else {
-    pushP('fail','No Power-Path Components','No components on the power air path. Cannot calculate stroke speed.',
-      arch.tier===1?'Add an SOV (Tier 1 power path).':'Add FR + VB on the power air path. SOV pilots the VB.');
-  }
-
-  // ══ SECTION 2 — PILOT / CONTROL PATH ══════════════════════════
-  if(!C('chk-solenoid')&&!C('chk-positioner')){
-    pushPi('fail','No Pilot Signal Configured',
-      'No SOV or I/P positioner configured.',
-      `Add a ${aType==='double'?'5/2':'3/2'} spring-return SOV.`);
-  } else {
-    if(C('chk-solenoid')){
-      const sd=getSovData(), sm=sd[getSelIdx('cv-sov')];
-      if(tier1){
-        pushPi('info','SOV — Tier 1 Power Path (Cv-Critical)',
-          `${sm?sm.model:'SOV'} is on the POWER PATH in Tier 1. Cv IS critical — checked in Section 01 above.\nTo make SOV pilot-only, add a Volume Booster (moves to Tier 2).`,null,sm?sm.model:null);
-      } else {
-        pushPi('pass','SOV — Pilot Path ✔ (Cv Irrelevant)',
-          `${sm?sm.model:'SOV'} configured on pilot path. Cv is irrelevant — SOV carries only the pilot signal to the VB.\nThe VB provides all actuator supply flow.`,null,sm?sm.model:null);
-      }
-    }
-    if(C('chk-positioner')){
-      const pm=BIFOLD_POS[getSelIdx('cv-pos')];
-      pushPi('pass','I/P Positioner — Pilot Path ✔',`${pm?pm.model:'I/P Positioner'} on pilot path. 4–20 mA → pneumatic signal.`,null,pm?pm.model:null);
-    }
-    if(aType==='single')
-      pushPi('info','Fail Position — Spring Return','On signal or air loss, spring drives actuator to fail position. Confirm spring torque ≥ 1.3× max break-out torque.');
-    else if(C('chk-solenoid'))
-      pushPi('pass','Fail Position — Defined via SOV','Spring-return SOV provides defined fail position on de-energise.');
-    else
-      pushPi('warn','Fail Position — Undefined','Double-acting with no spring-return SOV — no fail position defined.','Use a spring-return 5/2 SOV.');
-  }
-  if(!C('chk-limit'))
-    pushPi('warn','No Position Feedback','No limit switches. Control system cannot confirm valve position.','Add ZSO/ZSC limit switches.');
-  else
-    pushPi('pass','Position Feedback — ZSO/ZSC ✔','Open and close limit switches included.');
-
-  // ══ SECTION 3 — ARCHITECTURE ════════════════════════════════════
-  {
-    const hasVB=C('chk-vb'), hasHPX=C('chk-hipex'), hasQEV=C('chk-qev');
-    const tierMatch=(
-      (arch.tier===1&&!hasVB)||
-      (arch.tier===2&&hasVB&&!hasHPX)||
-      (arch.tier===3&&hasVB&&hasHPX)||
-      (arch.tier===4&&hasVB&&hasHPX)
-    );
-    if(tierMatch){
-      pushA('pass',`Architecture Tier ${arch.tier} — ✔ ${arch.name}`,
-        `Required supply Cv ${rawCvReq.toFixed(2)} (no SF) → ${arch.name}.\nConfigured components match recommended tier.\n${arch.desc}`);
-    } else {
-      let rec='';
-      if(arch.tier>=2&&!hasVB) rec='Add a Volume Booster on the power air path. ';
-      if(arch.tier>=3&&!hasHPX&&!hasQEV) rec+='Add a HiPex exhaust valve. ';
-      if(arch.tier===1&&hasVB) rec='VB not required at this Cv level — consider removing for simplicity. ';
-      pushA('warn',`Architecture — Tier ${arch.tier} (${arch.name}) — components need adjustment`,
-        `Required Cv ${rawCvReq.toFixed(2)} → ${arch.name}. ${arch.desc}`,rec.trim()||null);
-    }
-    pushA('info','Cv Summary',
-      `Supply Cv req (open, 1.5×SF, ${oSupply.regime}): ${oSupply.cv.toFixed(4)}\n`+
-      (aType==='double'?`Supply Cv req (close, 1.5×SF, ${cSupply.regime}): ${cSupply.cv.toFixed(4)}\n`:'')+
-      `Exhaust Cv req (1.5×SF, ${oExhaust.regime}, ${bpInfo.label}): ${exhaustCvReq.toFixed(4)}\n`+
-      `Power-path system Cv: ${cvArr.length?sysCv.toFixed(4):'— (no power-path components)'}\n`+
-      `Exhaust back-pressure: ${bpInfo.label} (inferred from panel config)`);
-  }
-
-  const verdict=fail?'rejected':(warn?'warning':'approved');
-  return {checks:powerChecks,pilotChecks,archChecks,verdict,sysCv,openR:oSupply,closeR:cSupply,openExhR:oExhaust,closeExhR:cExhaust,arch,exhaustCvReq,bpInfo};
-}
-
-// ─── SVG SCHEMATIC ────────────────────────────────────────────────
-const NS='http://www.w3.org/2000/svg';
-const el=(tag,a)=>{const e=document.createElementNS(NS,tag);if(a)for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;};
-let _ai=0;
-function mkArrow(p,col,sz=6){
-  const id=`arr${_ai++}`;
-  let defs=p.querySelector('defs');if(!defs){defs=el('defs');p.insertBefore(defs,p.firstChild);}
-  const mk=el('marker',{id,markerWidth:sz,markerHeight:sz,refX:sz-1,refY:sz/2,orient:'auto'});
-  mk.appendChild(el('path',{d:`M0,1 L${sz-1},${sz/2} L0,${sz-1} Z`,fill:col}));
-  defs.appendChild(mk);return id;
-}
-const tx=(p,x,y,s,o={})=>{const t=el('text',{x,y,fill:o.f||'#8aa8c8','font-family':o.m?"'Share Tech Mono',monospace":"'Rajdhani',sans-serif",'font-size':o.sz||10,'text-anchor':o.a||'middle','font-weight':o.b?'700':'400'});t.textContent=s;p.appendChild(t);return t;};
-const ln=(p,x1,y1,x2,y2,c,w,d)=>p.appendChild(el('line',{x1,y1,x2,y2,stroke:c||'#1e2d42','stroke-width':w||1.5,'stroke-dasharray':d||'none'}));
-const rc=(p,x,y,w,h,f,s,sw,rx)=>p.appendChild(el('rect',{x,y,width:w,height:h,fill:f||'#0d1720',stroke:s||'#1e2d42','stroke-width':sw||1.5,rx:rx||2}));
-const ci=(p,cx,cy,r,f,s,sw)=>p.appendChild(el('circle',{cx,cy,r,fill:f||'none',stroke:s||'#546e8a','stroke-width':sw||1.5}));
-const py=(p,pts,s,sw,d)=>p.appendChild(el('polyline',{points:pts.map(([x,y])=>`${x},${y}`).join(' '),fill:'none',stroke:s||'#546e8a','stroke-width':sw||1.5,'stroke-dasharray':d||'none'}));
-const jd=(p,x,y,c)=>ci(p,x,y,3.5,c||'#e3000f',c||'#e3000f',0);
-const al=(p,x1,y1,x2,y2,c,w)=>{const id=mkArrow(p,c);p.appendChild(el('line',{x1,y1,x2,y2,stroke:c,'stroke-width':w||1.5,'marker-end':`url(#${id})`}));};
-
-function symFR(p,cx,cy,tag){
-  const C='#8a8080';
-  rc(p,cx-26,cy-22,52,44,C+'11',C,1.2,2);
-  p.appendChild(el('polygon',{points:`${cx-11},${cy-13} ${cx+11},${cy-13} ${cx},${cy+2}`,fill:'none',stroke:C,'stroke-width':1.5}));
-  ln(p,cx-13,cy-13,cx+13,cy-13,C,1.5);
-  ci(p,cx,cy+10,9,'#0d1720',C,1.5);
-  tx(p,cx,cy-30,tag,{m:true,sz:8,f:C,b:true});
-}
-function symGauge(p,cx,cy,tag,col='#ff6b2b'){
-  ci(p,cx,cy,10,'#141111',col,1.2);
-  p.appendChild(el('line',{x1:cx,y1:cy,x2:cx+7,y2:cy-7,stroke:col,'stroke-width':1.2}));
-  tx(p,cx,cy+20,tag,{m:true,sz:8,f:col});
-}
-function symSOV(p,cx,cy,aType,tag){
-  const C='#e3000f',W=aType==='double'?110:84,H=36,bW=aType==='double'?52:42,by=cy-H/2,b1x=cx-W/2;
-  rc(p,b1x,by,bW,H,'#fff5f5',C,1.5,1);
-  if(aType==='double'){
-    al(p,b1x+8,cy+10,b1x+8,cy-10,C,1.5);ln(p,b1x+8,cy-10,b1x+20,cy-10,C,1.5);ln(p,b1x+20,cy-10,b1x+20,cy+10,C,1.5);
-    al(p,b1x+32,cy+10,b1x+32,cy-10,C,1.5);ln(p,b1x+32,cy-10,b1x+44,cy-10,C,1.5);
-  } else {
-    al(p,b1x+12,cy+10,b1x+12,cy-10,C,1.5);ln(p,b1x+12,cy-10,b1x+28,cy-10,C,1.5);
-    ln(p,b1x+28,cy-10,b1x+28,cy+4,'#546e8a',1.5);ln(p,b1x+22,cy+4,b1x+34,cy+4,'#546e8a',1.5);
-  }
-  const b2x=b1x+bW;rc(p,b2x,by,bW,H,'#141111','#546e8a',1.2,1);
-  if(aType==='double'){
-    ln(p,b2x+8,cy-10,b2x+8,cy+10,'#546e8a',1.5);ln(p,b2x+8,cy-10,b2x+18,cy-10,'#546e8a',1.5);
-    al(p,b2x+30,cy-10,b2x+30,cy+10,'#546e8a',1.5);ln(p,b2x+30,cy-10,b2x+44,cy-10,'#546e8a',1.5);
-    al(p,b2x+44,cy-10,b2x+44,cy+10,'#546e8a',1.5);
-  } else {
-    ln(p,b2x+8,cy-10,b2x+8,cy+4,'#546e8a',1.5);ln(p,b2x+8,cy-10,b2x+20,cy-10,'#546e8a',1.5);
-    ln(p,b2x+16,cy-8,b2x+24,cy+8,'#546e8a',1.5);ln(p,b2x+24,cy-8,b2x+32,cy+8,'#546e8a',1.5);
-  }
-  const sx=b1x-22;rc(p,sx,cy-8,20,16,'#fff5f5',C,1.2,1);
-  for(let i=0;i<4;i++) ln(p,sx+2+i*4,cy-8,sx+2+i*4,cy+8,C,0.8);
-  ln(p,sx,cy-8,sx,cy+8,C,1);ln(p,sx+20,cy,b1x,cy,C,1.5);
-  const srx=b2x+bW;py(p,Array.from({length:8},(_,i)=>[srx+2+i*3,cy+(i%2===0?-5:5)]),'#546e8a',1.2);
-  ln(p,srx+26,cy,srx+30,cy,'#546e8a',1.5);
-  const ports=aType==='double'?[{l:'1(P)',x:cx-W/2+14},{l:'4(A)',x:cx-W/2+34},{l:'2(B)',x:cx-W/2+66},{l:'3(R)',x:cx-W/2+88}]:[{l:'1(P)',x:cx-W/2+14},{l:'2(A)',x:cx-W/2+36},{l:'3(R)',x:cx-W/2+62}];
-  ports.forEach(({l,x:px})=>{ln(p,px,cy+H/2,px,cy+H/2+12,'#546e8a',1.5);tx(p,px,cy+H/2+21,l,{m:true,sz:8,f:'#546e8a'});});
-  tx(p,cx,cy-H/2-10,tag,{m:true,sz:8,f:C,b:true});
-}
-function symFCV(p,cx,cy,tag,col='#ff8c42'){
-  p.appendChild(el('polygon',{points:`${cx-14},${cy-12} ${cx+14},${cy-12} ${cx},${cy}`,fill:'#1a1010',stroke:col,'stroke-width':1.5}));
-  p.appendChild(el('polygon',{points:`${cx-14},${cy+12} ${cx+14},${cy+12} ${cx},${cy}`,fill:'#1a1010',stroke:col,'stroke-width':1.5}));
-  p.appendChild(el('line',{x1:cx-16,y1:cy+16,x2:cx+16,y2:cy-16,stroke:col,'stroke-width':1.2}));
-  tx(p,cx,cy-28,tag,{m:true,sz:8,f:col,b:true});
-}
-function symMuff(p,cx,cy,tag='ATM'){
-  rc(p,cx-10,cy-10,20,20,'#f0f0f0','#999999',1.2,2);
-  for(let i=-5;i<=5;i+=3) ln(p,cx+i,cy-10,cx+i,cy+10,'#aaaaaa',0.7);
-  tx(p,cx,cy+24,tag,{m:true,sz:7,f:'#888888'});
-}
-function symQEV(p,cx,cy,tag){
-  const C='#ffc107';
-  p.appendChild(el('polygon',{points:`${cx-16},${cy-14} ${cx+16},${cy-14} ${cx},${cy+14}`,fill:'#1a1010',stroke:C,'stroke-width':1.5}));
-  ln(p,cx-8,cy-14,cx+8,cy-14,C,2);ln(p,cx,cy+14,cx+18,cy+26,C,1.5);
-  symMuff(p,cx+18,cy+30,'EXH');
-  tx(p,cx,cy-28,tag,{m:true,sz:8,f:C,b:true});
-}
-function symHIPEX(p,cx,cy,tag){
-  const C='#ffc107',C2='#ff9800';
-  p.appendChild(el('polygon',{points:`${cx-20},${cy-16} ${cx+20},${cy-16} ${cx},${cy+16}`,fill:'#1a1010',stroke:C2,'stroke-width':2}));
-  ln(p,cx-10,cy-16,cx+10,cy-16,C2,2.5);
-  ln(p,cx,cy+16,cx,cy+32,C2,2);
-  symMuff(p,cx,cy+40,'EXH');
-  tx(p,cx,cy-30,tag,{m:true,sz:8,f:C2,b:true});
-  tx(p,cx,cy-19,'HiPex',{m:true,sz:7,f:C});
-}
-function symACT(p,cx,cy,aType,tag){
-  const C='#e3000f',W=100,H=60;
-  rc(p,cx-W/2,cy-H/2,W,H,'#fff0f0',C,2,2);
-  p.appendChild(el('path',{d:`M ${cx-18} ${cy+10} A 22 22 0 0 1 ${cx+10} ${cy-18}`,fill:'none',stroke:C,'stroke-width':1.8}));
-  ln(p,cx+W/2,cy,cx+W/2+14,cy,C,2.5);ci(p,cx+W/2+14,cy,5,'#fff0f0',C,2);
-  tx(p,cx-W/2+10,cy-H/2+12,'A',{m:true,sz:10,f:C,b:true});
-  if(aType==='double') tx(p,cx+W/2-10,cy-H/2+12,'B',{m:true,sz:10,f:'#ff6b2b',b:true});
-  tx(p,cx,cy+10,aType==='single'?'SA/SR':'D/A',{m:true,sz:9,f:'#546e8a'});
-  tx(p,cx,cy-H/2-10,tag,{m:true,sz:8,f:C,b:true});
-}
-function symVB(p,cx,cy,tag){
-  const C='#e3000f',CP2='#c084fc';
-  rc(p,cx-28,cy-22,56,44,'#fff5f5',C,1.8,3);
-  p.appendChild(el('polygon',{points:`${cx-14},${cy-12} ${cx-14},${cy+12} ${cx+14},${cy}`,fill:'rgba(227,0,15,.12)',stroke:C,'stroke-width':1.5}));
-  tx(p,cx+8,cy+3,'×',{m:true,sz:9,f:C,b:true});
-  ln(p,cx,cy-22,cx,cy-34,'#c084fc',1,'4,3');
-  tx(p,cx,cy-38,'PILOT',{m:true,sz:7,f:CP2});
-  tx(p,cx-28,cy-26,'IN',{m:true,sz:7,f:C,a:'start'});
-  tx(p,cx+28,cy-26,'OUT',{m:true,sz:7,f:C,a:'end'});
-  tx(p,cx,cy-46,tag,{m:true,sz:8,f:C,b:true});
-}
-function symLS(p,cx,cy,tag,col='#00e676'){
-  ln(p,cx-14,cy-8,cx+14,cy-8,col,1.5);ln(p,cx-8,cy,cx+8,cy,col,2);
-  ln(p,cx-8,cy+8,cx+8,cy+8,col,1.5);ln(p,cx-8,cy-8,cx-8,cy,col,1.2);ln(p,cx+8,cy-8,cx+8,cy,col,1.2);
-  ci(p,cx,cy-8,4,'#141111',col,1.2);tx(p,cx,cy+22,tag,{m:true,sz:8,f:col,b:true});
-}
-
-function buildSVG(params){
-  const{psi,gal,openT,closeT,aType,validation,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasMuffler,hasLimit,hasGauge}=params;
-  const tier1=isTier1();
-  const W=1060,H=860;
-  const svg=el('svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('xmlns',NS);svg.setAttribute('style','width:100%;height:auto;');
-  svg.appendChild(el('rect',{x:0,y:0,width:W,height:H,fill:'#ffffff'}));
-  const defs=el('defs');svg.insertBefore(defs,svg.firstChild);
-
-  rc(svg,0,0,W,36,'#f0f0f0','none',0);
-  ln(svg,0,36,W,36,'#cccccc',1);
-  tx(svg,20,23,'PNEUMATIC ACTUATOR CONTROL PANEL — INSTRUMENT SCHEMATIC (ISO 1219 / ISA S5.1)',{m:true,sz:10,f:'#e3000f',a:'start',b:true});
-  tx(svg,W-16,23,`${psi} PSI IA · ${gal} gal · ${aType.toUpperCase()} ACTING · OPEN ${openT}s CLOSE ${closeT}s · ${tier1?'TIER 1 (SOV=POWER)':'TIER 2+ (SOV=PILOT)'}`,{m:true,sz:8,f:'#546e8a',a:'end'});
-
-  const YR=90,YC=195,YS=330,YA=450,YB=510,YF=700,YL=790;
-  const XSU=80,XFR=210,XIP=360;
-  const XSOV=hasSov?(hasPos?520:430):430;
-  const XACT=650,XFVO=XACT-80,XFVC=XACT+60,XQEV=XACT-130,XHPX=XACT-190;
-  const XVB=hasVB?(hasFR?XFR+110:290):0;
-
-  const CS='#e3000f',CB='#ff6b00',CE='#888888',CG='#00c853',CP='#c084fc',CY='#ffb300';
-
-  const zl=(y,lbl,col)=>{ln(svg,16,y-2,24,y-2,col||CE,0.5);tx(svg,14,y+4,lbl,{m:true,sz:7,f:col||CE,a:'end'});};
-  zl(YR,'SUPPLY RAIL',CS);zl(YC,'CONDITIONING / VB','#aaaaaa');zl(YS,'CONTROL VALVE',CP);
-  zl(YA,'PORT A (OPEN)',CS);if(aType==='double') zl(YB,'PORT B (CLOSE)',CB);
-  zl(YF,'ACTUATOR',CS);if(hasLimit) zl(YL,'POSITION FB',CG);
-
-  [YC-30,YS-30,YF-30].forEach(yz=>ln(svg,30,yz,W-30,yz,'#3a3b3e',0.4,'8,6'));
-
-  // Supply rail
-  rc(svg,XSU-34,YR-16,68,30,'#fff5f5',CS,1.5,3);
-  tx(svg,XSU,YR-3,'IA SUPPLY',{m:true,sz:8,f:CS,b:true});tx(svg,XSU,YR+9,`${psi} PSI`,{m:true,sz:9,f:CS});
-  const XRE=hasSov?XSOV+2:XIP+2;
-  ln(svg,XSU+34,YR,XRE,YR,CS,2.5);
-  tx(svg,(XSU+34+XRE)/2,YR-8,'INSTRUMENT AIR — SUPPLY',{m:true,sz:7,f:CS});
-
-  // FR
-  if(hasFR){
-    ln(svg,XFR,YR,XFR,YC-22,CS,2);jd(svg,XFR,YR,CS);
-    symFR(svg,XFR,YC,'FR-01');
-    const frOutEnd=hasVB?XVB-28:(hasSov?XSOV-52:XRE);
-    ln(svg,XFR+26,YC,frOutEnd,YC,CS,hasVB?2:1.5);
-    ln(svg,XFR,YC+22,XFR,YS-10,CS,1.5);
-    jd(svg,XFR+26,YC,CS);
-    symGauge(svg,XFR+46,YC,'PI-01','#ff6b2b');
-  }
-
-  // VB
-  if(hasVB){
-    const VX=XVB,VY=YC;
-    const vbInX=hasFR?XFR+26:XSU+34;
-    ln(svg,vbInX,VY,VX-28,VY,CS,2);jd(svg,vbInX,VY,CS);
-    symVB(svg,VX,VY,'VB-01');
-    ln(svg,VX+28,VY,hasSov?XSOV-52:XACT-26,VY,CS,2);
-    const vbm=BIFOLD_VB[getSelIdx('cv-vb')];
-    tx(svg,VX,VY+30,`Cv ${vbm?vbm.cv:'?'}`,{m:true,sz:7,f:CE});
-  }
-
-  // SOV
-  if(hasSov){
-    const pPx=aType==='double'?XSOV-38:XSOV-28;
-    if(hasVB){
-      ln(svg,XVB+28,YC,XSOV-52,YC,CS,2);ln(svg,XSOV-52,YC,pPx,YC,CS,2);ln(svg,pPx,YC,pPx,YS,CS,2);
-      jd(svg,XVB+28,YC,CS);
-    } else {
-      // Tier 1 — SOV is on power path
-      const powerColor = tier1 ? CS : CS;
-      ln(svg,hasFR?XFR:XSU+34,YS,pPx,YS,powerColor,tier1?2:1.5);
-      ln(svg,pPx,hasFR?YC+22:YR,pPx,YS,powerColor,tier1?2:1.5);
-      if(!hasFR) jd(svg,pPx,YR,CS); else jd(svg,XFR,YS,CS);
-    }
-    symSOV(svg,XSOV,YS,aType,'SOV-01');
-    if(tier1){
-      // Label SOV as POWER PATH in Tier 1
-      rc(svg,XSOV-36,YS-H/2-52,72,14,'rgba(227,0,15,.1)','#e3000f',0.8,2);
-      tx(svg,XSOV,YS-H/2-46,'POWER PATH (T1)',{m:true,sz:7,f:'#e3000f',b:true});
-    }
-    const SY=YS-62;
-    ln(svg,30,SY,XSOV-57,SY,CG,1,'6,3');al(svg,XSOV-58,SY,XSOV-56,YS-18,CG,1);
-    tx(svg,32,SY-8,'24 VDC CONTROL SIGNAL',{m:true,sz:7,f:CG,a:'start'});
-    const eX=aType==='double'?XSOV+38:XSOV+28;
-    if(hasMuffler){
-      ln(svg,eX,YS+18,eX,YS+50,CE,1.5);
-      symMuff(svg,eX,YS+58,'MUFF');
-    } else {
-      ln(svg,eX,YS+18,eX,YS+50,CE,1.5);symMuff(svg,eX,YS+62);
-    }
-    if(hasVB){
-      const pAxP=aType==='double'?XSOV-18:XSOV-8;
-      ln(svg,pAxP,YS+18,pAxP,YS+44,CP,1.2,'4,3');ln(svg,pAxP,YS+44,XVB,YS+44,CP,1.2,'4,3');
-      ln(svg,XVB,YS+44,XVB,YC-22,CP,1.2,'4,3');
-      const pidArr=mkArrow(svg,CP,5);
-      svg.appendChild(el('line',{x1:XVB,y1:YC-26,x2:XVB,y2:YC-22,stroke:CP,'stroke-width':1.2,'marker-end':`url(#${pidArr})`}));
-      tx(svg,(pAxP+XVB)/2,YS+40,'PILOT SIGNAL',{m:true,sz:7,f:CP});
-    }
-    const pAx=aType==='double'?XSOV-18:XSOV-8;
-    ln(svg,pAx,YS+18,pAx,YA,CS,1.5);ln(svg,pAx,YA,XACT-26,YA,CS,1.5);
-    tx(svg,pAx-6,YA+14,'PORT A',{m:true,sz:7,f:CS,a:'end'});
-    if(aType==='double'){
-      const pBx=XSOV+18;
-      ln(svg,pBx,YS+18,pBx,YB,CB,1.5);ln(svg,pBx,YB,XACT+26,YB,CB,1.5);
-      tx(svg,pBx+6,YB+14,'PORT B',{m:true,sz:7,f:CB,a:'start'});
-    }
-  }
-
-  if(hasFCVopen&&hasSov){
-    const fc=COMP_DEFS.find(c=>c.id==='cv-fcv-open'),fcv=fc?getModelCv(fc).toFixed(2):'?';
-    ln(svg,XSOV-18,YA,XFVO-14,YA,CS,1.5);ln(svg,XFVO+14,YA,XACT-26,YA,CS,1.5);
-    symFCV(svg,XFVO,YA,aType==='single'?'FCV-01\n(PORT)':'FCV-01',CS);
-    tx(svg,XFVO+26,YA+4,`Cv ${fcv}`,{m:true,sz:7,f:'#6e4020',a:'start'});
-    if(aType==='single') tx(svg,XFVO,YA-36,'SUPPLY+EXH',{m:true,sz:6,f:CE});
-  }
-  if(hasFCVclose&&aType==='double'&&hasSov){
-    const fc=COMP_DEFS.find(c=>c.id==='cv-fcv-close'),fcv=fc?getModelCv(fc).toFixed(2):'?';
-    ln(svg,XSOV+18,YB,XFVC-14,YB,CB,1.5);ln(svg,XFVC+14,YB,XACT+26,YB,CB,1.5);
-    symFCV(svg,XFVC,YB,'FCV-02',CB);
-    tx(svg,XFVC+26,YB+4,`Cv ${fcv}`,{m:true,sz:7,f:'#6e2010',a:'start'});
-  }
-  if(hasQEV&&hasSov){
-    jd(svg,XQEV,YA,CS);ln(svg,XQEV,YA,XQEV,YA+32,CY,1.5);
-    symQEV(svg,XQEV,YA+46,'QEV-01');
-  }
-  if(hasHipex&&hasSov){
-    const HX=hasQEV?XHPX:XQEV;
-    jd(svg,HX,YA,CY);ln(svg,HX,YA,HX,YA+32,CY,2);
-    symHIPEX(svg,HX,YA+48,'HIPEX-01');
-    const hm=BIFOLD_HIPEX[getSelIdx('cv-hipex')];
-    const isEst=hm&&hm.est;
-    tx(svg,HX,YA-42,isEst?'⚠ Cv EST':`Cv ${hm?hm.cv:'?'}`,{m:true,sz:7,f:isEst?CY:'#a07020'});
-  }
-  if(hasGauge&&hasSov){
-    const GAX=XACT-26;jd(svg,GAX,YA,CS);ln(svg,GAX,YA,GAX,YA+22,CS,1);symGauge(svg,GAX,YA+36,'PI-A','#ff6b2b');
-    if(aType==='double'){const GBX=XACT+26;jd(svg,GBX,YB,CB);ln(svg,GBX,YB,GBX,YB+22,CB,1);symGauge(svg,GBX,YB+36,'PI-B','#ff6b2b');}
-  }
-
-  symACT(svg,XACT,YF,aType,'ACT-01');
-  ln(svg,XACT-26,YA,XACT-26,YF-30,CS,1.5);
-  if(aType==='double'){ln(svg,XACT+26,YB,XACT+26,YF-30,CB,1.5);}
-  if(aType==='single'){
-    const spx=XACT+64,spy=YF;
-    py(svg,Array.from({length:9},(_,i)=>[spx+i*5,spy+(i%2===0?-6:6)]),'#706060',1.2);
-    tx(svg,XACT+84,YF+10,'SPRING RETURN',{m:true,sz:7,f:'#706060',a:'start'});
-  }
-
-  if(hasLimit){
-    const ZO=XACT-80,ZC=XACT+80;
-    ln(svg,XACT-30,YF+30,ZO,YF+30,CG,0.8,'3,2');ln(svg,ZO,YF+30,ZO,YL-22,CG,0.8,'3,2');
-    ln(svg,XACT+30,YF+30,ZC,YF+30,CG,0.8,'3,2');ln(svg,ZC,YF+30,ZC,YL-22,CG,0.8,'3,2');
-    symLS(svg,ZO,YL,'ZSO',CG);symLS(svg,ZC,YL,'ZSC',CG);
-    al(svg,ZO,YL+22,ZO,YL+46,CG,1);tx(svg,ZO,YL+54,'→ DCS',{m:true,sz:7,f:CE});
-    al(svg,ZC,YL+22,ZC,YL+46,CG,1);tx(svg,ZC,YL+54,'→ DCS',{m:true,sz:7,f:CE});
-  }
-
-  // Cv badge
-  const{sysCv,openR,exhaustCvReq,bpInfo}=validation;
-  const rv=openR.cv;
-  const cvcol=sysCv>=rv?'#00e676':sysCv>=rv*0.85?'#ffc107':'#ff3d3d';
-  const BX=W-148,BY=64;
-  rc(svg,BX-90,BY-32,180,100,'#f0f0f0',cvcol,1.5,4);
-  tx(svg,BX,BY-18,'SYSTEM Cv (SUPPLY)',{m:true,sz:7,f:cvcol});
-  tx(svg,BX,BY+4,sysCv.toFixed(4),{m:true,sz:17,f:cvcol,b:true});
-  tx(svg,BX,BY+17,`REQ (1.5×SF): ${rv.toFixed(4)}`,{m:true,sz:7,f:CE});
-  ln(svg,BX-80,BY+22,BX+80,BY+22,'#1e2d42',0.5);
-  tx(svg,BX,BY+30,'EXHAUST Cv REQ:',{m:true,sz:7,f:CY});
-  tx(svg,BX,BY+43,exhaustCvReq.toFixed(4),{m:true,sz:10,f:CY,b:true});
-  tx(svg,BX,BY+55,bpInfo.label,{m:true,sz:6.5,f:'#999999'});
-
-  // Legend
-  const LX=W-192,LY=H-220;
-  rc(svg,LX-8,LY-18,190,210,'#f5f5f5','#cccccc',1,3);
-  tx(svg,LX+87,LY-4,'LINE TYPE LEGEND',{m:true,sz:8,f:'#aaaaaa',b:true});
-  [[CS,2,'none','Power Air — Supply (Tier 1+2+)'],[CB,2,'none','Power Air — Port B / D/A'],[CE,1.5,'none','Exhaust / Vent to Atmosphere'],[CP,1,'4,3','Pilot Signal (low flow, T2+)'],[CG,1,'6,3','Electrical / 24 VDC Control'],[CY,1.5,'none','Exhaust Path (QEV / HiPex)'],['#e3000f',2.5,'none','Tier 1: SOV carries all supply air']].forEach(([c,w,d,lbl],i)=>{
-    const ly2=LY+14+i*26;ln(svg,LX,ly2,LX+28,ly2,c,w,d);tx(svg,LX+34,ly2+4,lbl,{m:true,sz:8,f:'#555555',a:'start'});
-  });
-
-  svg.appendChild(el('rect',{x:2,y:2,width:W-4,height:H-4,fill:'none',stroke:'#2c2d30','stroke-width':1.5,rx:3}));
-  rc(svg,0,H-24,W,24,'#f0f0f0','none',0);ln(svg,0,H-24,W,H-24,'#cccccc',1);
-  tx(svg,W/2,H-9,`PNEUMAPANEL v3.0 · ISO 1219 / ISA S5.1 · BEPTO/ISA CHOKED FLOW · ${new Date().toLocaleDateString()}`,{m:true,sz:7,f:'#888888'});
-  return svg;
-}
-
-// ─── BOM ──────────────────────────────────────────────────────────
-function buildBOM(params){
-  const{psi,gal,aType,validation,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasMuffler,hasLimit,hasGauge}=params;
-  const{openR,closeR,openExhR,exhaustCvReq,bpInfo}=validation;
-  const items=[];
-  const gm=id=>{const c=COMP_DEFS.find(x=>x.id===id);if(!c)return null;const d=getCompData(c),i=getSelIdx(id);return d[i]||null;};
-  if(hasFR){const m=gm('cv-fr');items.push({tag:'FR-01',desc:'Filter-Regulator + Pressure Gauge (PI-01)',spec:`20–30µm, 0–${Math.ceil(psi*1.3/10)*10} PSI, ${psi} PSI set`,cv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasVB){const m=gm('cv-vb'),isEst=m&&m.est;items.push({tag:'VB-01',desc:'Volume Booster — Power Air Path',spec:`Supply Cv req: ${openR.cv.toFixed(4)} (1.5×SF${isEst?' — ⚠ Cv estimated':''}); pilot from SOV`,cv:m?m.cv.toFixed(2):'—',model:m?(m.model+(isEst?' ⚠ CONFIRM Cv':'')):' — ',type:'Pneumatic'});}
-  if(hasSov){const m=gm('cv-sov');const tier1=isTier1();items.push({tag:'SOV-01',desc:`${aType==='double'?'5/2':'3/2'} Solenoid Valve — Spring Return`,spec:tier1?`TIER 1 POWER PATH — Cv critical. ${psi} PSI, 24VDC`:`Pilot path only — Cv irrelevant. ${psi} PSI, 24VDC`,cv:tier1?(m?m.cv.toFixed(2):'—'):'PILOT',model:m?m.model:'—',type:tier1?'Pneumatic [POWER T1]':'Electrical [PILOT]'});}
-  if(hasPos){const m=gm('cv-pos');items.push({tag:'IPY-01',desc:'I/P Electropneumatic Transducer',spec:'4–20 mA → 3–15 PSI',cv:'PILOT',model:m?m.model:'—',type:'Electrical [PILOT]'});}
-  if(hasFCVopen){const m=gm('cv-fcv-open');items.push({tag:'FCV-01',desc:aType==='single'?'Flow Control Valve — Cylinder Port (Open + Close speed)':'Flow Control Valve — Open (Meter-Out Port A)',spec:`Set to Cv ${openR.cv.toFixed(4)} (supply); also controls exhaust throttle on SA`,cv:`≥ ${openR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasFCVclose&&aType==='double'){const m=gm('cv-fcv-close');items.push({tag:'FCV-02',desc:'Flow Control Valve — Close (Meter-Out Port B)',spec:`Set to Cv ${closeR.cv.toFixed(4)}`,cv:`≥ ${closeR.cv.toFixed(4)}`,model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasMuffler){const m=gm('cv-muffler');items.push({tag:'MUFF-01',desc:'Muffler / Silencer — SOV Exhaust Port',spec:`~3 PSI back-pressure at design flow. ${psi} PSI rated`,cv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasQEV){const m=gm('cv-qev');items.push({tag:'QEV-01',desc:'Quick Exhaust Valve',spec:`${psi} PSI rated`,cv:m?m.cv.toFixed(2):'—',model:m?m.model:'—',type:'Pneumatic'});}
-  if(hasHipex){const m=gm('cv-hipex'),isEst=m&&m.est;items.push({tag:'HIPEX-01',desc:'HiPex High-Pressure Exhaust Valve',spec:`Exhaust Cv req: ${exhaustCvReq.toFixed(4)} (1.5×SF, ${bpInfo.label})${isEst?' — ⚠ Cv estimated':''}`,cv:m?m.cv.toFixed(2):'—',model:m?(m.model+(isEst?' ⚠ CONFIRM WITH BIFOLD':'')):' — ',type:'Pneumatic'});}
-  if(hasGauge){items.push({tag:`PI-A${aType==='double'?'/PI-B':''}`,desc:`Cylinder Port Pressure Gauge${aType==='double'?' (×2)':''}`,spec:`0–${Math.ceil(psi*1.3/10)*10} PSI glycerine`,cv:'N/A',model:'Any 2.5" panel gauge',type:'Pneumatic'});}
-  items.push({tag:'ACT-01',desc:`Quarter-Turn Pneumatic Actuator — ${aType==='single'?'Single Acting SR':'Double Acting'}`,spec:`${gal} gal displacement, ${psi} PSI supply`,cv:'N/A',model:'Per actuator vendor datasheet',type:'Mechanical'});
-  if(hasLimit){items.push({tag:'ZSO',desc:'Limit Switch — Open Position',spec:'SPDT, NEMA 4X, cam operated',cv:'N/A',model:'Soldo / proximity switch',type:'Electrical'});items.push({tag:'ZSC',desc:'Limit Switch — Close Position',spec:'SPDT, NEMA 4X, cam operated',cv:'N/A',model:'Soldo / proximity switch',type:'Electrical'});}
-  return items;
-}
-
-// ─── APPLY ALL RECOMMENDATIONS ────────────────────────────────────
-window.applyAllRecommendations=function(){
-  const psi=V('supplyPSI'),gal=V('displacement'),ot=V('openTime'),ct=V('closeTime');
-  const oR=calcSupply(gal,ot,psi);
-  const rawCvReq=oR.cvRaw;
-  const arch=getArchTier(rawCvReq);
-  const oExh=calcExhaust(gal,ot,psi);
-
-  if(!C('chk-fr')) $('chk-fr').checked=true;
-  const needVB=arch.tier>=2;
-  $('chk-vb').checked=needVB;
-  const needHipex=arch.tier>=3;
-  if(needHipex){ $('chk-hipex').checked=true; $('chk-qev').checked=false; }
-  else if(oExh.cv>0.6&&!C('chk-hipex')&&!C('chk-qev')) $('chk-qev').checked=true;
-  if(!C('chk-solenoid')) $('chk-solenoid').checked=true;
-  if(!C('chk-speed-open')) $('chk-speed-open').checked=true;
-  if(actuatorType==='double'&&!C('chk-speed-close')) $('chk-speed-close').checked=true;
-  if(!C('chk-limit')) $('chk-limit').checked=true;
-  pinnedComps.clear();
-  updateCompVisibility();
-  setTimeout(()=>{ window.generateAll(); },60);
-  setTimeout(()=>{ const out=$('outContent');if(out) out.scrollIntoView({behavior:'smooth',block:'start'}); },200);
-};
-
-// ─── GENERATE & VALIDATE ──────────────────────────────────────────
-window.generateAll=function(){
-  const psi=V('supplyPSI'),gal=V('displacement'),openT=V('openTime'),closeT=V('closeTime'),aType=actuatorType;
-  if(!gal||!psi||!openT||!closeT){alert('Please fill in all required fields.');return;}
-  const hasSov=C('chk-solenoid'),hasPos=C('chk-positioner'),hasFR=C('chk-fr');
-  const hasFCVopen=C('chk-speed-open'),hasFCVclose=C('chk-speed-close')&&aType==='double';
-  const hasQEV=C('chk-qev'),hasHipex=C('chk-hipex'),hasLimit=C('chk-limit'),hasGauge=C('chk-gauge'),hasVB=C('chk-vb'),hasMuffler=C('chk-muffler');
-  const cvArr=getCvArray();
-  const validation=validate({psi,gal,openT,closeT,aType,cvArr});
-  const params={psi,gal,openT,closeT,aType,validation,cvArr,hasSov,hasPos,hasFR,hasVB,hasFCVopen,hasFCVclose,hasQEV,hasHipex,hasMuffler,hasLimit,hasGauge};
-  const svgEl=buildSVG(params);
-  const bom=buildBOM(params);
-  const{verdict,checks:powerChecks,pilotChecks,archChecks,sysCv,openR,openExhR,exhaustCvReq,bpInfo,arch}=validation;
-
-  const vText={approved:'✔ DESIGN APPROVED',warning:'⚠ APPROVED WITH WARNINGS',rejected:'✘ DESIGN NOT APPROVED'}[verdict];
-  const vSub={
-    approved:`All critical checks passed. Power-path system Cv ${sysCv.toFixed(3)} satisfies requirements.`,
-    warning:'Design conditionally meets requirements — review warnings before fabrication.',
-    rejected:'One or more critical checks failed. Design cannot achieve required stroke times.'
-  }[verdict];
-
-  const im={pass:'✔',fail:'✘',warn:'⚠',info:'ℹ'};
-  const chkHTML=arr=>arr.map(c=>`
-    <div class="chkitem ${c.status}">
-      <span class="chkicon">${im[c.status]}</span>
-      <div class="chkbody">
-        <div class="chktitle">${c.title}</div>
-        <div class="chkdetail">${c.detail.replace(/\n/g,'<br>')}</div>
-        ${c.rec?`<div class="chkrec">→ ${c.rec}</div>`:''}
-        ${c.model?`<div class="chkmod">✦ ${c.model}</div>`:''}
-      </div>
-    </div>`).join('');
-
-  const cvCls=verdict==='approved'?'green':verdict==='warning'?'yellow':'red';
-  const tier1=isTier1();
-  const badges=[
-    {l:aType==='single'?'SINGLE ACTING — SPRING RETURN':'DOUBLE ACTING',c:'cyan'},
-    {l:`${psi} PSI SUPPLY`,c:''},
-    {l:`${gal} GAL DISPLACEMENT`,c:''},
-    {l:`OPEN: ${openT}s → Supply Cv ${openR.cv.toFixed(3)}`,c:'cyan'},
-    aType==='double'?{l:`CLOSE: ${closeT}s → Supply Cv ${validation.closeR.cv.toFixed(3)}`,c:'orange'}:{l:`CLOSE: ${closeT}s (SPRING)`,c:''},
-    {l:`POWER-PATH Cv: ${sysCv.toFixed(3)}`,c:cvCls},
-    {l:`${tier1?'TIER 1 — SOV=POWER':'TIER 2+ — SOV=PILOT'} · ${arch?arch.name:'—'}`,c:'yellow'},
-    {l:`EXH Cv REQ: ${exhaustCvReq.toFixed(3)} · ${bpInfo.label}`,c:'purple'},
-    {l:`SUPPLY REGIME: ${openR.regime}`,c:''},
-  ].map(b=>`<span class="badge ${b.c}">${b.l}</span>`).join('');
-
-  const bomRows=bom.map(r=>`<tr><td class="tc">${r.tag}</td><td>${r.desc}</td><td class="tsp">${r.spec}</td><td class="tcv">${r.cv}</td><td class="tmo">${r.model}</td><td class="tsp">${r.type}</td></tr>`).join('');
-
-  const secHdr=(num,title,sub,pathType)=>`
-    <div class="val-sec-hdr">
-      <div class="val-sec-num">${num}</div>
-      <div><div class="val-sec-title">${title}</div><div class="val-sec-sub">${sub}</div></div>
-      <div class="val-path-pill ${pathType}">${pathType==='power'?'Cv-CRITICAL':pathType==='pilot'?'Cv-IRRELEVANT':'ARCHITECTURE'}</div>
+  if(sel){
+    const pc=portCallout();
+    html+=`<div class="pick">
+      <div class="lbl">Recommended panel</div>
+      <div class="big">${sel.panel.name}</div>
+      <div class="meta">Panel porting ${sel.porting}${sel.units?` &middot; ${sel.units} add-on exhaust unit${sel.units>1?'s':''} at Cv ${sel.panel.hipexCv} each`:''}</div>
+      ${pc?`<div class="meta">Actuator flanges — end ${pc.end} &middot; head ${pc.head} <span class="tag">FROM PORT OPTION ${val('portOpt')}</span></div>`
+          :`<div class="meta">Actuator flange callout not listed for this body and cylinder combination.</div>`}
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="k">Required Cv, supply</div><div class="v">${r.supply.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfSupply}</div></div>
+      <div class="kpi"><div class="k">Panel Cv, supply</div><div class="v">${sel.panel.cvIn.toFixed(2)}</div><div class="n">margin ${(sel.marginSupply*100).toFixed(0)}%</div></div>
+      <div class="kpi"><div class="k">Required Cv, exhaust</div><div class="v">${r.exhaust.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfExh}</div></div>
+      <div class="kpi"><div class="k">Panel Cv, exhaust</div><div class="v">${sel.panel.cvOut.toFixed(2)}</div><div class="n">${sel.exhaustShort>0?'short':'adequate'}</div></div>
+      <div class="kpi"><div class="k">Free air</div><div class="v">${r.supply.scfm.toFixed(1)}</div><div class="n">scfm, supply stroke</div></div>
     </div>`;
+  } else if(sys){
+    html+=`<div class="kpis">
+      <div class="kpi"><div class="k">Required Cv, supply</div><div class="v">${r.supply.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfSupply}</div></div>
+      <div class="kpi"><div class="k">System Cv, supply</div><div class="v">${sys.power.toFixed(3)}</div><div class="n">${sys.n} components in series</div></div>
+      <div class="kpi"><div class="k">Required Cv, exhaust</div><div class="v">${r.exhaust.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfExh}</div></div>
+      <div class="kpi"><div class="k">System Cv, exhaust</div><div class="v">${sys.exhaust?sys.exhaust.toFixed(3):'—'}</div><div class="n">${sys.exhaust?'exhaust path':'no exhaust components'}</div></div>
+    </div>`;
+  }
 
-  const content=$('outContent');
-  content.innerHTML=`<div class="outcontent">
-    <div class="outhdr">
-      <div><div class="outtitle">CONTROL <span>PANEL</span> DIAGRAM</div><div class="outsub">QUARTER-TURN PNEUMATIC ACTUATOR — BEPTO/ISA CHOKED FLOW METHOD v3.0</div></div>
-      <div style="display:flex;gap:8px;align-items:center">
-        ${verdict!=='approved'?`<button class="applybtn" onclick="window.applyAllRecommendations()">⚡ Apply All Recommendations</button>`:''}
-        <button class="printbtn" onclick="window.print()">⎙ PRINT / PDF</button>
-      </div>
-    </div>
-    <div class="badges">${badges}</div>
-    <div class="appr ${verdict}">
-      <div class="appr-top">
-        <div style="flex:1">
-          <div class="vbadge ${verdict}">${vText}</div>
-          <div class="vsub">${vSub}</div>
-        </div>
-        ${verdict!=='approved'?`<button class="applybtn applybtn-lg" onclick="window.applyAllRecommendations()">⚡ Apply All Recommendations</button>`:''}
-      </div>
-      ${secHdr('01','POWER AIR PATH','FR · VB · FCV · SOV (Tier 1) · Exhaust path','power')}
-      <div class="chklist">${chkHTML(powerChecks)}</div>
-      ${secHdr('02','PILOT / CONTROL PATH','SOV (Tier 2+) · I/P Positioner · Limit Switches','pilot')}
-      <div class="chklist">${chkHTML(pilotChecks)}</div>
-      ${secHdr('03','ARCHITECTURE & RECOMMENDATION','Required Cv → system tier selection','arch')}
-      <div class="chklist">${chkHTML(archChecks)}</div>
-    </div>
-    <div class="svgwrap" id="svgWrap"></div>
-    <div>
-      <div class="bomtitle">BILL OF MATERIALS</div>
-      <table class="bomtable"><thead><tr><th>Tag</th><th>Description</th><th>Specification / Notes</th><th>Cv</th><th>Model Reference</th><th>Type</th></tr></thead><tbody>${bomRows}</tbody></table>
-    </div>
-  </div>`;
+  const ic={ok:'&#10003;',warn:'&#9888;',err:'&#10007;',info:'&#8505;'};
+  html+=`<div class="sect"><h3>Checks</h3><div class="sh">Run in order. A failed stroke-time check stops the calculation.</div>`;
+  html+=checks.map(m=>`<div class="msg ${m.lvl}"><span class="ic">${ic[m.lvl]}</span><div><b>${m.title}</b><p>${m.body}</p>${m.fix?`<span class="fix">${m.fix}</span>`:''}</div></div>`).join('');
+  html+=`</div>`;
 
-  $('svgWrap').appendChild(svgEl);
-  $('emptyState').style.display='none';
-  content.style.display='block';
+  if(sel){
+    const rows=[
+      ['PNL-01', sel.panel.name+' standardized package', `Supply Cv ${sel.panel.cvIn.toFixed(2)} · exhaust Cv ${sel.panel.cvOut.toFixed(2)}`, sel.panel.port+' NPT'],
+      ...(sel.units?[['QEX-01', `Add-on quick-exhaust unit ×${sel.units}`, `Cv ${sel.panel.hipexCv} each · brings delivered Cv to ${sel.deliveredIn.toFixed(2)}`, sel.panel.port+' NPT']]:[]),
+      ['ACT-01', `${val('family')}-${val('bodySize')} actuator, ${acting==='sr'?'spring return':'double acting'}`,
+        `${r.gal} gal displacement${val('cylSize')?' · cylinder '+val('cylSize'):''}${chk('override')?' · manual override':''}`,
+        val('portOpt')?'Port option '+val('portOpt'):'—']
+    ];
+    html+=`<div class="sect" style="border-top:1px solid var(--fill2)"><h3>Bill of materials</h3>
+      <div class="sh">Standardized package. Individual components are fixed by the package definition.</div>
+      <table><thead><tr><th>Tag</th><th>Item</th><th>Specification</th><th>Connection</th></tr></thead><tbody>
+      ${rows.map(x=>`<tr><td class="m">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td class="m">${x[3]}</td></tr>`).join('')}
+      </tbody></table></div>`;
+  }
 
-  const tag=$('hdrTag'),st=$('hdrStatus');
-  st.textContent=verdict.toUpperCase();
-  tag.className='hdr-tag st-'+verdict;
-};
+  html+=`<div class="foot">Supply Cv on the workbook basis (CF / PD table, K ${K_SHEET}) &middot;
+    exhaust Cv on ISA critical flow, Q in scfh, Cv = Q&radic;(SG&middot;T)/(720&middot;P<sub>1</sub>) &middot;
+    ${new Date().toLocaleDateString()}</div>`;
 
-updateCompVisibility();
+  $('out').innerHTML=html;
+  const st=$('status');
+  st.className='status s-'+(verdict==='ok'?'ok':verdict==='warn'?'warn':'err');
+  st.innerHTML='Status <b>'+vt+'</b>';
+}
+
+function resetAll(){
+  $('disp').value=2.5; $('psi').value=80; $('tOpen').value=10; $('tClose').value=10;
+  $('override').checked=false; $('exhaust').value='muffler';
+  setActing('sr'); fillFamilies();
+  $('out').innerHTML='<div class="empty"><div class="g">&#9636;</div><b>No result yet</b>Enter the requirement and choose Calculate.</div>';
+  const st=$('status'); st.className='status'; st.innerHTML='Status <b>Not run</b>';
+}
+
+fillFamilies();
+live();
 </script>
 </body>
 </html>
