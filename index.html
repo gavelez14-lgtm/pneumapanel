@@ -73,7 +73,7 @@ button{font-family:inherit}
 
 /* layout */
 .wrap{display:grid;grid-template-columns:392px 1fr;gap:20px;padding:20px;align-items:start}
-.card{background:var(--white);border:1px solid var(--stroke);border-radius:2px;box-shadow:var(--d4)}
+.card{background:var(--white);border:1px solid var(--stroke);border-radius:2px}
 .card>h2{font-size:15px;font-weight:600;padding:14px 16px 10px;border-bottom:1px solid var(--fill2)}
 .card>h2 small{display:block;font-weight:400;font-size:12px;color:var(--t2);margin-top:2px}
 .cardbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:14px}
@@ -126,26 +126,30 @@ input[type=number]:focus,select:focus{border-color:var(--accent);outline:1px sol
 
 /* results */
 .result-head{display:flex;align-items:baseline;gap:12px;padding:16px 16px 12px;border-bottom:1px solid var(--fill2);flex-wrap:wrap}
-.verdict{font-size:20px;font-weight:600}
+.verdict{font-size:15px;font-weight:600}
 .verdict.ok{color:var(--ok)} .verdict.warn{color:var(--warn)} .verdict.err{color:var(--err)}
 .result-head .sub{font-size:13px;color:var(--t2)}
 .pick{padding:16px;border-bottom:1px solid var(--fill2)}
-.pick .big{font-size:30px;font-weight:600;letter-spacing:-.5px;line-height:1.15}
+.pick .big{font-size:26px;font-weight:600;letter-spacing:-.4px;line-height:1.2}
 .pick .lbl{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
 .pick .meta{font-size:13px;color:var(--t2);margin-top:6px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));border-top:1px solid var(--fill2)}
-.kpi{padding:12px 16px;border-right:1px solid var(--fill2)}
-.kpi:last-child{border-right:none}
-.kpi .k{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}
-.kpi .v{font-family:var(--mono);font-size:19px;font-weight:600;margin-top:3px}
-.kpi .n{font-size:11px;color:var(--t3);margin-top:1px}
+.spec{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fill2)}
+.spec dl{border-right:1px solid var(--fill2)}
+.spec dl:last-child{border-right:none}
+.spec div{display:flex;justify-content:space-between;gap:16px;padding:6px 16px;border-bottom:1px solid var(--fill2)}
+.spec dt{font-size:13px;color:var(--t2)}
+.spec dd{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right;white-space:nowrap}
+.spec dd small{font-weight:400;color:var(--t2);font-family:var(--font)}
 .sect{padding:14px 16px}
 .sect h3{font-size:14px;font-weight:600;margin-bottom:2px}
 .sect .sh{font-size:12px;color:var(--t2);margin-bottom:10px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-size:12px;font-weight:600;color:var(--t2);border-bottom:1px solid var(--stroke2);
-  padding:7px 10px;white-space:nowrap}
-td{padding:8px 10px;border-bottom:1px solid var(--fill2);vertical-align:top}
+  padding:6px 12px;white-space:nowrap;position:sticky;top:44px;background:var(--white)}
+td{padding:6px 12px;border-bottom:1px solid var(--fill2);vertical-align:top}
+td.num{text-align:right;font-family:var(--mono)}
+tbody tr.grp td{background:var(--bg);font-weight:600;font-size:12px;color:var(--t2);
+  text-transform:uppercase;letter-spacing:.4px;padding:5px 12px}
 tbody tr:hover td{background:var(--bg)}
 td.m,th.m{font-family:var(--mono)}
 .empty{padding:64px 24px;text-align:center;color:var(--t2)}
@@ -323,6 +327,31 @@ const LADDER_DA=[
      2" spring-return package, which uses the same body. Confirm before use. */
   {name:'2 (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:34.9964, cvOut:41.0685, port:'2', hipexCv:65.0, provisional:true}
 ];
+
+/* Component makeup of each standardized package.
+   Source: standardized engineering workbook, Sheet6 columns A-V.
+   Verified: the series combination 1/sqrt(sum(1/Cv^2)) of each package's
+   supply-path items reproduces the published cvIn for that package. */
+const PILOT_SR=[[1,'1/4" regulator',1.1],[1,'1/4" solenoid valve',0.72],[1,'1/4" bug screen',2.54]];
+const PILOT_DA=[[2,'1/4" 3/2 solenoid valve',0.72],[2,'1/4" bug screen',2.54]];
+const PANEL_BOM={
+ '1/4 (SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" solenoid valve',0.72],[1,'1/4" bug screen',2.54]],
+ '1/2 (FB+SOV)':[[1,'1/2" flow control',5.1],[1,'1/2" filter booster',4.0],[1,'1/2" bug screen',7.32],...PILOT_SR],
+ '3/4 (FB+SOV)':[[1,'3/4" flow control',11.2],[1,'3/4" filter booster',8.5],[1,'3/4" bug screen',13.87],...PILOT_SR],
+ '1 (FB+SOV)':[[1,'1" flow control',11.2],[1,'1" filter booster',11.2],[1,'1" bug screen',19.53],...PILOT_SR],
+ '1-1/2 (FB+SOV)':[[1,'1-1/2" flow control',26],[1,'1-1/2" filter booster',31],[1,'1-1/2" bug screen',38.09],...PILOT_SR],
+ '2 (FB+SOV)':[[1,'2" flow control',49],[1,'2" filter booster',50],[1,'2" bug screen',52.73],...PILOT_SR],
+ '1/4 (DA 5/2-5/3-4/3 + SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" 5/x solenoid valve',0.72],[2,'1/4" bug screen',2.54]],
+ '1/2 (DA 5/2-5/3-4/3 + SOV)':[[1,'1/2" regulator',4.2],[1,'1/2" flow control',5.1],[1,'1/2" 5/3 pilot valve',5.5],[2,'1/2" bug screen',7.32]],
+ '3/4 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'3/4" regulator',9],[1,'3/4" flow control',9.8],[1,'3/4" 5/3 pilot valve',9.7],[2,'3/4" bug screen',13.87],...PILOT_DA],
+ '1 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1" regulator',11.2],[1,'1" flow control',11.2],[1,'1" 5/3 pilot valve',11.1],[2,'1" bug screen',19.53],...PILOT_DA],
+ '1-1/2 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1-1/2" regulator',30],[1,'1-1/2" flow control',30],[1,'1-1/2" 5/3 pilot valve',30],[2,'1-1/2" bug screen',38.09],...PILOT_DA],
+ /* The workbook lists no flow coefficients for the 2" double-acting package.
+    Item names are carried across from the 1-1/2" package; Cv is left blank
+    rather than invented, and the package Cv above is provisional. */
+ '2 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'2" regulator',null],[1,'2" flow control',null],[1,'2" 5/3 pilot valve',null],[2,'2" bug screen',null],...PILOT_DA]
+};
+
 const BOOSTER_CAP=3;   // more than this many add-on exhaust units is a fabrication problem
 
 /* Families. CP bodies are not in the port-option tables, so port callout is
@@ -649,19 +678,30 @@ function run(){
       ${pc?`<div class="meta">Actuator flanges — end ${pc.end} &middot; head ${pc.head} <span class="tag">FROM PORT OPTION ${val('portOpt')}</span></div>`
           :`<div class="meta">Actuator flange callout not listed for this body and cylinder combination.</div>`}
     </div>
-    <div class="kpis">
-      <div class="kpi"><div class="k">Required Cv, supply</div><div class="v">${r.supply.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfSupply}</div></div>
-      <div class="kpi"><div class="k">Panel Cv, supply</div><div class="v">${sel.panel.cvIn.toFixed(2)}</div><div class="n">margin ${(sel.marginSupply*100).toFixed(0)}%</div></div>
-      <div class="kpi"><div class="k">Required Cv, exhaust</div><div class="v">${r.exhaust.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfExh}</div></div>
-      <div class="kpi"><div class="k">Panel Cv, exhaust</div><div class="v">${sel.panel.cvOut.toFixed(2)}</div><div class="n">${sel.exhaustShort>0?'short':'adequate'}</div></div>
-      <div class="kpi"><div class="k">Free air</div><div class="v">${r.supply.scfm.toFixed(1)}</div><div class="n">scfm, supply stroke</div></div>
+    <div class="spec">
+      <dl>
+        <div><dt>Required Cv, supply stroke</dt><dd>${r.supply.cv.toFixed(3)} <small>&times;${r.sfSupply} SF</small></dd></div>
+        <div><dt>Package Cv, supply</dt><dd>${sel.panel.cvIn.toFixed(2)}</dd></div>
+        <div><dt>Margin on supply</dt><dd>${(sel.marginSupply*100).toFixed(0)}%</dd></div>
+        <div><dt>Free air, supply stroke</dt><dd>${r.supply.scfm.toFixed(1)} <small>scfm</small></dd></div>
+      </dl>
+      <dl>
+        <div><dt>Required Cv, exhaust stroke</dt><dd>${r.exhaust.cv.toFixed(3)} <small>&times;${r.sfExh} SF</small></dd></div>
+        <div><dt>Package Cv, exhaust</dt><dd>${sel.panel.cvOut.toFixed(2)}</dd></div>
+        <div><dt>Exhaust back-pressure</dt><dd>${BACKP[val('exhaust')][0]} <small>psi, ${BACKP[val('exhaust')][1].toLowerCase()}</small></dd></div>
+        <div><dt>Minimum stroke time</dt><dd>${minTime()==null?'&mdash;':minTime().toFixed(1)+' s'}</dd></div>
+      </dl>
     </div>`;
   } else if(sys){
-    html+=`<div class="kpis">
-      <div class="kpi"><div class="k">Required Cv, supply</div><div class="v">${r.supply.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfSupply}</div></div>
-      <div class="kpi"><div class="k">System Cv, supply</div><div class="v">${sys.power.toFixed(3)}</div><div class="n">${sys.n} components in series</div></div>
-      <div class="kpi"><div class="k">Required Cv, exhaust</div><div class="v">${r.exhaust.cv.toFixed(3)}</div><div class="n">safety factor ${r.sfExh}</div></div>
-      <div class="kpi"><div class="k">System Cv, exhaust</div><div class="v">${sys.exhaust?sys.exhaust.toFixed(3):'—'}</div><div class="n">${sys.exhaust?'exhaust path':'no exhaust components'}</div></div>
+    html+=`<div class="spec">
+      <dl>
+        <div><dt>Required Cv, supply stroke</dt><dd>${r.supply.cv.toFixed(3)} <small>&times;${r.sfSupply} SF</small></dd></div>
+        <div><dt>System Cv, supply</dt><dd>${sys.power.toFixed(3)} <small>${sys.n} in series</small></dd></div>
+      </dl>
+      <dl>
+        <div><dt>Required Cv, exhaust stroke</dt><dd>${r.exhaust.cv.toFixed(3)} <small>&times;${r.sfExh} SF</small></dd></div>
+        <div><dt>System Cv, exhaust</dt><dd>${sys.exhaust?sys.exhaust.toFixed(3):'&mdash;'}</dd></div>
+      </dl>
     </div>`;
   }
 
@@ -671,18 +711,31 @@ function run(){
   html+=`</div>`;
 
   if(sel){
-    const rows=[
-      ['PNL-01', sel.panel.name+' standardized package', `Supply Cv ${sel.panel.cvIn.toFixed(2)} · exhaust Cv ${sel.panel.cvOut.toFixed(2)}`, sel.panel.port+' NPT'],
-      ...(sel.units?[['QEX-01', `Add-on quick-exhaust unit ×${sel.units}`, `Cv ${sel.panel.hipexCv} each · brings delivered Cv to ${sel.deliveredIn.toFixed(2)}`, sel.panel.port+' NPT']]:[]),
-      ['ACT-01', `${val('family')}-${val('bodySize')} actuator, ${acting==='sr'?'spring return':'double acting'}`,
-        `${r.gal} gal displacement${val('cylSize')?' · cylinder '+val('cylSize'):''}${chk('override')?' · manual override':''}`,
-        val('portOpt')?'Port option '+val('portOpt'):'—']
-    ];
+    const items=PANEL_BOM[sel.panel.name]||[];
+    const pc=portCallout();
+    let n=0;
+    const line=(qty,item,cv,conn)=>`<tr><td class="m">${String(++n).padStart(2,'0')}</td><td class="num">${qty}</td>`+
+      `<td>${item}</td><td class="num">${cv==null?'&mdash;':cv}</td><td class="m">${conn||'&mdash;'}</td></tr>`;
+    let rows=`<tr class="grp"><td colspan="5">${sel.panel.name} &mdash; standardized package</td></tr>`;
+    rows+=items.map(([q,nm,cv])=>line(q,nm,cv,'')).join('');
+    if(sel.units){
+      rows+=`<tr class="grp"><td colspan="5">Add-on exhaust capacity</td></tr>`;
+      rows+=line(sel.units,'HIPEX quick-exhaust unit',sel.panel.hipexCv,sel.panel.port+'" NPT');
+    }
+    rows+=`<tr class="grp"><td colspan="5">Actuator</td></tr>`;
+    rows+=line(1,`${val('family')}-${val('bodySize')} ${acting==='sr'?'spring return':'double acting'}`+
+      `${val('cylSize')?', cylinder '+val('cylSize'):''}`,null,
+      pc?`end ${pc.end} / head ${pc.head}`:'not listed');
+    if(chk('override')) rows+=line(1,'Manual override',null,'');
+
+    const totalItems=items.reduce((s,x)=>s+x[0],0)+sel.units+1+(chk('override')?1:0);
     html+=`<div class="sect" style="border-top:1px solid var(--fill2)"><h3>Bill of materials</h3>
-      <div class="sh">Standardized package. Individual components are fixed by the package definition.</div>
-      <table><thead><tr><th>Tag</th><th>Item</th><th>Specification</th><th>Connection</th></tr></thead><tbody>
-      ${rows.map(x=>`<tr><td class="m">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td class="m">${x[3]}</td></tr>`).join('')}
-      </tbody></table></div>`;
+      <div class="sh">${totalItems} items. Package contents are fixed by the standard &mdash; Cv shown per item,
+      supply-path items combine as 1/&radic;&Sigma;(1/Cv&sup2;) to the package Cv of ${sel.panel.cvIn.toFixed(2)}.</div>
+      <table><thead><tr><th>#</th><th class="num">Qty</th><th>Item</th><th class="num">Cv</th><th>Connection</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <div class="note">Panel porting callout ${sel.porting}. Flange sizes are read from the actuator port option
+      and are shown for reference only &mdash; the sizing tool selects the option.</div></div>`;
   }
 
   html+=`<div class="foot">Supply Cv on the workbook basis (CF / PD table, K ${K_SHEET}) &middot;
