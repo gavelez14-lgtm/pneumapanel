@@ -242,7 +242,7 @@ td.m,th.m{font-family:var(--mono)}
         <label for="psi">Air supply</label>
         <div class="unitwrap"><input type="number" id="psi" value="80" min="30" max="150" step="5" oninput="live()"><span class="u">psig</span></div>
       </div>
-      <div class="row2">
+            <div class="row2">
         <div class="f">
           <label for="tOpen">Open time</label>
           <div class="unitwrap"><input type="number" id="tOpen" value="10" min="0.1" max="600" step="0.5" oninput="live()"><span class="u">s</span></div>
@@ -254,19 +254,6 @@ td.m,th.m{font-family:var(--mono)}
       </div>
     </fieldset>
 
-    <fieldset>
-      <legend>Exhaust discharge</legend>
-      <div class="f">
-        <label for="exhaust">Discharge arrangement</label>
-        <select id="exhaust" onchange="live()">
-          <option value="open">Open exhaust — no restriction</option>
-          <option value="muffler" selected>Muffler / silencer — approx. 3 psi</option>
-          <option value="manifold">Shared manifold — approx. 8 psi</option>
-          <option value="both">Muffler and shared manifold — approx. 10 psi</option>
-        </select>
-        <span class="hint">Sets the back-pressure used for the exhaust-side flow coefficient.</span>
-      </div>
-    </fieldset>
 
     <fieldset id="fs-custom" style="display:none">
       <legend>Custom build — components</legend>
@@ -309,23 +296,23 @@ const MIN_TIME={"CP":{"035":[1.0,0.3],"045":[1.5,0.3],"055":[2.0,0.3],"065":[2.5
    ─────────────────────────────────────────────────────────────── */
 const CFPD=[[40,3,29],[60,5.1,32],[70,5.8,34.8],[80,6.4,37.4],[90,7.1,39.9],[100,7.8,42.1],[110,8.5,44.3],[120,9.2,46.4],[130,9.8,48.4],[140,10.5,50.3],[150,11.2,52.1],[160,11.8662,55.257999999999996],[180,13.2222,59.837999999999994],[200,14.5782,64.418],[220,15.9342,68.998],[240,17.2902,73.578],[260,18.6462,78.158],[280,20.0022,82.738],[300,21.3582,87.318],[320,22.714199999999998,91.898],[340,24.0702,96.478],[360,25.4262,101.05799999999999],[380,26.7822,105.638],[400,28.1382,110.218],[420,29.4942,114.798],[440,30.8502,119.378],[460,32.206199999999995,123.958],[480,33.5622,128.538],[500,34.9182,133.118],[520,36.2742,137.698],[540,37.6302,142.27800000000002],[560,38.9862,146.858],[580,40.3422,151.438],[600,41.6982,156.018],[700,48.4782,178.918],[800,55.2582,201.818],[900,62.038199999999996,224.718],[1000,68.81819999999999,247.618],[1100,75.59819999999999,270.51800000000003]];
 const LADDER_SR=[
-  {name:'1/4 (SOV)',        cvIn:0.5791, cvOut:0.6927, port:'1/4',   hipexCv:2.0},
-  {name:'1/2 (FB+SOV)',     cvIn:3.1474, cvOut:2.6759, port:'1/2',   hipexCv:5.2},
-  {name:'3/4 (FB+SOV)',     cvIn:6.7709, cvOut:5.1633, port:'3/4',   hipexCv:11.0},
-  {name:'1 (FB+SOV)',       cvIn:7.9196, cvOut:7.2448, port:'1',     hipexCv:14.3},
-  {name:'1-1/2 (FB+SOV)',   cvIn:19.9210,cvOut:24.0435,port:'1-1/2', hipexCv:40.3},
-  {name:'2 (FB+SOV)',       cvIn:34.9964,cvOut:41.0685,port:'2',     hipexCv:65.0}
+  {name:'1/4" (SOV)',        cvIn:0.5791, cvOut:0.6927, port:'1/4"',   hipexCv:2.0},
+  {name:'1/2" (FB+SOV)',     cvIn:3.1474, cvOut:2.6759, port:'1/2"',   hipexCv:5.2},
+  {name:'3/4" (FB+SOV)',     cvIn:6.7709, cvOut:5.1633, port:'3/4"',   hipexCv:11.0},
+  {name:'1" (FB+SOV)',       cvIn:7.9196, cvOut:7.2448, port:'1"',     hipexCv:14.3},
+  {name:'1-1/2" (FB+SOV)',   cvIn:19.9210,cvOut:24.0435,port:'1-1/2"', hipexCv:40.3},
+  {name:'2" (FB+SOV)',       cvIn:34.9964,cvOut:41.0685,port:'2"',     hipexCv:65.0}
 ];
 const LADDER_DA=[
-  {name:'1/4 (DA 5/2-5/3-4/3 + SOV)',  cvIn:0.5791, cvOut:0.6927, port:'1/4',   hipexCv:2.0},
-  {name:'1/2 (DA 5/2-5/3-4/3 + SOV)',  cvIn:2.7930, cvOut:4.3971, port:'1/2',   hipexCv:5.2},
-  {name:'3/4 (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:5.4729, cvOut:7.9490, port:'3/4', hipexCv:11.0},
-  {name:'1 (DA 5/3 SOV + 5/3 PV + 2x SOV)',   cvIn:6.4469, cvOut:7.9196, port:'1',   hipexCv:14.3},
-  {name:'1-1/2 (DA 5/3 SOV + 5/3 PV + 2x SOV)',cvIn:17.3205,cvOut:9.7157,port:'1-1/2',hipexCv:40.3},
+  {name:'1/4" (DA 5/2-5/3-4/3 + SOV)',  cvIn:0.5791, cvOut:0.6927, port:'1/4"',   hipexCv:2.0},
+  {name:'1/2" (DA 5/2-5/3-4/3 + SOV)',  cvIn:2.7930, cvOut:4.3971, port:'1/2"',   hipexCv:5.2},
+  {name:'3/4" (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:5.4729, cvOut:7.9490, port:'3/4"', hipexCv:11.0},
+  {name:'1" (DA 5/3 SOV + 5/3 PV + 2x SOV)',   cvIn:6.4469, cvOut:7.9196, port:'1"',   hipexCv:14.3},
+  {name:'1-1/2" (DA 5/3 SOV + 5/3 PV + 2x SOV)',cvIn:17.3205,cvOut:9.7157,port:'1-1/2"',hipexCv:40.3},
   /* The workbook's 2" DA entry had no flow coefficient, so any double-acting
      duty above 17.3 Cv returned an error instead of a panel. Filled from the
      2" spring-return package, which uses the same body. Confirm before use. */
-  {name:'2 (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:34.9964, cvOut:41.0685, port:'2', hipexCv:65.0, provisional:true}
+  {name:'2" (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:34.9964, cvOut:41.0685, port:'2"', hipexCv:65.0, provisional:true}
 ];
 
 /* Component makeup of each standardized package.
@@ -335,30 +322,31 @@ const LADDER_DA=[
 const PILOT_SR=[[1,'1/4" regulator',1.1],[1,'1/4" solenoid valve',0.72],[1,'1/4" bug screen',2.54]];
 const PILOT_DA=[[2,'1/4" 3/2 solenoid valve',0.72],[2,'1/4" bug screen',2.54]];
 const PANEL_BOM={
- '1/4 (SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" solenoid valve',0.72],[1,'1/4" bug screen',2.54]],
- '1/2 (FB+SOV)':[[1,'1/2" flow control',5.1],[1,'1/2" filter booster',4.0],[1,'1/2" bug screen',7.32],...PILOT_SR],
- '3/4 (FB+SOV)':[[1,'3/4" flow control',11.2],[1,'3/4" filter booster',8.5],[1,'3/4" bug screen',13.87],...PILOT_SR],
- '1 (FB+SOV)':[[1,'1" flow control',11.2],[1,'1" filter booster',11.2],[1,'1" bug screen',19.53],...PILOT_SR],
- '1-1/2 (FB+SOV)':[[1,'1-1/2" flow control',26],[1,'1-1/2" filter booster',31],[1,'1-1/2" bug screen',38.09],...PILOT_SR],
- '2 (FB+SOV)':[[1,'2" flow control',49],[1,'2" filter booster',50],[1,'2" bug screen',52.73],...PILOT_SR],
- '1/4 (DA 5/2-5/3-4/3 + SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" 5/x solenoid valve',0.72],[2,'1/4" bug screen',2.54]],
- '1/2 (DA 5/2-5/3-4/3 + SOV)':[[1,'1/2" regulator',4.2],[1,'1/2" flow control',5.1],[1,'1/2" 5/3 pilot valve',5.5],[2,'1/2" bug screen',7.32]],
- '3/4 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'3/4" regulator',9],[1,'3/4" flow control',9.8],[1,'3/4" 5/3 pilot valve',9.7],[2,'3/4" bug screen',13.87],...PILOT_DA],
- '1 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1" regulator',11.2],[1,'1" flow control',11.2],[1,'1" 5/3 pilot valve',11.1],[2,'1" bug screen',19.53],...PILOT_DA],
- '1-1/2 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1-1/2" regulator',30],[1,'1-1/2" flow control',30],[1,'1-1/2" 5/3 pilot valve',30],[2,'1-1/2" bug screen',38.09],...PILOT_DA],
+ '1/4" (SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" solenoid valve',0.72],[1,'1/4" bug screen',2.54]],
+ '1/2" (FB+SOV)':[[1,'1/2" flow control',5.1],[1,'1/2" filter booster',4.0],[1,'1/2" bug screen',7.32],...PILOT_SR],
+ '3/4" (FB+SOV)':[[1,'3/4" flow control',11.2],[1,'3/4" filter booster',8.5],[1,'3/4" bug screen',13.87],...PILOT_SR],
+ '1" (FB+SOV)':[[1,'1" flow control',11.2],[1,'1" filter booster',11.2],[1,'1" bug screen',19.53],...PILOT_SR],
+ '1-1/2" (FB+SOV)':[[1,'1-1/2" flow control',26],[1,'1-1/2" filter booster',31],[1,'1-1/2" bug screen',38.09],...PILOT_SR],
+ '2" (FB+SOV)':[[1,'2" flow control',49],[1,'2" filter booster',50],[1,'2" bug screen',52.73],...PILOT_SR],
+ '1/4" (DA 5/2-5/3-4/3 + SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" 5/x solenoid valve',0.72],[2,'1/4" bug screen',2.54]],
+ '1/2" (DA 5/2-5/3-4/3 + SOV)':[[1,'1/2" regulator',4.2],[1,'1/2" flow control',5.1],[1,'1/2" 5/3 pilot valve',5.5],[2,'1/2" bug screen',7.32]],
+ '3/4" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'3/4" regulator',9],[1,'3/4" flow control',9.8],[1,'3/4" 5/3 pilot valve',9.7],[2,'3/4" bug screen',13.87],...PILOT_DA],
+ '1" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1" regulator',11.2],[1,'1" flow control',11.2],[1,'1" 5/3 pilot valve',11.1],[2,'1" bug screen',19.53],...PILOT_DA],
+ '1-1/2" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1-1/2" regulator',30],[1,'1-1/2" flow control',30],[1,'1-1/2" 5/3 pilot valve',30],[2,'1-1/2" bug screen',38.09],...PILOT_DA],
  /* The workbook lists no flow coefficients for the 2" double-acting package.
     Item names are carried across from the 1-1/2" package; Cv is left blank
     rather than invented, and the package Cv above is provisional. */
- '2 (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'2" regulator',null],[1,'2" flow control',null],[1,'2" 5/3 pilot valve',null],[2,'2" bug screen',null],...PILOT_DA]
+ '2" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'2" regulator',null],[1,'2" flow control',null],[1,'2" 5/3 pilot valve',null],[2,'2" bug screen',null],...PILOT_DA]
 };
 
 const BOOSTER_CAP=3;   // more than this many add-on exhaust units is a fabrication problem
 
 /* Families. CP bodies are not in the port-option tables, so port callout is
    unavailable for them — the min-time check still applies. */
+const CP_CYL={"035":["080","100","130","140"],"045":["120","140","180","200"],"055":["160","200","250","280"],"065":["250","280","335","385"]};
 const FAMILIES={
   GP:{label:'GP — scotch yoke', bodies:['065','085','100','130','160','161','200','201','270','271','350']},
-  CP:{label:'CP — rack and pinion', bodies:['035','045','055','065']}
+  CP:{label:'CP — scotch yoke, small range', bodies:['035','045','055','065']}
 };
 
 /* ───────────────────────────────────────────────────────────────
@@ -377,9 +365,24 @@ const GAL_IN3=231, T_R=530, SG=1.0, ETA=0.90, ATM=14.696, K_SHEET=29;
      spring, air stroke    2.5
      spring, spring stroke 0.8
      double acting         1.0   (sized on the faster of the two strokes) */
-const SF={srActuate:2.5, srDeactuate:0.8, da:1.0, custom:1.5};
+/* Safety factors, built into the calculation rather than exposed as inputs.
+   The spring air-stroke factor stands in for two unmodelled things:
+     1. Port and tubing restriction, which sits in series with the panel. Series
+        Cv means the physics needs SF = 1/sqrt(1-(Cr/Ct)^2) — about 1.15 if the
+        unmodelled path passes 2x the required Cv. This part alone is small.
+     2. Stroke times are calculated, never measured with a valve mounted to the
+        actuator. That is load variance, not a series restriction, so a plain
+        multiplier fits it and it carries most of the 1.5.
+   The workbook used 2.5; seven of eleven representative duties drop one panel
+   size at 1.5. Panels sized before this change used 2.5. */
+const SF={srActuate:1.5, srDeactuate:0.8, da:1.0, custom:1.5};
+/* Spring air-stroke safety factor. Covers port and tubing restriction that the
+   Cv calculation does not model. The workbook used 2.5; because components
+   combine in series, the physics needs SF = 1/sqrt(1-(Cr/Ct)^2), so 2.5 assumed
+   the unmodelled path passed only 1.09x the required Cv and 1.5 assumes 1.34x.
+   Exposed as an input rather than fixed, so it can be calibrated against jobs. */
 
-const BACKP={open:[0,'Open exhaust'],muffler:[3,'Muffler'],manifold:[8,'Shared manifold'],both:[10,'Muffler and manifold']};
+
 
 /* Supply side keeps the workbook's basis so results stay continuous with
    quotes already issued: Cv = V(in3) x CF x SF / (t x PD x 29).
@@ -395,17 +398,24 @@ function supplyStroke(gal,secs,psi,sf){
   return {scfm:(gal*GAL_IN3/1728)/secs*60*((psi+ATM)/14.7)/ETA, cvRaw:raw, cv:raw*sf, basis:'workbook'};
 }
 
-/* Exhaust side is new. Venting to atmosphere is genuinely choked
-   (P2/P1 well under 0.528 at any normal supply pressure), so the critical
-   flow equation applies directly:  Cv = Q x sqrt(SG x T) / (720 x P1),
-   with Q IN SCFH. The previous build passed SCFM into these constants,
-   which understated every required Cv by a factor of 60. */
+/* Exhaust side is new; the workbook has no exhaust model.
+   Venting is choked for the bulk of the stroke, so the critical flow equation
+   applies:  Cv = Q x sqrt(SG x T) / (720 x P1), with Q IN SCFH. The previous
+   build passed SCFM into these constants, which understated every required Cv
+   by a factor of 60.
+
+   Downstream back-pressure does not appear here, and that is deliberate rather
+   than an omission: while choked, mass flow falls in proportion to chamber
+   pressure and Cv demand is very nearly constant, so a single evaluation at
+   supply pressure is valid. It stops being valid once the chamber drops below
+   about 1.9x the downstream pressure and the flow unchokes, which is the last
+   16-32% of the stroke depending on the discharge arrangement. Modelling that
+   tail needs a blowdown calculation this tool does not do. */
 function exhaustStroke(gal,secs,psi,sf){
-  const p1=psi+ATM, p2=ATM+BACKP[val('exhaust')][0];
+  const p1=psi+ATM;
   const q=(gal*GAL_IN3/1728)/secs*3600*(p1/14.7)/ETA;
-  const choked=(p2/p1)<=0.528;
   const raw=q*Math.sqrt(SG*T_R)/(720*p1);
-  return {scfm:q/60, cvRaw:raw, cv:raw*sf, p1, p2, choked, basis:'ISA critical flow'};
+  return {scfm:q/60, cvRaw:raw, cv:raw*sf, p1, basis:'ISA critical flow'};
 }
 function seriesCv(a){const v=a.filter(x=>x>0);return v.length?1/Math.sqrt(v.reduce((s,x)=>s+1/(x*x),0)):0;}
 
@@ -427,7 +437,12 @@ function onFamily(){
   onBody();
 }
 function onBody(){
-  const b=val('bodySize'), cyls=PORT_MAP[b]?Object.keys(PORT_MAP[b]):[];
+  const b=val('bodySize');
+  /* GP cylinder options come from the port-option tables. CP is not covered by
+     those tables, so its cylinder options are taken from the model numbers in
+     the standardized workbook instead. */
+  const cyls = PORT_MAP[b] ? Object.keys(PORT_MAP[b])
+             : (val('family')==='CP' && CP_CYL[b] ? CP_CYL[b] : []);
   const sel=$('cylSize');
   if(!cyls.length){ sel.innerHTML='<option value="">Not listed</option>'; sel.disabled=true; }
   else { sel.disabled=false; sel.innerHTML=cyls.map(c=>`<option value="${c}">${c}</option>`).join(''); }
@@ -552,8 +567,6 @@ function live(){
     ['Free air, supply stroke', r.supply.scfm.toFixed(1)+' scfm'],
     ['Required Cv, supply', r.supply.cv.toFixed(3)],
     ['Required Cv, exhaust', r.exhaust.cv.toFixed(3)],
-    ['Exhaust flow regime', r.exhaust.choked?'Choked':'Subcritical'],
-    ['Exhaust back-pressure', BACKP[val('exhaust')][1]],
     ['Minimum stroke time', mt==null?'Not listed':mt.toFixed(1)+' s'],
     ['End flange', pc?pc.end:'Not listed'],
     ['Head flange', pc?pc.head:'Not listed']
@@ -626,7 +639,7 @@ function run(){
     if(sel.exhaustShort>0){
       checks.push({lvl:'warn',title:'Exhaust capacity is short on the return stroke',
         body:`The package exhausts at Cv ${sel.panel.cvOut.toFixed(2)} against a required ${r.exhaust.cv.toFixed(3)} `+
-             `at ${BACKP[val('exhaust')][1].toLowerCase()} back-pressure. The workbook never checked this, so a panel that `+
+             `. The workbook never checked exhaust capacity at all, so a panel that `+
              `sizes correctly on supply can still stroke slow in the field.`,
         fix:`Add exhaust capacity or open up the discharge arrangement.`});
       if(verdict==='ok') verdict='warn';
@@ -658,7 +671,7 @@ function run(){
     }
     if(exh.length && sys.exhaust<r.exhaust.cv){
       checks.push({lvl:'warn',title:'Exhaust path is undersized',
-        body:`Exhaust Cv ${sys.exhaust.toFixed(3)} against a required ${r.exhaust.cv.toFixed(3)} at ${BACKP[val('exhaust')][1].toLowerCase()} back-pressure.`,
+        body:`Exhaust Cv ${sys.exhaust.toFixed(3)} against a required ${r.exhaust.cv.toFixed(3)}.`,
         fix:'Fit a larger quick-exhaust or HIPEX unit.'});
       if(verdict==='ok') verdict='warn';
     }
@@ -688,7 +701,6 @@ function run(){
       <dl>
         <div><dt>Required Cv, exhaust stroke</dt><dd>${r.exhaust.cv.toFixed(3)} <small>&times;${r.sfExh} SF</small></dd></div>
         <div><dt>Package Cv, exhaust</dt><dd>${sel.panel.cvOut.toFixed(2)}</dd></div>
-        <div><dt>Exhaust back-pressure</dt><dd>${BACKP[val('exhaust')][0]} <small>psi, ${BACKP[val('exhaust')][1].toLowerCase()}</small></dd></div>
         <div><dt>Minimum stroke time</dt><dd>${minTime()==null?'&mdash;':minTime().toFixed(1)+' s'}</dd></div>
       </dl>
     </div>`;
@@ -720,7 +732,7 @@ function run(){
     rows+=items.map(([q,nm,cv])=>line(q,nm,cv,'')).join('');
     if(sel.units){
       rows+=`<tr class="grp"><td colspan="5">Add-on exhaust capacity</td></tr>`;
-      rows+=line(sel.units,'HIPEX quick-exhaust unit',sel.panel.hipexCv,sel.panel.port+'" NPT');
+      rows+=line(sel.units,'HIPEX quick-exhaust unit',sel.panel.hipexCv,sel.panel.port+' NPT');
     }
     rows+=`<tr class="grp"><td colspan="5">Actuator</td></tr>`;
     rows+=line(1,`${val('family')}-${val('bodySize')} ${acting==='sr'?'spring return':'double acting'}`+
@@ -750,7 +762,7 @@ function run(){
 
 function resetAll(){
   $('disp').value=2.5; $('psi').value=80; $('tOpen').value=10; $('tClose').value=10;
-  $('override').checked=false; $('exhaust').value='muffler';
+  $('override').checked=false; 
   setActing('sr'); fillFamilies();
   $('out').innerHTML='<div class="empty"><div class="g">&#9636;</div><b>No result yet</b>Enter the requirement and choose Calculate.</div>';
   const st=$('status'); st.className='status'; st.innerHTML='Status <b>Not run</b>';
