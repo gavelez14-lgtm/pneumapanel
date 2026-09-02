@@ -292,9 +292,9 @@ const MIN_TIME={"CP":{"035":[1.0,0.3],"045":[1.5,0.3],"055":[2.0,0.3],"065":[2.5
    STANDARDIZED PANEL LADDERS
    Source: standardized engineering workbook, Sheet6 columns AI:AN.
    cvIn / cvOut are catalogue values for the assembled package.
-   hipexCv is the flow coefficient of one add-on quick-exhaust unit.
+   hipexCv is retained for reference; add-on units are now chosen from ADDONS
+   independently of the package port size.
    ─────────────────────────────────────────────────────────────── */
-const CFPD=[[40,3,29],[60,5.1,32],[70,5.8,34.8],[80,6.4,37.4],[90,7.1,39.9],[100,7.8,42.1],[110,8.5,44.3],[120,9.2,46.4],[130,9.8,48.4],[140,10.5,50.3],[150,11.2,52.1],[160,11.8662,55.257999999999996],[180,13.2222,59.837999999999994],[200,14.5782,64.418],[220,15.9342,68.998],[240,17.2902,73.578],[260,18.6462,78.158],[280,20.0022,82.738],[300,21.3582,87.318],[320,22.714199999999998,91.898],[340,24.0702,96.478],[360,25.4262,101.05799999999999],[380,26.7822,105.638],[400,28.1382,110.218],[420,29.4942,114.798],[440,30.8502,119.378],[460,32.206199999999995,123.958],[480,33.5622,128.538],[500,34.9182,133.118],[520,36.2742,137.698],[540,37.6302,142.27800000000002],[560,38.9862,146.858],[580,40.3422,151.438],[600,41.6982,156.018],[700,48.4782,178.918],[800,55.2582,201.818],[900,62.038199999999996,224.718],[1000,68.81819999999999,247.618],[1100,75.59819999999999,270.51800000000003]];
 const LADDER_SR=[
   {name:'1/4" (SOV)',        cvIn:0.5791, cvOut:0.6927, port:'1/4"',   hipexCv:2.0},
   {name:'1/2" (FB+SOV)',     cvIn:3.1474, cvOut:2.6759, port:'1/2"',   hipexCv:5.2},
@@ -339,6 +339,14 @@ const PANEL_BOM={
  '2" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'2" regulator',null],[1,'2" flow control',null],[1,'2" 5/3 pilot valve',null],[2,'2" bug screen',null],...PILOT_DA]
 };
 
+/* Add-on quick-exhaust units, keyed on connection size — Sheet6 column AN,
+   which tracks the port in column AL and is identical across the spring-return
+   and double-acting blocks. The add-on does not have to match the panel's port:
+   it mounts at the actuator, so the actuator's ports are what limit it. Choosing
+   freely lets one larger unit replace several matched ones, which matters because
+   a third of the actuator/cylinder/option combinations have only one port per
+   flange and physically cannot take two fittings. */
+const ADDONS=[['1/4"',2.0],['1/2"',5.2],['3/4"',11.0],['1"',14.3],['1-1/2"',40.3],['2"',65.0]];
 const BOOSTER_CAP=3;   // more than this many add-on exhaust units is a fabrication problem
 
 /* Families. CP bodies are not in the port-option tables, so port callout is
@@ -358,7 +366,7 @@ const FAMILIES={
    which understated every required Cv by a factor of 60 and made the
    architecture tiers unreachable. Q is now converted before it is used.
    ─────────────────────────────────────────────────────────────── */
-const GAL_IN3=231, T_R=530, SG=1.0, ETA=0.90, ATM=14.696, K_SHEET=29;
+const GAL_IN3=231, ATM=14.696;
 
 /* Safety factors carried over from the standardized workbook, because the
    panel ladder breakpoints were established under them.
@@ -367,6 +375,13 @@ const GAL_IN3=231, T_R=530, SG=1.0, ETA=0.90, ATM=14.696, K_SHEET=29;
      double acting         1.0   (sized on the faster of the two strokes) */
 /* Safety factors, built into the calculation rather than exposed as inputs.
    The spring air-stroke factor stands in for two unmodelled things:
+   The spring stroke now carries the same 1.5 as the air stroke. It previously
+   carried 0.8, a de-rating, which could not be reconciled with the reasons for
+   padding the air stroke: the spring stroke runs down the same ports and tubing,
+   and its load is if anything less predictable, since spring output falls off
+   through the stroke while valve running torque peaks near the seat. A reference
+   ISA calculation applies 1.5 to both strokes.
+
      1. Port and tubing restriction, which sits in series with the panel. Series
         Cv means the physics needs SF = 1/sqrt(1-(Cr/Ct)^2) — about 1.15 if the
         unmodelled path passes 2x the required Cv. This part alone is small.
@@ -375,7 +390,7 @@ const GAL_IN3=231, T_R=530, SG=1.0, ETA=0.90, ATM=14.696, K_SHEET=29;
         multiplier fits it and it carries most of the 1.5.
    The workbook used 2.5; seven of eleven representative duties drop one panel
    size at 1.5. Panels sized before this change used 2.5. */
-const SF={srActuate:1.5, srDeactuate:0.8, da:1.0, custom:1.5};
+const SF={srActuate:1.5, srDeactuate:1.5, da:1.0, custom:1.5};
 /* Spring air-stroke safety factor. Covers port and tubing restriction that the
    Cv calculation does not model. The workbook used 2.5; because components
    combine in series, the physics needs SF = 1/sqrt(1-(Cr/Ct)^2), so 2.5 assumed
@@ -387,36 +402,33 @@ const SF={srActuate:1.5, srDeactuate:0.8, da:1.0, custom:1.5};
 /* Supply side keeps the workbook's basis so results stay continuous with
    quotes already issued: Cv = V(in3) x CF x SF / (t x PD x 29).
    CF and PD are read from the workbook's own pressure table. */
-function cfpdAt(psi){
-  let row=CFPD[0];
-  for(const r of CFPD){ if(psi>=r[0]) row=r; else break; }
-  return {cf:row[1], pd:row[2]};
-}
+/* Compression factor is the absolute pressure ratio — the same "delta P / 14.7"
+   used in the reference sheet. Computed rather than looked up, so any supply
+   pressure works. */
+function compressionFactor(psi){ return (psi+ATM)/ATM; }
+
+/* Both strokes now use ISA-75.01 / IEC 60534 gas sizing:
+     Cv = q / (N7 x Fp x P1 x Y x SQRT(x / (Gg x T1 x Z)))
+   Choked, so x = 1 and Y = 2/3; Fp, Gg and Z are 1 for air through a straight run.
+   q is in SCFH.
+
+   Supply previously used the workbook basis, Cv = V x CF / (t x PD x 29). That is
+   not an ISA-equivalent table — rearranged, its PD would have to be 0.6226 x P1 to
+   match, so it demanded 32% more Cv at 50 psig and 58% more at 80, widening with
+   pressure. Both sides now agree with the reference sheet. */
+const N7=1360, Y_CHOKED=0.667, T1_R=581.67, GG=1.0;
+const isaCv=(q,p1)=>q/(N7*p1*Y_CHOKED*Math.sqrt(1/(GG*T1_R)));
+const scfhAt=(gal,secs,psi)=>(gal*GAL_IN3/1728)/secs*3600*compressionFactor(psi);
+
 function supplyStroke(gal,secs,psi,sf){
-  const {cf,pd}=cfpdAt(psi);
-  const raw=(gal*GAL_IN3*cf)/(secs*pd*K_SHEET);
-  return {scfm:(gal*GAL_IN3/1728)/secs*60*((psi+ATM)/14.7)/ETA, cvRaw:raw, cv:raw*sf, basis:'workbook'};
+  const p1=psi+ATM, q=scfhAt(gal,secs,psi), raw=isaCv(q,p1);
+  return {scfm:q/60, scfh:q, cvRaw:raw, cv:raw*sf, p1, basis:'ISA-75.01 choked'};
 }
-
-/* Exhaust side is new; the workbook has no exhaust model.
-   Venting is choked for the bulk of the stroke, so the critical flow equation
-   applies:  Cv = Q x sqrt(SG x T) / (720 x P1), with Q IN SCFH. The previous
-   build passed SCFM into these constants, which understated every required Cv
-   by a factor of 60.
-
-   Downstream back-pressure does not appear here, and that is deliberate rather
-   than an omission: while choked, mass flow falls in proportion to chamber
-   pressure and Cv demand is very nearly constant, so a single evaluation at
-   supply pressure is valid. It stops being valid once the chamber drops below
-   about 1.9x the downstream pressure and the flow unchokes, which is the last
-   16-32% of the stroke depending on the discharge arrangement. Modelling that
-   tail needs a blowdown calculation this tool does not do. */
 function exhaustStroke(gal,secs,psi,sf){
-  const p1=psi+ATM;
-  const q=(gal*GAL_IN3/1728)/secs*3600*(p1/14.7)/ETA;
-  const raw=q*Math.sqrt(SG*T_R)/(720*p1);
-  return {scfm:q/60, cvRaw:raw, cv:raw*sf, p1, basis:'ISA critical flow'};
+  const p1=psi+ATM, q=scfhAt(gal,secs,psi), raw=isaCv(q,p1);
+  return {scfm:q/60, scfh:q, cvRaw:raw, cv:raw*sf, p1, basis:'ISA-75.01 choked'};
 }
+
 function seriesCv(a){const v=a.filter(x=>x>0);return v.length?1/Math.sqrt(v.reduce((s,x)=>s+1/(x*x),0)):0;}
 
 /* ─── helpers ─── */
@@ -537,25 +549,54 @@ function requirement(){
 }
 
 /* ─── panel selection ─── */
+/* Ports available on the actuator flange, parsed from the "[2] - 2\" NPT" callout.
+   Each add-on unit needs one. Defaults to 1 when the combination is not listed. */
+function flangePorts(){
+  const pc=portCallout();
+  if(!pc) return 1;
+  const m=/^\[(\d+)\]/.exec(pc.end);
+  return m?parseInt(m[1]):1;
+}
+
+/* The package is sized on the air stroke. The return stroke is covered by the
+   package itself where it can be, otherwise by the smallest single add-on that
+   clears it on its own — one fitting rather than several matched ones. */
 function selectPanel(req){
   const ladder = acting==='da'?LADDER_DA:LADDER_SR;
-  const need=req.supply.cv;
-  let panel=ladder.find(p=>p.cvIn>need), boosters=0, overLadder=false;
-  if(!panel){
-    panel=ladder[ladder.length-1];
-    overLadder=true;
-    boosters=Math.ceil((need-panel.cvIn)/panel.hipexCv);
+  const needIn=req.supply.cv, needOut=req.exhaust.cv;
+  let panel=ladder.find(p=>p.cvIn>needIn), overLadder=false;
+  if(!panel){ panel=ladder[ladder.length-1]; overLadder=true; }
+
+  const ports=flangePorts();
+  let addon=null, units=0;
+  const shortfall=needOut-panel.cvOut;
+  if(shortfall>0){
+    const single=ADDONS.find(a=>a[1]>shortfall);
+    if(single){ addon=single; units=1; }
+    else {
+      addon=ADDONS[ADDONS.length-1];
+      units=Math.ceil(shortfall/addon[1]);
+    }
   }
-  // add-on exhaust units to cover the opposite stroke
-  const shortfall=req.exhaust.cv-panel.cvIn;
-  const exhaustUnits = shortfall>0 ? Math.ceil(shortfall/panel.hipexCv) : 0;
-  const units=Math.max(boosters,exhaustUnits);
+  if(overLadder){
+    const inShort=needIn-panel.cvIn;
+    units=Math.max(units, Math.ceil(inShort/(addon?addon[1]:ADDONS[ADDONS.length-1][1])));
+    if(!addon) addon=ADDONS[ADDONS.length-1];
+  }
+
+  /* Alternative with no add-on at all: the smallest package clearing both sides. */
+  const noAddon=ladder.find(p=>p.cvIn>needIn&&p.cvOut>needOut);
+  const alt=(units>0&&noAddon&&noAddon!==panel)?noAddon:null;
+
+  const deliveredOut=panel.cvOut+(addon?addon[1]*units:0);
   return {
-    panel, units, overLadder,
-    porting:(1+units)+'\u00d7 '+panel.port,
-    marginSupply:(panel.cvIn-need)/panel.cvIn,
-    deliveredIn:panel.cvIn+panel.hipexCv*units,
-    exhaustShort:req.exhaust.cv-panel.cvOut
+    panel, addon, units, overLadder, alt, ports,
+    portsExceeded: units>ports,
+    porting: units? units+'\u00d7 '+addon[0]+' add-on on '+panel.port+' package' : panel.port+' package',
+    marginIn:(panel.cvIn-needIn)/panel.cvIn,
+    marginOut:(deliveredOut-needOut)/deliveredOut,
+    deliveredOut,
+    exhaustShort:needOut-deliveredOut
   };
 }
 
@@ -634,7 +675,21 @@ function run(){
     } else {
       checks.push({lvl:'ok',title:'Standardized panel covers the duty',
         body:`${sel.panel.name} at Cv ${sel.panel.cvIn.toFixed(2)} against a required ${r.supply.cv.toFixed(3)}, `+
-             `a margin of ${(sel.marginSupply*100).toFixed(0)}%.`});
+             `a margin of ${(sel.marginIn*100).toFixed(0)}%.`});
+    }
+    if(sel.units){
+      checks.push({lvl:sel.portsExceeded?'err':'ok',
+        title:sel.portsExceeded?'Not enough ports on the actuator flange':'Return stroke covered by an add-on unit',
+        body:`${sel.units} \u00d7 ${sel.addon[0]} quick-exhaust at Cv ${sel.addon[1]} brings exhaust capacity to `+
+             `${sel.deliveredOut.toFixed(2)} against a required ${req.exhaust.cv.toFixed(3)}. `+
+             `The flange has ${sel.ports} port${sel.ports>1?'s':''} and each unit needs one.`,
+        fix:sel.portsExceeded?'Move up a package size, or select a port option with more ports.':null});
+      if(sel.portsExceeded) verdict='err';
+    }
+    if(sel.alt){
+      checks.push({lvl:'info',title:'Add-on can be avoided',
+        body:`The ${sel.alt.name} package clears both strokes on its own, at Cv ${sel.alt.cvIn.toFixed(2)} in `+
+             `and ${sel.alt.cvOut.toFixed(2)} out. Trade a larger package against one add-on fitting.`});
     }
     if(sel.exhaustShort>0){
       checks.push({lvl:'warn',title:'Exhaust capacity is short on the return stroke',
@@ -687,7 +742,7 @@ function run(){
     html+=`<div class="pick">
       <div class="lbl">Recommended panel</div>
       <div class="big">${sel.panel.name}</div>
-      <div class="meta">Panel porting ${sel.porting}${sel.units?` &middot; ${sel.units} add-on exhaust unit${sel.units>1?'s':''} at Cv ${sel.panel.hipexCv} each`:''}</div>
+      <div class="meta">${sel.porting}${sel.units?` &middot; add-on Cv ${sel.addon[1]} each &middot; delivered exhaust Cv ${sel.deliveredOut.toFixed(2)}`:''}</div>
       ${pc?`<div class="meta">Actuator flanges — end ${pc.end} &middot; head ${pc.head} <span class="tag">FROM PORT OPTION ${val('portOpt')}</span></div>`
           :`<div class="meta">Actuator flange callout not listed for this body and cylinder combination.</div>`}
     </div>
@@ -695,7 +750,7 @@ function run(){
       <dl>
         <div><dt>Required Cv, supply stroke</dt><dd>${r.supply.cv.toFixed(3)} <small>&times;${r.sfSupply} SF</small></dd></div>
         <div><dt>Package Cv, supply</dt><dd>${sel.panel.cvIn.toFixed(2)}</dd></div>
-        <div><dt>Margin on supply</dt><dd>${(sel.marginSupply*100).toFixed(0)}%</dd></div>
+        <div><dt>Margin on supply</dt><dd>${(sel.marginIn*100).toFixed(0)}%</dd></div>
         <div><dt>Free air, supply stroke</dt><dd>${r.supply.scfm.toFixed(1)} <small>scfm</small></dd></div>
       </dl>
       <dl>
@@ -732,7 +787,7 @@ function run(){
     rows+=items.map(([q,nm,cv])=>line(q,nm,cv,'')).join('');
     if(sel.units){
       rows+=`<tr class="grp"><td colspan="5">Add-on exhaust capacity</td></tr>`;
-      rows+=line(sel.units,'HIPEX quick-exhaust unit',sel.panel.hipexCv,sel.panel.port+' NPT');
+      rows+=line(sel.units,`${sel.addon[0]} quick-exhaust unit`,sel.addon[1],`${sel.addon[0]} NPT`);
     }
     rows+=`<tr class="grp"><td colspan="5">Actuator</td></tr>`;
     rows+=line(1,`${val('family')}-${val('bodySize')} ${acting==='sr'?'spring return':'double acting'}`+
@@ -750,8 +805,9 @@ function run(){
       and are shown for reference only &mdash; the sizing tool selects the option.</div></div>`;
   }
 
-  html+=`<div class="foot">Supply Cv on the workbook basis (CF / PD table, K ${K_SHEET}) &middot;
-    exhaust Cv on ISA critical flow, Q in scfh, Cv = Q&radic;(SG&middot;T)/(720&middot;P<sub>1</sub>) &middot;
+  html+=`<div class="foot">ISA-75.01 choked gas sizing, both strokes &middot;
+    N<sub>7</sub> ${N7} &middot; Y ${Y_CHOKED} &middot; T<sub>1</sub> ${T1_R}&deg;R &middot;
+    F<sub>p</sub> / G<sub>g</sub> / Z = 1 &middot; safety factor 1.5 &middot;
     ${new Date().toLocaleDateString()}</div>`;
 
   $('out').innerHTML=html;
