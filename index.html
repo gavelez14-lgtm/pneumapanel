@@ -1,831 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PneumaPanel — Actuator Control Panel Sizing</title>
-<style>
-:root{
-  --white:#ffffff;
-  --bg:#faf9f8;
-  --fill:#f3f2f1;
-  --fill2:#edebe9;
-  --stroke:#e1dfdd;
-  --stroke2:#c8c6c4;
-  --t3:#a19f9d;
-  --t2:#605e5c;
-  --t1:#323130;
-  --accent:#a4262c;
-  --accent-dk:#751b1f;
-  --accent-bg:#fdf3f4;
-  --ok:#107c10;
-  --ok-bg:#f1faf1;
-  --warn:#f7630c;
-  --warn-bg:#fff9f5;
-  --err:#a4262c;
-  --err-bg:#fdf3f4;
-  --info:#0078d4;
-  --info-bg:#f3f9fd;
-  --d4:0 1.6px 3.6px rgba(0,0,0,.132),0 .3px .9px rgba(0,0,0,.108);
-  --d8:0 3.2px 7.2px rgba(0,0,0,.132),0 .6px 1.8px rgba(0,0,0,.108);
-  --font:"Segoe UI","Segoe UI Web (West European)",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
-  --mono:Consolas,"Courier New",monospace;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);font-size:14px;color:var(--t1);background:var(--bg);line-height:1.43}
-button{font-family:inherit}
-:focus-visible{outline:2px solid var(--t1);outline-offset:1px}
-
-/* suite bar */
-.suite{height:48px;background:var(--accent);display:flex;align-items:center;gap:16px;padding:0 20px;color:#fff}
-.waffle{width:20px;height:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;opacity:.85}
-.waffle i{background:#fff;border-radius:1px}
-.suite .app{font-size:15px;font-weight:600;letter-spacing:.2px}
-.suite .sep{width:1px;height:20px;background:rgba(255,255,255,.35)}
-.suite .site{font-size:14px;opacity:.9}
-.suite .right{margin-left:auto;font-size:12px;opacity:.85;font-family:var(--mono)}
-
-/* page header */
-.pagehead{background:var(--white);border-bottom:1px solid var(--stroke);padding:18px 24px 0}
-.crumbs{font-size:12px;color:var(--t2);margin-bottom:6px}
-.crumbs span{color:var(--t3)}
-.pagehead h1{font-size:24px;font-weight:600;letter-spacing:-.2px;margin-bottom:2px}
-.pagehead p{font-size:13px;color:var(--t2);margin-bottom:12px;max-width:70ch}
-.pivot{display:flex;gap:20px}
-.pivot button{background:none;border:none;padding:8px 2px 10px;font-size:14px;font-weight:600;color:var(--t2);
-  cursor:pointer;border-bottom:2px solid transparent}
-.pivot button:hover{color:var(--t1)}
-.pivot button.on{color:var(--accent);border-bottom-color:var(--accent)}
-
-/* command bar */
-.cmdbar{background:var(--white);border-bottom:1px solid var(--stroke);height:44px;display:flex;align-items:center;
-  gap:4px;padding:0 20px;position:sticky;top:0;z-index:20}
-.cmd{background:none;border:none;height:36px;padding:0 12px;font-size:14px;color:var(--t1);cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;border-radius:2px}
-.cmd:hover{background:var(--fill)}
-.cmd.primary{background:var(--accent);color:#fff;font-weight:600}
-.cmd.primary:hover{background:var(--accent-dk)}
-.cmd .gl{font-size:15px;line-height:1}
-.cmdbar .status{margin-left:auto;font-size:12px;font-family:var(--mono);color:var(--t2);
-  border:1px solid var(--stroke2);border-radius:2px;padding:3px 10px}
-.cmdbar .status b{font-weight:600}
-.status.s-ok b{color:var(--ok)} .status.s-warn b{color:var(--warn)} .status.s-err b{color:var(--err)}
-
-/* layout */
-.wrap{display:grid;grid-template-columns:392px 1fr;gap:20px;padding:20px;align-items:start}
-.card{background:var(--white);border:1px solid var(--stroke);border-radius:2px}
-.card>h2{font-size:15px;font-weight:600;padding:14px 16px 10px;border-bottom:1px solid var(--fill2)}
-.card>h2 small{display:block;font-weight:400;font-size:12px;color:var(--t2);margin-top:2px}
-.cardbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:14px}
-
-/* form */
-fieldset{border:none}
-legend,.grouplabel{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;
-  padding-bottom:8px;display:block}
-.f{display:flex;flex-direction:column;gap:4px}
-.f label{font-size:13px;font-weight:600}
-.f .hint{font-size:12px;color:var(--t2)}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-input[type=number],select{width:100%;height:32px;border:1px solid var(--stroke2);border-radius:2px;background:var(--white);
-  padding:0 8px;font-family:var(--font);font-size:14px;color:var(--t1)}
-input[type=number]:hover,select:hover{border-color:var(--t2)}
-input[type=number]:focus,select:focus{border-color:var(--accent);outline:1px solid var(--accent);outline-offset:-2px}
-.unitwrap{position:relative}
-.unitwrap input{padding-right:44px}
-.unitwrap .u{position:absolute;right:9px;top:0;height:32px;display:flex;align-items:center;font-size:12px;color:var(--t2);pointer-events:none}
-.choice{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--stroke2);border-radius:2px;overflow:hidden}
-.choice button{background:var(--white);border:none;padding:8px 6px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer}
-.choice button+button{border-left:1px solid var(--stroke2)}
-.choice button.on{background:var(--accent-bg);color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
-.chk{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13px;cursor:pointer}
-.chk input{margin-top:2px;accent-color:var(--accent);width:15px;height:15px}
-.tag{font-family:var(--mono);font-size:10px;font-weight:600;padding:1px 5px;border-radius:2px;
-  border:1px solid var(--stroke2);color:var(--t2);margin-left:4px;white-space:nowrap}
-.tag.pw{color:var(--accent);border-color:var(--accent);background:var(--accent-bg)}
-.tag.ex{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
-.tag.pi{color:var(--info);border-color:var(--info);background:var(--info-bg)}
-
-/* readout */
-.readout{border:1px solid var(--fill2);border-radius:2px;overflow:hidden}
-.readout div{display:flex;justify-content:space-between;gap:10px;padding:6px 10px;font-size:12px;border-top:1px solid var(--fill2)}
-.readout div:first-child{border-top:none}
-.readout div:nth-child(even){background:var(--bg)}
-.readout .k{color:var(--t2)}
-.readout .v{font-family:var(--mono);font-weight:600}
-
-/* message bar */
-.msg{display:flex;gap:10px;padding:10px 12px;border-radius:2px;font-size:13px;align-items:flex-start;margin-bottom:12px}
-.msg .ic{font-weight:700;line-height:1.3}
-.msg.ok{background:var(--ok-bg);border-left:3px solid var(--ok)} .msg.ok .ic{color:var(--ok)}
-.msg.warn{background:var(--warn-bg);border-left:3px solid var(--warn)} .msg.warn .ic{color:var(--warn)}
-.msg.err{background:var(--err-bg);border-left:3px solid var(--err)} .msg.err .ic{color:var(--err)}
-.msg.info{background:var(--info-bg);border-left:3px solid var(--info)} .msg.info .ic{color:var(--info)}
-.msg b{display:block;font-weight:600;margin-bottom:1px}
-.msg p{color:var(--t2);font-size:12.5px}
-.msg .fix{margin-top:5px;font-size:12px;color:var(--t1);background:rgba(0,0,0,.035);padding:4px 8px;border-radius:2px;display:inline-block}
-
-/* results */
-.result-head{display:flex;align-items:baseline;gap:12px;padding:16px 16px 12px;border-bottom:1px solid var(--fill2);flex-wrap:wrap}
-.verdict{font-size:15px;font-weight:600}
-.verdict.ok{color:var(--ok)} .verdict.warn{color:var(--warn)} .verdict.err{color:var(--err)}
-.result-head .sub{font-size:13px;color:var(--t2)}
-.pick{padding:16px;border-bottom:1px solid var(--fill2)}
-.pick .big{font-size:26px;font-weight:600;letter-spacing:-.4px;line-height:1.2}
-.pick .lbl{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.pick .meta{font-size:13px;color:var(--t2);margin-top:6px}
-.spec{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fill2)}
-.spec dl{border-right:1px solid var(--fill2)}
-.spec dl:last-child{border-right:none}
-.spec div{display:flex;justify-content:space-between;gap:16px;padding:6px 16px;border-bottom:1px solid var(--fill2)}
-.spec dt{font-size:13px;color:var(--t2)}
-.spec dd{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right;white-space:nowrap}
-.spec dd small{font-weight:400;color:var(--t2);font-family:var(--font)}
-.sect{padding:14px 16px}
-.sect h3{font-size:14px;font-weight:600;margin-bottom:2px}
-.sect .sh{font-size:12px;color:var(--t2);margin-bottom:10px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;font-size:12px;font-weight:600;color:var(--t2);border-bottom:1px solid var(--stroke2);
-  padding:6px 12px;white-space:nowrap;position:sticky;top:44px;background:var(--white)}
-td{padding:6px 12px;border-bottom:1px solid var(--fill2);vertical-align:top}
-td.num{text-align:right;font-family:var(--mono)}
-tbody tr.grp td{background:var(--bg);font-weight:600;font-size:12px;color:var(--t2);
-  text-transform:uppercase;letter-spacing:.4px;padding:5px 12px}
-tbody tr:hover td{background:var(--bg)}
-td.m,th.m{font-family:var(--mono)}
-.empty{padding:64px 24px;text-align:center;color:var(--t2)}
-.empty .g{font-size:40px;color:var(--stroke2);margin-bottom:10px}
-.empty b{display:block;font-size:15px;color:var(--t1);margin-bottom:4px}
-.foot{padding:12px 16px;border-top:1px solid var(--fill2);font-size:11.5px;color:var(--t2);font-family:var(--mono)}
-.note{font-size:12px;color:var(--t2);border-left:2px solid var(--stroke2);padding-left:10px;margin-top:6px}
-@media(max-width:980px){.wrap{grid-template-columns:1fr}}
-@media print{.suite,.cmdbar,.pivot,.sidebar{display:none}.wrap{grid-template-columns:1fr}.card{box-shadow:none}}
-</style>
-</head>
-<body>
-
-<div class="suite">
-  <div class="waffle"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="app">PneumaPanel</div>
-  <div class="sep"></div>
-  <div class="site">Engineered-to-Order · Control Panel Sizing</div>
-  <div class="right" id="engineTag">ISA choked flow · v4.0</div>
-</div>
-
-<div class="pagehead">
-  <div class="crumbs">Customer Service <span>&rsaquo;</span> Tools <span>&rsaquo;</span> Control panel sizing</div>
-  <h1>Control panel sizing</h1>
-  <p>Enter the actuator displacement and speed requirement. The tool checks the stroke time against the
-     actuator's minimum, sizes the required flow coefficient, and returns a standardized panel.</p>
-  <div class="pivot">
-    <button class="on" id="pv-std" onclick="setMode('std')">Standardized panel</button>
-    <button id="pv-cus" onclick="setMode('cus')">Custom build</button>
-  </div>
-</div>
-
-<div class="cmdbar">
-  <button class="cmd primary" onclick="run()"><span class="gl">&#9655;</span> Calculate</button>
-  <button class="cmd" onclick="resetAll()"><span class="gl">&#8635;</span> Reset</button>
-  <button class="cmd" onclick="window.print()"><span class="gl">&#9113;</span> Print</button>
-  <div class="status" id="status">Status <b>Not run</b></div>
-</div>
-
-<div class="wrap">
-
-<!-- ═══ INPUTS ═══ -->
-<div class="card sidebar">
-  <h2>Requirement<small>All fields are required unless marked optional.</small></h2>
-  <div class="cardbody">
-
-    <fieldset>
-      <legend>Actuator</legend>
-      <div class="f" style="margin-bottom:10px">
-        <label>Acting type</label>
-        <div class="choice">
-          <button class="on" id="at-sr" onclick="setActing('sr')">Spring return</button>
-          <button id="at-da" onclick="setActing('da')">Double acting</button>
-        </div>
-      </div>
-      <div class="row2" style="margin-bottom:10px">
-        <div class="f">
-          <label for="family">Family</label>
-          <select id="family" onchange="onFamily()"></select>
-        </div>
-        <div class="f">
-          <label for="bodySize">Body size</label>
-          <select id="bodySize" onchange="onBody()"></select>
-        </div>
-      </div>
-      <div class="row2" style="margin-bottom:10px">
-        <div class="f">
-          <label for="cylSize">Cylinder size</label>
-          <select id="cylSize" onchange="onCyl()"></select>
-        </div>
-        <div class="f">
-          <label for="portOpt">Port option</label>
-          <select id="portOpt" onchange="live()"></select>
-        </div>
-      </div>
-      <div class="f">
-        <label class="chk" for="override"><input type="checkbox" id="override" onchange="live()">
-          <span>Manual override fitted<span class="hint" style="display:block">Raises the actuator's minimum stroke time substantially.</span></span></label>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Duty</legend>
-      <div class="f" style="margin-bottom:10px">
-        <label for="disp">Displacement</label>
-        <div class="unitwrap"><input type="number" id="disp" value="2.5" min="0.001" max="500" step="0.001" oninput="live()"><span class="u">gal</span></div>
-        <span class="hint">Swept volume per stroke, from the sizing tool.</span>
-      </div>
-      <div class="f" style="margin-bottom:10px">
-        <label for="psi">Air supply</label>
-        <div class="unitwrap"><input type="number" id="psi" value="80" min="30" max="150" step="5" oninput="live()"><span class="u">psig</span></div>
-      </div>
-            <div class="row2">
-        <div class="f">
-          <label for="tOpen">Open time</label>
-          <div class="unitwrap"><input type="number" id="tOpen" value="10" min="0.1" max="600" step="0.5" oninput="live()"><span class="u">s</span></div>
-        </div>
-        <div class="f">
-          <label for="tClose">Close time</label>
-          <div class="unitwrap"><input type="number" id="tClose" value="10" min="0.1" max="600" step="0.5" oninput="live()"><span class="u">s</span></div>
-        </div>
-      </div>
-    </fieldset>
-
-
-    <fieldset id="fs-custom" style="display:none">
-      <legend>Custom build — components</legend>
-      <div id="compChecks"></div>
-      <div id="compPicks" style="margin-top:10px;display:flex;flex-direction:column;gap:8px"></div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Live calculation</legend>
-      <div class="readout" id="readout"></div>
-    </fieldset>
-
-  </div>
-</div>
-
-<!-- ═══ RESULTS ═══ -->
-<div class="card">
-  <div id="out">
-    <div class="empty">
-      <div class="g">&#9636;</div>
-      <b>No result yet</b>
-      Enter the requirement and choose Calculate.
-    </div>
-  </div>
-</div>
-
-</div>
-
 <script>
-'use strict';
-const PORT_MAP={"065":{"180":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"]},"235":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"],"C":["[3] - 1/2\" NPT","[3] - 1/2\" NPT"]},"280":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[2] - 1\" NPT","[2] - 1\" NPT"]},"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"]}},"085":{"180":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"]},"235":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[2] - 1/2\" NPT","[2] - 1/2\" NPT"],"C":["[3] - 1/2\" NPT","[3] - 1/2\" NPT"]},"280":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[2] - 1\" NPT","[2] - 1\" NPT"]},"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"]},"435":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"]},"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 2\" NPT"]}},"161":{"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"635":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"685":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]}},"200":{"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"635":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"685":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"935":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"937":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]}},"100":{"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"435":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]}},"130":{"335":{"A":["[1] - 1/2\" NPT","[1] - 1/2\" NPT"],"B":["[1] - 1\" NPT","[1] - 1\" NPT"],"C":["[3] - 1\" NPT","[3] - 1\" NPT"]},"385":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"435":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[2] - 1\" NPT"]},"485":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"]},"535":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"585":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"635":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"685":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[2] - 1\" NPT"],"C":["[2] - 2\" NPT","[2] - 1\" NPT"]},"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]}},"201":{"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"935":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"937":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"940":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]}},"270":{"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"935":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"937":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"940":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"942":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"945":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"960":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"962":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]}},"271":{"735":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[2] - 1\" NPT","[1] - 2\" NPT"],"C":["[2] - 2\" NPT","[1] - 2\" NPT"]},"785":{"A":["[1] - 1\" NPT","[1] - 1\" NPT"],"B":["[1] - 2\" NPT","[1] - 2\" NPT"],"C":["[3] - 2\" NPT","[1] - 2\" NPT"]},"835":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"885":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"935":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"937":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"940":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"942":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"945":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"960":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"962":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"965":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"970":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"972":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"975":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"980":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"982":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"987":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"990":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"992":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"995":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"997":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]}},"350":{"995":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"997":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"937":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[2] - 2\" NPT"]},"940":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"942":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"945":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"960":{"A":["[2] - 1\" NPT","[2] - 1\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"962":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"965":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"970":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"972":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"975":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"980":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"982":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"987":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"990":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]},"992":{"A":["[1] - 2\" NPT","[1] - 2\" NPT"],"B":["[2] - 2\" NPT","[2] - 2\" NPT"],"C":["[4] - 2\" NPT","[4] - 2\" NPT"]}}};
-const MIN_TIME={"CP":{"035":[1.0,0.3],"045":[1.5,0.3],"055":[2.0,0.3],"065":[2.5,0.3]},"GP":{"065":[2.5,0.5],"085":[3.0,0.5],"100":[3.5,0.6],"130":[4.0,0.7],"160":[5.0,0.8],"161":[5.0,0.8],"200":[6.0,1.0],"201":[6.0,1.0],"270":[7.0,1.3],"271":[7.0,1.3],"350":[8.0,6.0]}};
-
-
-/* ───────────────────────────────────────────────────────────────
-   STANDARDIZED PANEL LADDERS
-   Source: standardized engineering workbook, Sheet6 columns AI:AN.
-   cvIn / cvOut are catalogue values for the assembled package.
-   hipexCv is retained for reference; add-on units are now chosen from ADDONS
-   independently of the package port size.
-   ─────────────────────────────────────────────────────────────── */
-const LADDER_SR=[
-  {name:'1/4" (SOV)',        cvIn:0.5791, cvOut:0.6927, port:'1/4"',   hipexCv:2.0},
-  {name:'1/2" (FB+SOV)',     cvIn:3.1474, cvOut:2.6759, port:'1/2"',   hipexCv:5.2},
-  {name:'3/4" (FB+SOV)',     cvIn:6.7709, cvOut:5.1633, port:'3/4"',   hipexCv:11.0},
-  {name:'1" (FB+SOV)',       cvIn:7.9196, cvOut:7.2448, port:'1"',     hipexCv:14.3},
-  {name:'1-1/2" (FB+SOV)',   cvIn:19.9210,cvOut:24.0435,port:'1-1/2"', hipexCv:40.3},
-  {name:'2" (FB+SOV)',       cvIn:34.9964,cvOut:41.0685,port:'2"',     hipexCv:65.0}
-];
-const LADDER_DA=[
-  {name:'1/4" (DA 5/2-5/3-4/3 + SOV)',  cvIn:0.5791, cvOut:0.6927, port:'1/4"',   hipexCv:2.0},
-  {name:'1/2" (DA 5/2-5/3-4/3 + SOV)',  cvIn:2.7930, cvOut:4.3971, port:'1/2"',   hipexCv:5.2},
-  {name:'3/4" (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:5.4729, cvOut:7.9490, port:'3/4"', hipexCv:11.0},
-  {name:'1" (DA 5/3 SOV + 5/3 PV + 2x SOV)',   cvIn:6.4469, cvOut:7.9196, port:'1"',   hipexCv:14.3},
-  {name:'1-1/2" (DA 5/3 SOV + 5/3 PV + 2x SOV)',cvIn:17.3205,cvOut:9.7157,port:'1-1/2"',hipexCv:40.3},
-  /* The workbook's 2" DA entry had no flow coefficient, so any double-acting
-     duty above 17.3 Cv returned an error instead of a panel. Filled from the
-     2" spring-return package, which uses the same body. Confirm before use. */
-  {name:'2" (DA 5/3 SOV + 5/3 PV + 2x SOV)', cvIn:34.9964, cvOut:41.0685, port:'2"', hipexCv:65.0, provisional:true}
-];
-
-/* Component makeup of each standardized package.
-   Source: standardized engineering workbook, Sheet6 columns A-V.
-   Verified: the series combination 1/sqrt(sum(1/Cv^2)) of each package's
-   supply-path items reproduces the published cvIn for that package. */
-const PILOT_SR=[[1,'1/4" regulator',1.1],[1,'1/4" solenoid valve',0.72],[1,'1/4" bug screen',2.54]];
-const PILOT_DA=[[2,'1/4" 3/2 solenoid valve',0.72],[2,'1/4" bug screen',2.54]];
-const PANEL_BOM={
- '1/4" (SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" solenoid valve',0.72],[1,'1/4" bug screen',2.54]],
- '1/2" (FB+SOV)':[[1,'1/2" flow control',5.1],[1,'1/2" filter booster',4.0],[1,'1/2" bug screen',7.32],...PILOT_SR],
- '3/4" (FB+SOV)':[[1,'3/4" flow control',11.2],[1,'3/4" filter booster',8.5],[1,'3/4" bug screen',13.87],...PILOT_SR],
- '1" (FB+SOV)':[[1,'1" flow control',11.2],[1,'1" filter booster',11.2],[1,'1" bug screen',19.53],...PILOT_SR],
- '1-1/2" (FB+SOV)':[[1,'1-1/2" flow control',26],[1,'1-1/2" filter booster',31],[1,'1-1/2" bug screen',38.09],...PILOT_SR],
- '2" (FB+SOV)':[[1,'2" flow control',49],[1,'2" filter booster',50],[1,'2" bug screen',52.73],...PILOT_SR],
- '1/4" (DA 5/2-5/3-4/3 + SOV)':[[1,'1/4" regulator',1.1],[1,'1/4" flow control',2.1],[1,'1/4" 5/x solenoid valve',0.72],[2,'1/4" bug screen',2.54]],
- '1/2" (DA 5/2-5/3-4/3 + SOV)':[[1,'1/2" regulator',4.2],[1,'1/2" flow control',5.1],[1,'1/2" 5/3 pilot valve',5.5],[2,'1/2" bug screen',7.32]],
- '3/4" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'3/4" regulator',9],[1,'3/4" flow control',9.8],[1,'3/4" 5/3 pilot valve',9.7],[2,'3/4" bug screen',13.87],...PILOT_DA],
- '1" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1" regulator',11.2],[1,'1" flow control',11.2],[1,'1" 5/3 pilot valve',11.1],[2,'1" bug screen',19.53],...PILOT_DA],
- '1-1/2" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'1-1/2" regulator',30],[1,'1-1/2" flow control',30],[1,'1-1/2" 5/3 pilot valve',30],[2,'1-1/2" bug screen',38.09],...PILOT_DA],
- /* The workbook lists no flow coefficients for the 2" double-acting package.
-    Item names are carried across from the 1-1/2" package; Cv is left blank
-    rather than invented, and the package Cv above is provisional. */
- '2" (DA 5/3 SOV + 5/3 PV + 2x SOV)':[[1,'2" regulator',null],[1,'2" flow control',null],[1,'2" 5/3 pilot valve',null],[2,'2" bug screen',null],...PILOT_DA]
-};
-
-/* Add-on quick-exhaust units, keyed on connection size — Sheet6 column AN,
-   which tracks the port in column AL and is identical across the spring-return
-   and double-acting blocks. The add-on does not have to match the panel's port:
-   it mounts at the actuator, so the actuator's ports are what limit it. Choosing
-   freely lets one larger unit replace several matched ones, which matters because
-   a third of the actuator/cylinder/option combinations have only one port per
-   flange and physically cannot take two fittings. */
-const ADDONS=[['1/4"',2.0],['1/2"',5.2],['3/4"',11.0],['1"',14.3],['1-1/2"',40.3],['2"',65.0]];
-const BOOSTER_CAP=3;   // more than this many add-on exhaust units is a fabrication problem
-
-/* Families. CP bodies are not in the port-option tables, so port callout is
-   unavailable for them — the min-time check still applies. */
-const CP_CYL={"035":["080","100","130","140"],"045":["120","140","180","200"],"055":["160","200","250","280"],"065":["250","280","335","385"]};
-const FAMILIES={
-  GP:{label:'GP — scotch yoke', bodies:['065','085','100','130','160','161','200','201','270','271','350']},
-  CP:{label:'CP — scotch yoke, small range', bodies:['035','045','055','065']}
-};
-
-/* ───────────────────────────────────────────────────────────────
-   FLOW ENGINE
-   Critical (choked) flow, air:   Cv = Q·sqrt(SG·T) / (720·P1)
-   Subcritical:                   Cv = Q·sqrt(SG·T) / (1360·P1·sqrt(1-(2/3)x^2))
-
-   Q IS IN SCFH. The previous version passed SCFM into the same constants,
-   which understated every required Cv by a factor of 60 and made the
-   architecture tiers unreachable. Q is now converted before it is used.
-   ─────────────────────────────────────────────────────────────── */
-const GAL_IN3=231, ATM=14.696;
-
-/* Safety factors carried over from the standardized workbook, because the
-   panel ladder breakpoints were established under them.
-     spring, air stroke    2.5
-     spring, spring stroke 0.8
-     double acting         1.0   (sized on the faster of the two strokes) */
-/* Safety factors, built into the calculation rather than exposed as inputs.
-   The spring air-stroke factor stands in for two unmodelled things:
-   The spring stroke now carries the same 1.5 as the air stroke. It previously
-   carried 0.8, a de-rating, which could not be reconciled with the reasons for
-   padding the air stroke: the spring stroke runs down the same ports and tubing,
-   and its load is if anything less predictable, since spring output falls off
-   through the stroke while valve running torque peaks near the seat. A reference
-   ISA calculation applies 1.5 to both strokes.
-
-     1. Port and tubing restriction, which sits in series with the panel. Series
-        Cv means the physics needs SF = 1/sqrt(1-(Cr/Ct)^2) — about 1.15 if the
-        unmodelled path passes 2x the required Cv. This part alone is small.
-     2. Stroke times are calculated, never measured with a valve mounted to the
-        actuator. That is load variance, not a series restriction, so a plain
-        multiplier fits it and it carries most of the 1.5.
-   The workbook used 2.5; seven of eleven representative duties drop one panel
-   size at 1.5. Panels sized before this change used 2.5. */
-const SF={srActuate:1.5, srDeactuate:1.5, da:1.0, custom:1.5};
-/* Spring air-stroke safety factor. Covers port and tubing restriction that the
-   Cv calculation does not model. The workbook used 2.5; because components
-   combine in series, the physics needs SF = 1/sqrt(1-(Cr/Ct)^2), so 2.5 assumed
-   the unmodelled path passed only 1.09x the required Cv and 1.5 assumes 1.34x.
-   Exposed as an input rather than fixed, so it can be calibrated against jobs. */
-
-
-
-/* Supply side keeps the workbook's basis so results stay continuous with
-   quotes already issued: Cv = V(in3) x CF x SF / (t x PD x 29).
-   CF and PD are read from the workbook's own pressure table. */
-/* Compression factor is the absolute pressure ratio — the same "delta P / 14.7"
-   used in the reference sheet. Computed rather than looked up, so any supply
-   pressure works. */
-function compressionFactor(psi){ return (psi+ATM)/ATM; }
-
-/* Both strokes now use ISA-75.01 / IEC 60534 gas sizing:
-     Cv = q / (N7 x Fp x P1 x Y x SQRT(x / (Gg x T1 x Z)))
-   Choked, so x = 1 and Y = 2/3; Fp, Gg and Z are 1 for air through a straight run.
-   q is in SCFH.
-
-   Supply previously used the workbook basis, Cv = V x CF / (t x PD x 29). That is
-   not an ISA-equivalent table — rearranged, its PD would have to be 0.6226 x P1 to
-   match, so it demanded 32% more Cv at 50 psig and 58% more at 80, widening with
-   pressure. Both sides now agree with the reference sheet. */
-const N7=1360, Y_CHOKED=0.667, T1_R=581.67, GG=1.0;
-const isaCv=(q,p1)=>q/(N7*p1*Y_CHOKED*Math.sqrt(1/(GG*T1_R)));
-const scfhAt=(gal,secs,psi)=>(gal*GAL_IN3/1728)/secs*3600*compressionFactor(psi);
-
-function supplyStroke(gal,secs,psi,sf){
-  const p1=psi+ATM, q=scfhAt(gal,secs,psi), raw=isaCv(q,p1);
-  return {scfm:q/60, scfh:q, cvRaw:raw, cv:raw*sf, p1, basis:'ISA-75.01 choked'};
-}
-function exhaustStroke(gal,secs,psi,sf){
-  const p1=psi+ATM, q=scfhAt(gal,secs,psi), raw=isaCv(q,p1);
-  return {scfm:q/60, scfh:q, cvRaw:raw, cv:raw*sf, p1, basis:'ISA-75.01 choked'};
-}
-
-function seriesCv(a){const v=a.filter(x=>x>0);return v.length?1/Math.sqrt(v.reduce((s,x)=>s+1/(x*x),0)):0;}
-
-/* ─── helpers ─── */
-const $=id=>document.getElementById(id);
-const val=id=>$(id).value;
-const num=id=>parseFloat($(id).value)||0;
-const chk=id=>{const e=$(id);return e?e.checked:false;};
-let mode='std', acting='sr';
-
-/* ─── population ─── */
-function fillFamilies(){
-  $('family').innerHTML=Object.entries(FAMILIES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
-  onFamily();
-}
-function onFamily(){
-  const f=val('family');
-  $('bodySize').innerHTML=FAMILIES[f].bodies.map(b=>`<option value="${b}">${f}-${b}</option>`).join('');
-  onBody();
-}
-function onBody(){
-  const b=val('bodySize');
-  /* GP cylinder options come from the port-option tables. CP is not covered by
-     those tables, so its cylinder options are taken from the model numbers in
-     the standardized workbook instead. */
-  const cyls = PORT_MAP[b] ? Object.keys(PORT_MAP[b])
-             : (val('family')==='CP' && CP_CYL[b] ? CP_CYL[b] : []);
-  const sel=$('cylSize');
-  if(!cyls.length){ sel.innerHTML='<option value="">Not listed</option>'; sel.disabled=true; }
-  else { sel.disabled=false; sel.innerHTML=cyls.map(c=>`<option value="${c}">${c}</option>`).join(''); }
-  onCyl();
-}
-function onCyl(){
-  const b=val('bodySize'), c=val('cylSize'), sel=$('portOpt');
-  const opts=(PORT_MAP[b]&&PORT_MAP[b][c])?Object.keys(PORT_MAP[b][c]):[];
-  if(!opts.length){ sel.innerHTML='<option value="">Not listed</option>'; sel.disabled=true; }
-  else { sel.disabled=false; sel.innerHTML=opts.map(o=>`<option value="${o}">Option ${o}</option>`).join(''); }
-  live();
-}
-function portCallout(){
-  const b=val('bodySize'), c=val('cylSize'), o=val('portOpt');
-  const r=PORT_MAP[b]&&PORT_MAP[b][c]&&PORT_MAP[b][c][o];
-  return r?{end:r[0],head:r[1]}:null;
-}
-function minTime(){
-  const f=val('family'), b=val('bodySize');
-  const r=MIN_TIME[f]&&MIN_TIME[f][b];
-  if(!r) return null;
-  return chk('override')?r[0]:r[1];
-}
-
-/* ─── custom-build components ─── */
-const CATALOG={
-  fr:[['SH06-FR 1/4" NPT',1.7],['SH12-FR 1/2" NPT',1.9],['SH25-FR 1" NPT',14.2]],
-  sov3:[['FP06P 3/2 1/4"',0.6],['FP10P 3/2 1/4"',0.75],['BXS 3/2 1/4" NAMUR',0.73],['FP12P 3/2 1/2"',2.5],['SPR-08 3/2 3/8"',3.0],['SPR-16 3/2 1"',11.1]],
-  sov5:[['FP06P 5/2 1/4"',0.6],['FP10P 5/2 1/4"',0.75],['BXS 5/2 1/4" NAMUR',0.73],['FP12P 5/2 1/2"',2.5],['SPR-08 5/2 3/8"',3.0],['SPR-16 5/2 1"',11.1]],
-  vb:[['VBP-04 1/4"',1.8],['VBP-06 3/8"',3.6],['VBP-08 1/2"',3.9],['VBP-12 3/4"',8.5],['VBP-16 1"',11.0],['VBP-32 2"',35.0]],
-  fcv:[['FCV3006 1/4"',0.5],['FCV3009 3/8"',0.9],['FCV3012 1/2"',1.1],['FCV3019 3/4"',2.0],['FCV3025 1"',2.2]],
-  qev:[['S06-QEV 1/4"',1.1],['S09-QEV 3/8"',3.0],['S12-QEV 1/2"',3.5],['S19-QEV 3/4"',8.3],['S25-QEV 1"',10.0]],
-  hipex:[['HIPEX-08 1/2"',20],['HIPEX-16 1"',50],['HIPEX-24 1-1/2"',103],['HIPEX-32 2"',150]],
-  muffler:[['1/4" sintered bronze',2.0],['1/2" sintered bronze',6.0],['3/4" sintered bronze',10.0],['1" sintered bronze',18.0]]
-};
-const COMPS=[
-  {id:'fr',      name:'Filter-regulator',        cat:'fr',     path:'power',   on:true},
-  {id:'sov',     name:'Solenoid valve',          cat:null,     path:'power',   on:true},
-  {id:'vb',      name:'Volume booster',          cat:'vb',     path:'power',   on:false},
-  {id:'fcvo',    name:'Flow control — open',     cat:'fcv',    path:'power',   on:true},
-  {id:'fcvc',    name:'Flow control — close',    cat:'fcv',    path:'power',   on:false, daOnly:true},
-  {id:'qev',     name:'Quick exhaust valve',     cat:'qev',    path:'exhaust', on:false},
-  {id:'hipex',   name:'HIPEX exhaust valve',     cat:'hipex',  path:'exhaust', on:false},
-  {id:'muffler', name:'Muffler / silencer',      cat:'muffler',path:'exhaust', on:false}
-];
-const catOf=c=>c.id==='sov'?(acting==='da'?CATALOG.sov5:CATALOG.sov3):CATALOG[c.cat];
-function buildCustomUI(){
-  $('compChecks').innerHTML=COMPS.filter(c=>!(c.daOnly&&acting==='sr')).map(c=>{
-    const t=c.path==='power'?'<span class="tag pw">POWER</span>':'<span class="tag ex">EXHAUST</span>';
-    return `<label class="chk"><input type="checkbox" id="on-${c.id}" ${c.on?'checked':''} onchange="buildPicks();live()"><span>${c.name}${t}</span></label>`;
-  }).join('');
-  buildPicks();
-}
-function buildPicks(){
-  $('compPicks').innerHTML=COMPS.filter(c=>!(c.daOnly&&acting==='sr')&&chk('on-'+c.id)).map(c=>{
-    const opts=catOf(c).map(([n,cv],i)=>`<option value="${i}">${n} — Cv ${cv}</option>`).join('');
-    return `<div class="f"><label for="pick-${c.id}">${c.name}</label><select id="pick-${c.id}" onchange="live()">${opts}</select></div>`;
-  }).join('');
-}
-const pickCv=c=>{const s=$('pick-'+c.id);return s?catOf(c)[parseInt(s.value)||0][1]:0;};
-
-/* ─── mode / acting ─── */
-function setMode(m){
-  mode=m;
-  $('pv-std').classList.toggle('on',m==='std');
-  $('pv-cus').classList.toggle('on',m==='cus');
-  $('fs-custom').style.display=m==='cus'?'':'none';
-  if(m==='cus') buildCustomUI();
-  live();
-}
-function setActing(a){
-  acting=a;
-  $('at-sr').classList.toggle('on',a==='sr');
-  $('at-da').classList.toggle('on',a==='da');
-  if(mode==='cus') buildCustomUI();
-  live();
-}
-
-/* ─── requirement ─── */
-function requirement(){
-  const gal=num('disp'), psi=num('psi'), to=num('tOpen'), tc=num('tClose');
-  const sfSupply = mode==='cus' ? SF.custom : (acting==='da'?SF.da:SF.srActuate);
-  const sfExh    = mode==='cus' ? SF.custom : (acting==='da'?SF.da:SF.srDeactuate);
-  const tSupply  = acting==='da' ? Math.min(to,tc) : to;   // spring: air stroke opens
-  const tExhaust = acting==='da' ? Math.min(to,tc) : tc;   // spring: spring stroke closes
-  return {
-    gal,psi,to,tc,
-    supply : supplyStroke(gal,tSupply,psi,sfSupply),
-    exhaust: exhaustStroke(gal,tExhaust,psi,sfExh),
-    sfSupply, sfExh
-  };
-}
-
-/* ─── panel selection ─── */
-/* Ports available on the actuator flange, parsed from the "[2] - 2\" NPT" callout.
-   Each add-on unit needs one. Defaults to 1 when the combination is not listed. */
-function flangePorts(){
-  const pc=portCallout();
-  if(!pc) return 1;
-  const m=/^\[(\d+)\]/.exec(pc.end);
-  return m?parseInt(m[1]):1;
-}
-
-/* The package is sized on the air stroke. The return stroke is covered by the
-   package itself where it can be, otherwise by the smallest single add-on that
-   clears it on its own — one fitting rather than several matched ones. */
-function selectPanel(req){
-  const ladder = acting==='da'?LADDER_DA:LADDER_SR;
-  const needIn=req.supply.cv, needOut=req.exhaust.cv;
-  let panel=ladder.find(p=>p.cvIn>needIn), overLadder=false;
-  if(!panel){ panel=ladder[ladder.length-1]; overLadder=true; }
-
-  const ports=flangePorts();
-  let addon=null, units=0;
-  const shortfall=needOut-panel.cvOut;
-  if(shortfall>0){
-    const single=ADDONS.find(a=>a[1]>shortfall);
-    if(single){ addon=single; units=1; }
-    else {
-      addon=ADDONS[ADDONS.length-1];
-      units=Math.ceil(shortfall/addon[1]);
-    }
-  }
-  if(overLadder){
-    const inShort=needIn-panel.cvIn;
-    units=Math.max(units, Math.ceil(inShort/(addon?addon[1]:ADDONS[ADDONS.length-1][1])));
-    if(!addon) addon=ADDONS[ADDONS.length-1];
-  }
-
-  /* Alternative with no add-on at all: the smallest package clearing both sides. */
-  const noAddon=ladder.find(p=>p.cvIn>needIn&&p.cvOut>needOut);
-  const alt=(units>0&&noAddon&&noAddon!==panel)?noAddon:null;
-
-  const deliveredOut=panel.cvOut+(addon?addon[1]*units:0);
-  return {
-    panel, addon, units, overLadder, alt, ports,
-    portsExceeded: units>ports,
-    porting: units? units+'\u00d7 '+addon[0]+' add-on on '+panel.port+' package' : panel.port+' package',
-    marginIn:(panel.cvIn-needIn)/panel.cvIn,
-    marginOut:(deliveredOut-needOut)/deliveredOut,
-    deliveredOut,
-    exhaustShort:needOut-deliveredOut
-  };
-}
-
-/* ─── live readout ─── */
-function live(){
-  const r=requirement();
-  const mt=minTime(), pc=portCallout();
-  const rows=[
-    ['Free air, supply stroke', r.supply.scfm.toFixed(1)+' scfm'],
-    ['Required Cv, supply', r.supply.cv.toFixed(3)],
-    ['Required Cv, exhaust', r.exhaust.cv.toFixed(3)],
-    ['Minimum stroke time', mt==null?'Not listed':mt.toFixed(1)+' s'],
-    ['End flange', pc?pc.end:'Not listed'],
-    ['Head flange', pc?pc.head:'Not listed']
-  ];
-  $('readout').innerHTML=rows.map(([k,v])=>`<div><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
-}
-
-/* ─── validation ─── */
-function validate(){
-  const r=requirement();
-  const out=[]; let worst='ok';
-  const add=(lvl,title,body,fix)=>{out.push({lvl,title,body,fix});
-    if(lvl==='err') worst='err'; else if(lvl==='warn'&&worst!=='err') worst='warn';};
-
-  // 1 — minimum stroke time. Hard gate: nothing downstream matters if this fails.
-  const mt=minTime();
-  if(mt==null){
-    add('info','Minimum stroke time not listed',
-      `No published minimum for ${val('family')}-${val('bodySize')}. The speed requirement has not been checked against the actuator.`);
-  } else {
-    const fastest=Math.min(r.to,r.tc);
-    if(fastest<mt) add('err','Stroke time is below the actuator minimum',
-        `The fastest requested stroke is ${fastest.toFixed(1)} s. ${val('family')}-${val('bodySize')} `+
-        `${chk('override')?'with':'without'} a manual override cannot stroke faster than ${mt.toFixed(1)} s. `+
-        `No panel, port option, or exhaust valve changes this.`,
-        chk('override')?`Increase the stroke time to ${mt.toFixed(1)} s or remove the manual override.`
-                       :`Increase the stroke time to at least ${mt.toFixed(1)} s.`);
-    else if(fastest<mt*1.25) add('warn','Stroke time is close to the actuator minimum',
-        `${fastest.toFixed(1)} s against a ${mt.toFixed(1)} s minimum leaves under 25% margin.`);
-    else add('ok','Stroke time is achievable',
-        `${fastest.toFixed(1)} s against a ${mt.toFixed(1)} s minimum for ${val('family')}-${val('bodySize')}.`);
-  }
-
-  // 2 — supply pressure
-  if(r.psi<40) add('err','Air supply is too low',`${r.psi} psig is below the 40 psig working minimum.`,'Raise the supply pressure.');
-  else if(r.psi<60) add('warn','Air supply is below the normal range',`${r.psi} psig is under the usual 60–100 psig. Confirm actuator torque output at this pressure.`);
-  else add('ok','Air supply is in range',`${r.psi} psig.`);
-
-  return {r,out,worst};
-}
-
-/* ─── render ─── */
 function run(){
-  const {r,out,worst}=validate();
-  const blocked=out.some(m=>m.lvl==='err');
-  let html='';
+  try {
+    const {r,out,worst}=validate();
+    const blocked=out.some(m=>m.lvl==='err');
 
-  const vmap={ok:['ok','Approved'],warn:['warn','Approved with warnings'],err:['err','Not approved']};
-  let checks=out.slice(), verdict=worst;
+    let html='';
+    let checks=out.slice();
+    let verdict=worst;
+    let sel=null;
+    let sys=null;
 
-  let sel=null, sys=null;
-  if(!blocked && mode==='std'){
-    sel=selectPanel(r);
-    if(sel.overLadder && sel.units>BOOSTER_CAP){
-      checks.push({lvl:'err',title:'Duty is beyond the standardized range',
-        body:`Required Cv ${r.supply.cv.toFixed(2)} needs ${sel.units} add-on exhaust units on the largest panel. `+
-             `Above ${BOOSTER_CAP} this stops being a sizing answer and becomes a fabrication problem.`,
-        fix:'Refer to engineering for a purpose-built panel.'});
-      verdict='err';
-    } else if(sel.overLadder){
-      checks.push({lvl:'warn',title:'Duty is above the largest standardized panel',
-        body:`Required Cv ${r.supply.cv.toFixed(2)} exceeds the ${sel.panel.name} package at Cv ${sel.panel.cvIn.toFixed(2)}. `+
-             `${sel.units} add-on exhaust unit${sel.units>1?'s':''} bring the delivered Cv to ${sel.deliveredIn.toFixed(2)}.`});
-      if(verdict==='ok') verdict='warn';
-    } else {
-      checks.push({lvl:'ok',title:'Standardized panel covers the duty',
-        body:`${sel.panel.name} at Cv ${sel.panel.cvIn.toFixed(2)} against a required ${r.supply.cv.toFixed(3)}, `+
-             `a margin of ${(sel.marginIn*100).toFixed(0)}%.`});
-    }
-    if(sel.units){
-      checks.push({lvl:sel.portsExceeded?'err':'ok',
-        title:sel.portsExceeded?'Not enough ports on the actuator flange':'Return stroke covered by an add-on unit',
-        body:`${sel.units} \u00d7 ${sel.addon[0]} quick-exhaust at Cv ${sel.addon[1]} brings exhaust capacity to `+
-             `${sel.deliveredOut.toFixed(2)} against a required ${req.exhaust.cv.toFixed(3)}. `+
-             `The flange has ${sel.ports} port${sel.ports>1?'s':''} and each unit needs one.`,
-        fix:sel.portsExceeded?'Move up a package size, or select a port option with more ports.':null});
-      if(sel.portsExceeded) verdict='err';
-    }
-    if(sel.alt){
-      checks.push({lvl:'info',title:'Add-on can be avoided',
-        body:`The ${sel.alt.name} package clears both strokes on its own, at Cv ${sel.alt.cvIn.toFixed(2)} in `+
-             `and ${sel.alt.cvOut.toFixed(2)} out. Trade a larger package against one add-on fitting.`});
-    }
-    if(sel.exhaustShort>0){
-      checks.push({lvl:'warn',title:'Exhaust capacity is short on the return stroke',
-        body:`The package exhausts at Cv ${sel.panel.cvOut.toFixed(2)} against a required ${r.exhaust.cv.toFixed(3)} `+
-             `. The workbook never checked exhaust capacity at all, so a panel that `+
-             `sizes correctly on supply can still stroke slow in the field.`,
-        fix:`Add exhaust capacity or open up the discharge arrangement.`});
-      if(verdict==='ok') verdict='warn';
-    }
-    if(sel.panel.provisional){
-      checks.push({lvl:'warn',title:'Selected package uses a provisional flow coefficient',
-        body:`The workbook had no Cv for the 2" double-acting package, so double-acting duty above Cv 17.3 returned an error. `+
-             `The value here is carried across from the 2" spring-return package.`,
-        fix:'Confirm the 2" double-acting package Cv before quoting.'});
-      if(verdict==='ok') verdict='warn';
-    }
-  }
+    const vmap={
+      ok:['ok','Approved'],
+      warn:['warn','Approved with warnings'],
+      err:['err','Not approved']
+    };
 
-  if(!blocked && mode==='cus'){
-    const power=COMPS.filter(c=>!(c.daOnly&&acting==='sr')&&chk('on-'+c.id)&&c.path==='power').map(pickCv);
-    const exh=COMPS.filter(c=>!(c.daOnly&&acting==='sr')&&chk('on-'+c.id)&&c.path==='exhaust').map(pickCv);
-    sys={power:seriesCv(power), exhaust:seriesCv(exh), n:power.length};
-    if(!power.length){
-      checks.push({lvl:'err',title:'No components on the supply path',body:'The system flow coefficient cannot be calculated.',fix:'Select at least a solenoid valve.'});
-      verdict='err';
-    } else if(sys.power>=r.supply.cv){
-      checks.push({lvl:'ok',title:'Supply path meets the requirement',
-        body:`System Cv ${sys.power.toFixed(3)} against a required ${r.supply.cv.toFixed(3)}, a margin of ${((sys.power/r.supply.cv-1)*100).toFixed(0)}%.`});
-    } else {
-      checks.push({lvl:'err',title:'Supply path is undersized',
-        body:`System Cv ${sys.power.toFixed(3)} falls short of the required ${r.supply.cv.toFixed(3)}. Components in series combine as 1/√Σ(1/Cv²), so the smallest one dominates.`,
-        fix:'Increase the smallest component on the supply path, or add a volume booster.'});
-      verdict='err';
-    }
-    if(exh.length && sys.exhaust<r.exhaust.cv){
-      checks.push({lvl:'warn',title:'Exhaust path is undersized',
-        body:`Exhaust Cv ${sys.exhaust.toFixed(3)} against a required ${r.exhaust.cv.toFixed(3)}.`,
-        fix:'Fit a larger quick-exhaust or HIPEX unit.'});
-      if(verdict==='ok') verdict='warn';
-    }
-  }
+    /* ============================================================
+       STANDARDIZED PANEL
+       ============================================================ */
+    if(!blocked && mode==='std'){
+      sel=selectPanel(r);
 
-  const [vc,vt]=vmap[verdict];
-  html+=`<div class="result-head"><span class="verdict ${vc}">${vt}</span>
-    <span class="sub">${r.gal} gal &middot; ${r.psi} psig &middot; open ${r.to}s / close ${r.tc}s &middot;
-    ${acting==='sr'?'spring return':'double acting'} &middot; ${val('family')}-${val('bodySize')}</span></div>`;
+      /*
+       * If required supply Cv is beyond the largest standardized
+       * panel, an exhaust add-on cannot correct the supply shortage.
+       */
+      if(sel.overLadder){
+        checks.push({
+          lvl:'err',
+          title:'Duty is beyond the standardized supply range',
+          body:
+            `Required supply Cv ${r.supply.cv.toFixed(2)} exceeds the `+
+            `${sel.panel.name} package supply Cv of `+
+            `${sel.panel.cvIn.toFixed(2)}. An exhaust add-on cannot `+
+            `increase the package supply capacity.`,
+          fix:'Refer to engineering for a purpose-built supply arrangement.'
+        });
 
-  if(sel){
-    const pc=portCallout();
-    html+=`<div class="pick">
-      <div class="lbl">Recommended panel</div>
-      <div class="big">${sel.panel.name}</div>
-      <div class="meta">${sel.porting}${sel.units?` &middot; add-on Cv ${sel.addon[1]} each &middot; delivered exhaust Cv ${sel.deliveredOut.toFixed(2)}`:''}</div>
-      ${pc?`<div class="meta">Actuator flanges — end ${pc.end} &middot; head ${pc.head} <span class="tag">FROM PORT OPTION ${val('portOpt')}</span></div>`
-          :`<div class="meta">Actuator flange callout not listed for this body and cylinder combination.</div>`}
-    </div>
-    <div class="spec">
-      <dl>
-        <div><dt>Required Cv, supply stroke</dt><dd>${r.supply.cv.toFixed(3)} <small>&times;${r.sfSupply} SF</small></dd></div>
-        <div><dt>Package Cv, supply</dt><dd>${sel.panel.cvIn.toFixed(2)}</dd></div>
-        <div><dt>Margin on supply</dt><dd>${(sel.marginIn*100).toFixed(0)}%</dd></div>
-        <div><dt>Free air, supply stroke</dt><dd>${r.supply.scfm.toFixed(1)} <small>scfm</small></dd></div>
-      </dl>
-      <dl>
-        <div><dt>Required Cv, exhaust stroke</dt><dd>${r.exhaust.cv.toFixed(3)} <small>&times;${r.sfExh} SF</small></dd></div>
-        <div><dt>Package Cv, exhaust</dt><dd>${sel.panel.cvOut.toFixed(2)}</dd></div>
-        <div><dt>Minimum stroke time</dt><dd>${minTime()==null?'&mdash;':minTime().toFixed(1)+' s'}</dd></div>
-      </dl>
-    </div>`;
-  } else if(sys){
-    html+=`<div class="spec">
-      <dl>
-        <div><dt>Required Cv, supply stroke</dt><dd>${r.supply.cv.toFixed(3)} <small>&times;${r.sfSupply} SF</small></dd></div>
-        <div><dt>System Cv, supply</dt><dd>${sys.power.toFixed(3)} <small>${sys.n} in series</small></dd></div>
-      </dl>
-      <dl>
-        <div><dt>Required Cv, exhaust stroke</dt><dd>${r.exhaust.cv.toFixed(3)} <small>&times;${r.sfExh} SF</small></dd></div>
-        <div><dt>System Cv, exhaust</dt><dd>${sys.exhaust?sys.exhaust.toFixed(3):'&mdash;'}</dd></div>
-      </dl>
-    </div>`;
-  }
+        verdict='err';
+      } else {
+        checks.push({
+          lvl:'ok',
+          title:'Standardized panel covers the supply duty',
+          body:
+            `${sel.panel.name} has a supply Cv of `+
+            `${sel.panel.cvIn.toFixed(2)} against a required `+
+            `${r.supply.cv.toFixed(3)}, providing a margin of `+
+            `${(sel.marginIn*100).toFixed(0)}%.`
+        });
+      }
 
-  const ic={ok:'&#10003;',warn:'&#9888;',err:'&#10007;',info:'&#8505;'};
-  html+=`<div class="sect"><h3>Checks</h3><div class="sh">Run in order. A failed stroke-time check stops the calculation.</div>`;
-  html+=checks.map(m=>`<div class="msg ${m.lvl}"><span class="ic">${ic[m.lvl]}</span><div><b>${m.title}</b><p>${m.body}</p>${m.fix?`<span class="fix">${m.fix}</span>`:''}</div></div>`).join('');
-  html+=`</div>`;
+      /*
+       * Return-stroke add-on check.
+       *
+       * FIX:
+       * The previous code referred to req.exhaust.cv.
+       * The requirement object in this function is named r.
+       */
+      if(sel.units && sel.addon){
+        checks.push({
+          lvl:sel.portsExceeded?'err':'ok',
+          title:sel.portsExceeded
+            ? 'Not enough ports on the actuator flange'
+            : 'Return stroke covered by an add-on unit',
+          body:
+            `${sel.units} × ${sel.addon[0]} quick-exhaust at Cv `+
+            `${sel.addon[1]} brings exhaust capacity to `+
+            `${sel.deliveredOut.toFixed(2)} against a required `+
+            `${r.exhaust.cv.toFixed(3)}. The flange has `+
+            `${sel.ports} port${sel.ports>1?'s':''}, and each unit `+
+            `requires one port.`,
+          fix:sel.portsExceeded
+            ? 'Move up a package size or select a port option with more ports.'
+            : null
+        });
 
-  if(sel){
-    const items=PANEL_BOM[sel.panel.name]||[];
-    const pc=portCallout();
-    let n=0;
-    const line=(qty,item,cv,conn)=>`<tr><td class="m">${String(++n).padStart(2,'0')}</td><td class="num">${qty}</td>`+
-      `<td>${item}</td><td class="num">${cv==null?'&mdash;':cv}</td><td class="m">${conn||'&mdash;'}</td></tr>`;
-    let rows=`<tr class="grp"><td colspan="5">${sel.panel.name} &mdash; standardized package</td></tr>`;
-    rows+=items.map(([q,nm,cv])=>line(q,nm,cv,'')).join('');
-    if(sel.units){
-      rows+=`<tr class="grp"><td colspan="5">Add-on exhaust capacity</td></tr>`;
-      rows+=line(sel.units,`${sel.addon[0]} quick-exhaust unit`,sel.addon[1],`${sel.addon[0]} NPT`);
-    }
-    rows+=`<tr class="grp"><td colspan="5">Actuator</td></tr>`;
-    rows+=line(1,`${val('family')}-${val('bodySize')} ${acting==='sr'?'spring return':'double acting'}`+
-      `${val('cylSize')?', cylinder '+val('cylSize'):''}`,null,
-      pc?`end ${pc.end} / head ${pc.head}`:'not listed');
-    if(chk('override')) rows+=line(1,'Manual override',null,'');
+        if(sel.portsExceeded){
+          verdict='err';
+        }
+      }
 
-    const totalItems=items.reduce((s,x)=>s+x[0],0)+sel.units+1+(chk('override')?1:0);
-    html+=`<div class="sect" style="border-top:1px solid var(--fill2)"><h3>Bill of materials</h3>
-      <div class="sh">${totalItems} items. Package contents are fixed by the standard &mdash; Cv shown per item,
-      supply-path items combine as 1/&radic;&Sigma;(1/Cv&sup2;) to the package Cv of ${sel.panel.cvIn.toFixed(2)}.</div>
-      <table><thead><tr><th>#</th><th class="num">Qty</th><th>Item</th><th class="num">Cv</th><th>Connection</th></tr></thead>
-      <tbody>${rows}</tbody></table>
-      <div class="note">Panel porting callout ${sel.porting}. Flange sizes are read from the actuator port option
-      and are shown for reference only &mdash; the sizing tool selects the option.</div></div>`;
-  }
+      /*
+       * No suitable exhaust add-on was found.
+       */
+      if(sel.units && !sel.addon){
+        checks.push({
+          lvl:'err',
+          title:'No suitable exhaust add-on is available',
+          body:
+            `The required exhaust Cv is ${r.exhaust.cv.toFixed(3)}, `+
+            `but no add-on unit could be selected from the configured `+
+            `add-on catalogue.`,
+          fix:'Refer the exhaust arrangement to engineering.'
+        });
 
-  html+=`<div class="foot">ISA-75.01 choked gas sizing, both strokes &middot;
-    N<sub>7</sub> ${N7} &middot; Y ${Y_CHOKED} &middot; T<sub>1</sub> ${T1_R}&deg;R &middot;
-    F<sub>p</sub> / G<sub>g</sub> / Z = 1 &middot; safety factor 1.5 &middot;
-    ${new Date().toLocaleDateString()}</div>`;
+        verdict='err';
+      }
 
-  $('out').innerHTML=html;
-  const st=$('status');
-  st.className='status s-'+(verdict==='ok'?'ok':verdict==='warn'?'warn':'err');
-  st.innerHTML='Status <b>'+vt+'</b>';
-}
-
-function resetAll(){
-  $('disp').value=2.5; $('psi').value=80; $('tOpen').value=10; $('tClose').value=10;
-  $('override').checked=false; 
-  setActing('sr'); fillFamilies();
-  $('out').innerHTML='<div class="empty"><div class="g">&#9636;</div><b>No result yet</b>Enter the requirement and choose Calculate.</div>';
-  const st=$('status'); st.className='status'; st.innerHTML='Status <b>Not run</b>';
-}
-
-fillFamilies();
-live();
-</script>
-</body>
-</html>
+      /*
+       * Alternative package with no add-on.
+       */
+      if(sel.alt){
+        checks.push({
+          lvl:'info',
+          title:'Add-on can be avoided',
+    
